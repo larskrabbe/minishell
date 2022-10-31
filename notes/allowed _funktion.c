@@ -3,25 +3,27 @@
  * @brief	readline will read a line from the terminal and return it, using prompt as a prompt
  * 			it will allocat the string using malloc.
  * 			for more information GNU READLINE
- * @include <stdio.h>
- * @param	prompt
- * @return	
+ * @param	prompt a string that will be printed at at the beginning of the terminal line
+ * @return	return  a allocated string
  */
 char *   readline (const char *prompt);
-
+/**
+ * @brief 
+ * 
+ */
 rl_clear_history():
 rl_on_new_line();
 rl_replace_line();
 rl_redisplay();
 add_history();
-printf();
-malloc();
-free();
-write();
+////printf();
+////malloc();
+////free();
+////write();
 access();
-open();
-read();
-close();
+////open();
+////read();
+////close();
 fork();
 wait();
 waitpid();

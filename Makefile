@@ -4,7 +4,7 @@ NAME = minishell
 
 CC = cc
 
-FLAGS = -lreadline $(CFLAGS)
+FLAGS = -lreadline $(CFLAGS) -g -fsanitize=address
 
 CFLAGS = -Wextra -Werror -Wall
 
@@ -20,7 +20,7 @@ $(NAME): $(OBJ)
 	$(CC) $(FLAGS) src/main.c -o $(NAME)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
-	$(CC) $(CFLAGS) $(INCFL) -c $< -o $@
+	$(CC) $(CFLAGS) -g -fsanitize=address $(INCFL) -c $< -o $@
 
 $(DIR_OBJ):
 	@mkdir -p $(DIR_OBJ)
