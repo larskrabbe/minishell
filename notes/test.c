@@ -8,6 +8,6 @@ int	main()
 	char *ptr;
 
 	ptr = readline(NULL); //reads line from terminal input
-	printf("%s",ptr);
+	printf("%s\n<minishell>",ptr);
 	return(0);
 }
