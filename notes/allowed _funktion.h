@@ -365,39 +365,57 @@ int ttyslot(void);
 */
 int ioctl(int fd, unsigned long request, ...);
 
+
 /**
- * @brief 
+ * @brief The getenv() function searches the environment list to find the
+       environment variable name, and returns a pointer to the
+       corresponding value string.
 */
-getenv();
+char *getenv(const char *name);
+
 /**
- * @brief 
+ * @brief  set the parameters associated with the terminal
 */
-tcsetattr();
+int tcsetattr(int fildes, int optional_actions,const struct termios *termios_p);
+
 /**
- * @brief 
+ * @brief get the parameters associated with the terminal
 */
-tcgetattr();
+int tcgetattr(int fildes, struct termios *termios_p);
+
 /**
- * @brief 
+ * @brief 	The tgetent routine loads the entry for name. It returns 1 on success, 
+ 			0 if there is no such entry, and -1 if the terminfo database could not be found. 
+ 			The emulation ignores the buffer pointer bp. 
 */
-tgetent();
+ int tgetent(char *bp, const char *name);
+
 /**
- * @brief 
+ * @brief The tgetflag routine gets the boolean entry for id, or zero if it is not available. 
 */
-tgetflag();
+ int tgetflag(char *id);
+
 /**
- * @brief 
+ * @brief The tgetflag routine gets the boolean entry for id, or zero if it is not available. 
 */
-tgetnum();
+ int tgetnum(char *id);
+ 
 /**
- * @brief 
+ * @brief 	The tgetstr routine returns the string entry for id, or zero if it is not available. 
+ 			Use tputs to output the returned string. 
+ 			The return value will also be copied to the buffer pointed to by area,
+  			and the area value will be updated to point past the null ending this value. 
 */
-tgetstr();
+ char *tgetstr(char *id, char **area);
+ 
 /**
- * @brief 
+ * @brief The tgoto routine instantiates the parameters into the given capability.
+ 			 The output from this routine is to be passed to tputs. 
 */
-tgoto();
+ char *tgoto(const char *cap, int col, int row);
+ 
 /**
- * @brief 
+ * @brief The tputs routine is described on the curs_terminfo(3X) manual page.
+ 			 It can retrieve capabilities by either termcap or terminfo name.
 */
-tputs();
+ int tputs(const char *str, int affcnt, int (*putc)(int)); 
