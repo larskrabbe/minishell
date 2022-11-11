@@ -13,6 +13,7 @@ output_overwrite = 8,
 output_append = 9,
 }t_tokentype;
 
+
 typedef struct s_token{
 t_tokentype		tokentype;
 t_token			*next;

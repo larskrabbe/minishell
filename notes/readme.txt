@@ -21,3 +21,18 @@ Compilers: Principles, Techniques, and Tools
 	The "-" flag (<<-) ignores whitespace in this cae 
 > -> creates or overwrite a file as a output
 >> -> creates or appends a file as a ouput
+
+
+some ideas for diffrent ways to 'tokenize'(maybe combi with parser )
+-simple string change: change the str or a dubversion of it  where at the start and end of every token there will be a special char like < and >  or "" etc
+-location saving: simple  save the start maybe the end of  each token in a array(int or struct). can stored in the stack or heap once and be reused for multipel execution
+-store in struct: for each token create use a new struct to safe the string of the token. uses a array or pointer inside of the token to "chain" them together. easy to expent later o. most likely best incase of empty cat and *wildcard, easy to add the chain 
+-don't tokenize at all: simple at the beginning but can get harder after
+
+
+
+to care for
+!! leaks : no reason to say why
+multiple flags : need to takare of invaleach flaggs ("echo -n -n -n hello "-> just "hello" and the -n flag once)
+empty cat : ask for valid file also look for cat and | combination
+wildcards in tokenizer: 
