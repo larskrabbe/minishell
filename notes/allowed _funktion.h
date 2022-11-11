@@ -154,35 +154,146 @@ struct sigaction {
  */
 int sigaction(int sig, const struct sigaction *restrict act, struct sigaction *restrict oact);
 
+/**
+ * @brief 
+*/
 sigemptyset();
+
+/**
+ * @brief 
+*/
 sigaddset();
+
+/**
+ * @brief 
+*/
 kill();
+
+/**
+ * @brief 
+*/
 exit();
+
+/**
+ * @brief 
+*/
 getcwd();
+
+/**
+ * @brief 
+*/
 chdir();
+
+/**
+ * @brief 
+*/
 stat();
+
+/**
+ * @brief 
+*/
 lstat();
+
+/**
+ * @brief 
+*/
 fstat();
+
+/**
+ * @brief 
+*/
 unlink();
+
+/**
+ * @brief 
+*/
 execve();
+
+/**
+ * @brief 
+*/
 dup();
+
+/**
+ * @brief 
+*/
 dup2();
+
+/**
+ * @brief 
+*/
 pipe();
+
+/**
+ * @brief 
+*/
 opendir();
+
+/**
+ * @brief 
+*/
 readdir();
+/**
+ * @brief 
+*/
 closedir();
+/**
+ * @brief 
+*/
 strerror();
+/**
+ * @brief 
+*/
 perror();
+/**
+ * @brief 
+*/
 isatty();
+/**
+ * @brief 
+*/
 ttyname();
+/**
+ * @brief 
+*/
 ttyslot();
+/**
+ * @brief 
+*/
 ioctl();
+/**
+ * @brief 
+*/
 getenv();
+/**
+ * @brief 
+*/
 tcsetattr();
+/**
+ * @brief 
+*/
 tcgetattr();
+/**
+ * @brief 
+*/
 tgetent();
+/**
+ * @brief 
+*/
 tgetflag();
+/**
+ * @brief 
+*/
 tgetnum();
+/**
+ * @brief 
+*/
 tgetstr();
+/**
+ * @brief 
+*/
 tgoto();
+/**
+ * @brief 
+*/
 tputs();
