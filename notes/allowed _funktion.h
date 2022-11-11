@@ -155,112 +155,216 @@ struct sigaction {
 int sigaction(int sig, const struct sigaction *restrict act, struct sigaction *restrict oact);
 
 /**
- * @brief 
+ * @brief set the sigmaks to 0 so every signal will get through it
 */
-sigemptyset();
+int sigemptyset(sigset_t *set);
+
+/**
+ * @brief Add a signalnumber to the signalmask
+*/
+ int sigaddset(sigset_t *set, int signum);
+
+/**
+ * @brief send a  process a signal
+*/
+int kill(pid_t pid, int sig);
+
+/**
+ * @brief cause normal process termination
+*/
+noreturn void exit(int status);
+
+/**
+ * @brief The getcwd() function copies an absolute pathname of the current
+	   working directory to the array pointed to by buf, which is of
+	   length size.
+*/
+char *getcwd(char *buf, size_t size);
+
+/**
+ * @brief changes the current working directory of the calling
+	   process to the directory specified in path.
+*/
+int chdir(const char *path);
+
+/**
+ * @brief  These functions return information about a file, in the buffer
+	   pointed to by statbuf.  No permissions are required on the file
+	   itself, but—in the case of stat(), fstatat(), and lstat()—execute
+	   (search) permission is required on all of the directories in
+	   pathname that lead to the file.
+*/
+int stat(const char *restrict pathname,struct stat *restrict statbuf);
+struct stat {
+	dev_t     st_dev;         /* ID of device containing file */
+	ino_t     st_ino;         /* Inode number */
+	mode_t    st_mode;        /* File type and mode */
+	nlink_t   st_nlink;       /* Number of hard links */
+	uid_t     st_uid;         /* User ID of owner */
+	gid_t     st_gid;         /* Group ID of owner */
+	dev_t     st_rdev;        /* Device ID (if special file) */
+	off_t     st_size;        /* Total size, in bytes */
+	blksize_t st_blksize;     /* Block size for filesystem I/O */
+	blkcnt_t  st_blocks;      /* Number of 512B blocks allocated */
+
+	/* Since Linux 2.6, the kernel supports nanosecond
+		precision for the following timestamp fields.
+		For the details before Linux 2.6, see NOTES. */
+
+	struct timespec st_atim;  /* Time of last access */
+	struct timespec st_mtim;  /* Time of last modification */
+	struct timespec st_ctim;  /* Time of last status change */
+
+#define st_atime st_atim.tv_sec      /* Backward compatibility */
+#define st_mtime st_mtim.tv_sec
+#define st_ctime st_ctim.tv_sec
+};
+
+/**
+ * @brief lstat() is identical to stat(), except that if pathname is a
+	 symbolic link, then it returns information about the link itself,
+	 not the file that the link refers to.
+*/
+ int lstat(const char *restrict pathname,struct stat *restrict statbuf);
 
 /**
  * @brief 
+	 fstat() is identical to stat(), except that the file about which
+	 information is to be retrieved is specified by the file
+	 descriptor fd.
 */
-sigaddset();
+int fstat(int fd, struct stat *statbuf);
 
 /**
- * @brief 
+ * @brief    unlink() deletes a name from the filesystem.  If that name was
+	 the last link to a file and no processes have the file open, the
+	 file is deleted and the space it was using is made available for
+	 reuse.
 */
-kill();
+int unlink(const char *pathname);
 
 /**
- * @brief 
+ * @brief execve() executes the program referred to by pathname.  This
+	 causes the program that is currently being run by the calling
+	 process to be replaced with a new program, with newly initialized
+	 stack, heap, and (initialized and uninitialized) data segments.
 */
-exit();
+int execve(const char *pathname, char *const argv[],char *const envp[]);
 
 /**
- * @brief 
+ * @brief  The dup() system call allocates a new file descriptor that refers
+	 to the same open file description as the descriptor oldfd.  (For
+	 an explanation of open file descriptions, see open(2).)  The new
+	 file descriptor number is guaranteed to be the lowest-numbered
+	 file descriptor that was unused in the calling process.
 */
-getcwd();
+int dup(int oldfd);
 
 /**
- * @brief 
+ * @brief  The dup2() system call performs the same task as dup(), but
+	 instead of using the lowest-numbered unused file descriptor, it
+	 uses the file descriptor number specified in newfd.  In other
+	 words, the file descriptor newfd is adjusted so that it now
+	 refers to the same open file description as oldfd.
 */
-chdir();
+int dup2(int oldfd, int newfd);
 
 /**
- * @brief 
+ * @brief   pipe() creates a pipe, a unidirectional data channel that can be
+	 used for interprocess communication.  The array pipefd is used to
+	 return two file descriptors referring to the ends of the pipe.
+	 pipefd[0] refers to the read end of the pipe.  pipefd[1] refers
+	 to the write end of the pipe.  Data written to the write end of
+	 the pipe is buffered by the kernel until it is read from the read
+	 end of the pipe.  For further details, see pipe(7).
 */
-stat();
+ int pipe(int pipefd[2]);
 
 /**
- * @brief 
+ * @brief      The opendir() function opens a directory stream corresponding to
+	 the directory name, and returns a pointer to the directory
+	 stream.  The stream is positioned at the first entry in the
+	 directory.
 */
-lstat();
+DIR *opendir(const char *name);
+
+
+struct dirent {
+	ino_t          d_ino;       /* Inode number */
+	off_t          d_off;       /* Not an offset; see below */
+	unsigned short d_reclen;    /* Length of this record */
+	unsigned char  d_type;      /* Type of file; not supported
+						by all filesystem types */
+	char           d_name[256]; /* Null-terminated filename */
+};
 
 /**
- * @brief 
+ * @brief The readdir() function returns a pointer to a dirent structure
+       representing the next directory entry in the directory stream
+       pointed to by dirp.  It returns NULL on reaching the end of the
+       directory stream or if an error occurred.
 */
-fstat();
+struct dirent *readdir(DIR *dirp);
 
 /**
- * @brief 
+ * @brief   The closedir() function closes the directory stream associated
+       with dirp.  A successful call to closedir() also closes the
+       underlying file descriptor associated with dirp.  The directory
+       stream descriptor dirp is not available after this call.
 */
-unlink();
+int closedir(DIR *dirp);
 
 /**
- * @brief 
+ * @brief The strerror() function returns a pointer to a string that
+       describes the error code passed in the argument errnum, possibly
+       using the LC_MESSAGES part of the current locale to select the
+       appropriate language.  (For example, if errnum is EINVAL, the
+       returned description will be "Invalid argument".)  This string
+       must not be modified by the application, but may be modified by a
+       subsequent call to strerror() or strerror_l().  No other library
+       function, including perror(3), will modify this string.
 */
-execve();
+char *strerror(int errnum);
 
 /**
- * @brief 
+ * @brief The perror() function produces a message on standard error
+       describing the last error encountered during a call to a system
+       or library function
 */
-dup();
+void perror(const char *s);
 
 /**
- * @brief 
+ * @brief The isatty() function tests whether fd is an open file descriptor
+       referring to a terminal.
 */
-dup2();
+int isatty(int fd);
 
 /**
- * @brief 
+ * @brief  The function ttyname() returns a pointer to the null-terminated
+       pathname of the terminal device that is open on the file
+       descriptor fd, or NULL on error (for example, if fd is not
+       connected to a terminal).  The return value may point to static
+       data, possibly overwritten by the next call.  The function
+       ttyname_r() stores this pathname in the buffer buf of length
+       buflen.
 */
-pipe();
+char *ttyname(int fd);
 
 /**
- * @brief 
+ * @brief find the slot of the current user's terminal in some
+       file
 */
-opendir();
+int ttyslot(void);
 
 /**
- * @brief 
+ * @brief The ioctl() system call manipulates the underlying device
+       parameters of special files.  In particular, many operating
+       characteristics of character special files (e.g., terminals) may
+       be controlled with ioctl() requests.  The argument fd must be an
+       open file descriptor.
 */
-readdir();
-/**
- * @brief 
-*/
-closedir();
-/**
- * @brief 
-*/
-strerror();
-/**
- * @brief 
-*/
-perror();
-/**
- * @brief 
-*/
-isatty();
-/**
- * @brief 
-*/
-ttyname();
-/**
- * @brief 
-*/
-ttyslot();
-/**
- * @brief 
-*/
-ioctl();
+int ioctl(int fd, unsigned long request, ...);
+
 /**
  * @brief 
 */

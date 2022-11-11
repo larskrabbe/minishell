@@ -36,3 +36,5 @@ to care for
 multiple flags : need to takare of invaleach flaggs ("echo -n -n -n hello "-> just "hello" and the -n flag once)
 empty cat : ask for valid file also look for cat and | combination
 wildcards in tokenizer: 
+executable and builins and flag inside of Qutationmarks: so there is a order of tokentypes (for example "exe" "flag" "arg1" "arg2")
+cat execute one file after another: example "cat" "file1" "file2" first file1 will be printed the file2
