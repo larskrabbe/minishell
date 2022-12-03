@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/30 12:50:18 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:01:37 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-void	print_token_chain(t_tokenchain *tokenchain)
+void	ft_bzero(void *s, size_t n)
 {
+	char	*ptr;
 
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	ptr = (char *)s;
+	while (n > 0)
+	{
+		*ptr = 0;
+		ptr++;
+		n--;
+	}
 }

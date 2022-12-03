@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/30 12:59:53 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/03/31 15:47:45 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
-
-void	print_token_chain(t_tokenchain *tokenchain)
+int	ft_isprint(int a)
 {
-
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	if (a >= 32 && a <= 126)
+		return (1);
+	else
+		return (0);
 }

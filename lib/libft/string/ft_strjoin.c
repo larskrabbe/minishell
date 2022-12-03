@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_memory.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 16:29:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:38:14 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/04/06 17:21:22 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:04:16 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-/**
- * @brief allocate memory for the tokens
- * 
- * @return the pointer to the tokenchain_head
- */
-t_tokenchain	*tokenchain_create(void)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_tokenchain	*head;
+	int		max_len;
+	char	*copy;
+	int		i1;
+	int		i2;
 
-	head = calloc(sizeof(t_tokenchain), 1);
-	if (head == NULL)
+	i1 = 0;
+	i2 = 0;
+	if (s1 == NULL || s2 == NULL )
 		return (NULL);
-	head->token = calloc(sizeof(t_tokenchain), ARG_MAX);
-	if (head->token == NULL)
+	max_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	copy = malloc(sizeof(char) * max_len);
+	if (copy == NULL)
+		return (NULL);
+	while (s1[i1] != '\0')
 	{
-		free(head);
-		return (NULL);
+		copy[i1] = s1[i1];
+		i1++;
 	}
-	head->token[1].tokentype = token_start;
-	return (head);
+	while (s2[i2] != '\0')
+	{
+		copy[i1 + i2] = s2[i2];
+		i2++;
+	}
+	copy[i1 + i2] = '\0';
+	return (copy);
 }

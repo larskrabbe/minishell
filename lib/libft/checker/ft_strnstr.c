@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 18:50:17 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:44:06 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/28 15:48:34 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:02:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-int	lexer(char *str, t_tokenchain *tokenchain)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	int	i;
+	int	p1;
+	int	p2;
 
-	i = 0;
-	tokenchain->str = str;
-	while (str[i] != '\0')
-	{
-		if (is_whitespace(str[i]) != 0)
+	p1 = 0;
+	p2 = 0;
+	if (needle[0] == '\0')
+		return ((char *)(haystack));
+	while (haystack[p1] != '\0' && len > (size_t)p1)
+	{	
+		p2 = 0;
+		while (haystack[p1 + p2] == needle[p2] && (size_t)(p1 + p2) < len)
 		{
-			
+			if (needle[p2 + 1] == '\0')
+				return ((char *)(haystack + p1));
+			p2++;
 		}
-		i++;
+		p1++;
 	}
-	return (0);
+	return (NULL);
 }

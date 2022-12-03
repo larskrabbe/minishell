@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/23 11:19:18 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:04:22 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-void	print_token_chain(t_tokenchain *tokenchain)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
+	size_t	j;
 
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	j = 0;
+	if (size == 0)
+		return (ft_strlen(src));
+	while (src[j] != '\0' && (size - 1) > j)
+	{
+		dst[j] = src[j];
+		j++;
+	}
+	dst[j] = '\0';
+	return (ft_strlen(src));
 }

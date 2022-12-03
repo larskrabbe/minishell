@@ -30,6 +30,9 @@ some ideas for diffrent ways to 'tokenize'(maybe combi with parser )
 -don't tokenize at all: simple at the beginning but can get harder after
 
 
+inside of the parser i will check for wildcards and envar
+the parser will allocated a string take care of it 
+
 
 to care for
 !! leaks : no reason to say why
@@ -38,3 +41,4 @@ empty cat : ask for valid file also look for cat and | combination
 wildcards in tokenizer: 
 executable and builins and flag inside of Qutationmarks: so there is a order of tokentypes (for example "exe" "flag" "arg1" "arg2")
 cat execute one file after another: example "cat" "file1" "file2" first file1 will be printed the file2
+capilisation for executable and builtins

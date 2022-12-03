@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/04/12 16:43:07 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:03:13 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-void	print_token_chain(t_tokenchain *tokenchain)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	new->next = *lst;
+	*lst = new;
 }

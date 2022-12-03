@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/26 14:04:12 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/03/26 14:07:00 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
-
-void	print_token_chain(t_tokenchain *tokenchain)
+int	ft_tolower(int letter)
 {
-
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	if (letter <= 'Z' && letter >= 'A')
+		letter = letter + 32;
+	return (letter);
 }

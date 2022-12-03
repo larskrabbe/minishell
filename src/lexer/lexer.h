@@ -1,50 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/12/03 16:54:11 by lkrabbe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#ifndef LEXER_H
+# define LEXER_H
+
 //?-----------Includes------------?//
 
-#include	"../../include/minishell.h"
+# include	"../../include/minishell.h"
 
 //?-----------Defines------------?//
 
-#define ARG_MAX 1000
+//!max amount of 'token' not sure if needed
+# define ARG_MAX 1000
 
 //?-----------Enums------------?//
 
-typedef	enum e_toektype{
-builtins = 0,
-excutables = 1,
-token_pipe = 2,
-and = 3,
-or = 4,
-argument = 5,
-input_file = 6,
-input_until = 7,//need a better name for <<
-output_overwrite = 8,
-output_append = 9,
-token_start ,
-token_end ,
+/**
+ * @brief enums to for each token, mostly used in the tokenizer
+ * 
+ */
+typedef enum e_toektype{
+	token_end = 0,
+	token_start = 1,
 }t_tokentype;
 
 //?-----------Structs------------?//
 
+/**
+ * @brief stores each position of a token inside of the input string
+ * 
+ * @param tokentype int that represent the type of token
+ * @param start the start of the token
+ * @param end the end of the token
+ */
 typedef struct s_token{
-t_tokentype		tokentype;
-char			*content;// saving the content inside of the token is maybe more set up but its  way easier to  manipulate it later
+	t_tokentype	tokentype;
+	char		*start;
+	char		*end;
 }t_token;
+
+/**
+ * @brief Head structure of the tokenchain
+ * 
+ * @param str string that is tokenize
+ * @param tokenchain the pointer to all token
+ */
+typedef struct s_tokenchain{
+	char	*str;
+	t_token	*token;
+}t_tokenchain;
 
 //?-----------Protoypes------------?//
 
-//------lexer_main.c------
-
-void	lexer(char *str, t_token *tokenchain);
-
-//------lexer_utiels.c-----
-
-void	print_token(t_token *token);
-void	print_token_chain(t_token *tokenchain);
-
-//------lexer_memory.c-------
-
-int		create_token_chain(t_token	*ptr);
-void	free_token_chain(t_token *ptr);
-void	myerror(char *str);// will be in minishell.h later
-
-
+#endif

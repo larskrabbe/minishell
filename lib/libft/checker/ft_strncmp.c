@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/27 15:36:17 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/04/01 14:06:54 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
-
-void	print_token_chain(t_tokenchain *tokenchain)
+int	ft_strncmp( const char *str1, const char *str2, int n )
 {
+	int	i;
 
-}
-
-void	print_token(t_token *token)
-{	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
-
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (str1[i] == str2[i] && str1[i] != '\0' && str2[i] != '\0')
+	{
+		if ((n - 1) == i)
+			return (0);
+		i++;
+	}
+	return ((unsigned char)str1[i] - (unsigned char)str2 [i]);
 }

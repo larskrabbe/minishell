@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utiels.c                                     :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:37:05 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/03/31 14:15:14 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/08/22 19:02:24 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../libft.h"
 
-void	print_token_chain(t_tokenchain *tokenchain)
-{
-
-}
-
-void	print_token(t_token *token)
+char	*ft_strrchr(const char *string, int letter)
 {	
-	printf("--------------\n");
-	printf("tokentype = %i\n", token->tokentype);
-	printf("content = %i  \n", token->start);
-	printf("content = %i  \n", token->end);
-	printf("--------------\n");
-}
+	int				i;
+	int				lastc;
+	unsigned char	*str;
+	unsigned char	c;
 
-void	myerror(char *str)
-{
-	printf("\033[31;1m%s\n\033[0m", str);
-	exit (0);
+	str = (unsigned char *)string;
+	c = (unsigned char) letter;
+	lastc = 0;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+		if (str[i] == c)
+			lastc = i;
+	}
+	if (c != str[lastc])
+		return (NULL);
+	return ((char *)(str + lastc));
 }
