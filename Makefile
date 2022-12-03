@@ -14,7 +14,9 @@ OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
 
 DIR_OBJ = obj
 
+LIBFT=$(LIB_DIR)libft.a
 
+LIB_DIR=libft/
 
 all:$(NAME)
 
@@ -27,10 +29,18 @@ $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 $(DIR_OBJ):
 	@mkdir -p $(DIR_OBJ)
 
-test:
-	@echo test
-	cc $(FLAGS) notes/test.c -o test.out
-	./test.out
+LEXER = src/lexer/lexer.c\
+		src/lexer/lexer_main.c\
+		src/lexer/lexer_memory.c\
+		src/lexer/is_white_space.c\
+		src/lexer/lexer_utiels.c\
+
+
+lexer_main:$(LEXER) | $(LIBFT)
+	cc $(LEXER) $(LIBFT)
+
+$(LIBFT):
+	make -C $(LIB_DIR)
 
 fclean:
 	@rm -f test.out
@@ -40,6 +50,7 @@ fclean:
 re: fclean all
 
 #need to install brew before we can install and  use readline
+#use bre addprefix to see if already installed
 brew:
 	rm -rf $$HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $$HOME/.brew && echo 'export PATH=$$HOME/.brew/bin:$$PATH' >> $$HOME/.zshrc && source $$HOME/.zshrc && brew update
 

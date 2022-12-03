@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_memory.c                                     :+:      :+:    :+:   */
+/*   is_white_space.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 16:29:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 19:39:15 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/08/29 13:23:33 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/12/03 19:41:18 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../../include/minishell.h"
 
-/**
- * @brief allocate memory for the tokens
- * 
- * @return the pointer to the tokenchain_head
- */
-t_tokenchain	*tokenchain_create(void)
+int	is_white_space(int a)
 {
-	t_tokenchain	*head;
-
-	head = ft_calloc(sizeof(t_tokenchain), 1);
-	if (head == NULL)
-		return (NULL);
-	head->token = ft_calloc(sizeof(t_tokenchain), ARG_MAX);
-	if (head->token == NULL)
-	{
-		free(head);
-		return (NULL);
-	}
-	return (head);
+	if (a == ' ' || a == '\n' || a == '\t')
+		return (1);
+	if (a == '\f' || a == '\r' || a == '\v')
+		return (1);
+	return (0);
 }

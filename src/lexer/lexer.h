@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 16:54:11 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/03 19:39:25 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ typedef enum e_toektype{
 	token_start = 1,
 }t_tokentype;
 
+/**
+ * @brief enums to for each token, mostly used in the tokenizer
+ * 
+ */
+typedef enum e_quotes{
+	noquotes = 0,
+	squotes = 1,
+	dquotes = 2,
+}t_quotes;
+
 //?-----------Structs------------?//
 
 /**
@@ -44,7 +54,6 @@ typedef enum e_toektype{
  * @param end the end of the token
  */
 typedef struct s_token{
-	t_tokentype	tokentype;
 	char		*start;
 	char		*end;
 }t_token;
@@ -61,5 +70,9 @@ typedef struct s_tokenchain{
 }t_tokenchain;
 
 //?-----------Protoypes------------?//
+
+void			myerror(char *str);
+int				lexer(char *str, t_tokenchain *tokenchain);
+t_tokenchain	*tokenchain_create(void);
 
 #endif

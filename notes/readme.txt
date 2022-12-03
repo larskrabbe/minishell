@@ -37,6 +37,7 @@ the parser will allocated a string take care of it
 to care for
 !! leaks : no reason to say why
 multiple flags : need to takare of invaleach flaggs ("echo -n -n -n hello "-> just "hello" and the -n flag once)
+flags are tested in the builtins not in the parser 
 empty cat : ask for valid file also look for cat and | combination
 wildcards in tokenizer: 
 executable and builins and flag inside of Qutationmarks: so there is a order of tokentypes (for example "exe" "flag" "arg1" "arg2")
