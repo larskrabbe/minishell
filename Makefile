@@ -37,7 +37,7 @@ LEXER = src/lexer/lexer.c\
 
 
 lexer_main:$(LEXER) | $(LIBFT)
-	cc $(LEXER) $(LIBFT)
+	cc $(FLAGS) $(LEXER) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIB_DIR)

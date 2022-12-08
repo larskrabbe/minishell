@@ -12,26 +12,32 @@
 
 #include	"lexer.h"
 
+void inline static	quotes_logic(char c, char *end)
+{
+	if (c == '\"' && *end == ' ')
+		*end = '\"';
+	else if (c == '\'' && *end == ' ')
+		*end = '\'';
+	else if (c == '\"' && *end == '\"')
+		*end = ' ';
+	else if (c == '\'' && *end == '\'')
+		*end = ' ';
+}
+
 char	*find_token_end(char *str)
 {
 	char	end;
 
 	end = ' ';
-	while (*str != '\0' && (end == ' ' && *str == end))
+	while (*str != '\0' && *str != end)
 	{
-		if (*str == '\"' && end == ' ')
-			end = '\"';
-		else if (*str == '\'' && end == ' ')
-			end = '\'';
-		else if (*str == '\"' && end == '\"')
-			end = ' ';
-		else if (*str == '\'' && end == '\'')
-			end = ' ';
+		quotes_logic(*str, &end);
 		str++;
 	}
-	if (end != ' ')
+	quotes_logic(*str, &end);
+	if (end != ' ' && *str != '\0')
 		return (NULL);
-	return (str);
+	return (str++);
 }
 
 int	lexer(char *str, t_tokenchain *tokenchain)
@@ -44,8 +50,7 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 	tokenchain->str = str;
 	while (*str != '\0')
 	{
-		printf(">%s\n", str);
-		if (is_white_space(*str) != 0)
+		if (is_white_space(*str) == 0)
 		{
 			tokenchain->token[t].start = str;
 			tokenchain->token[t].end = find_token_end(&str[i]);
@@ -54,7 +59,8 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 				myerror("quotes not closed");
 			t++;
 		}
-		str++;
+		if (*str != '\0')
+			str++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 19:39:25 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/08 18:11:48 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ typedef struct s_tokenchain{
 void			myerror(char *str);
 int				lexer(char *str, t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
+void			print_token_chain(t_tokenchain *tokenchain);
 
 #endif
