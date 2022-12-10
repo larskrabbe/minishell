@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/10 12:56:39 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/10 16:06:13 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	print_token_chain(t_tokenchain *tokenchain)
 	while (tokenchain->token[cur_token].end != 0)
 	{
 		print_token(&tokenchain->token[cur_token]);
-	printf("\n");
-		// printf("%s \n",tokenchain->token[cur_token].start);
+		printf("\n");
 		cur_token++;
 	}
 }

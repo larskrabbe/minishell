@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/08 18:11:48 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/10 16:06:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,14 @@
 //?-----------Enums------------?//
 
 /**
- * @brief enums to for each token, mostly used in the tokenizer
+ * @brief enums for error values
  * 
  */
-typedef enum e_toektype{
-	token_end = 0,
-	token_start = 1,
-}t_tokentype;
-
-/**
- * @brief enums to for each token, mostly used in the tokenizer
- * 
- */
-typedef enum e_quotes{
-	noquotes = 0,
-	squotes = 1,
-	dquotes = 2,
-}t_quotes;
+typedef enum e_error{
+	no_error = 0,
+	error_quotes = 1,
+	error_allocation = 2,
+}t_error;
 
 //?-----------Structs------------?//
 

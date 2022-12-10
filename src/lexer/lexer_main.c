@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:32:00 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/10 12:47:01 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/10 16:15:06 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ int	tmain(char *s)
 
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
-		myerror("create_token_chain != 1");
+		return (error_allocation);
 	lexer(s, tokenchain);
-	// printf("token str %s\n",tokenchain->token[1].start);
 	print_token_chain(tokenchain);
 	return (0);
 }

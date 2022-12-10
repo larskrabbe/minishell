@@ -12,7 +12,7 @@
 
 #include	"lexer.h"
 
-void inline static	quotes_logic(char c, char *end)
+int inline static	quotes_logic(char c, char *end)
 {
 	if (c == '\"' && *end == ' ')
 		*end = '\"';
@@ -22,6 +22,12 @@ void inline static	quotes_logic(char c, char *end)
 		*end = ' ';
 	else if (c == '\'' && *end == '\'')
 		*end = ' ';
+	else if (*end == ' ' && is_special_char(c))
+	{
+		printf("S char at the end\n");
+		return (1);
+	}
+	return (0);
 }
 
 char	*find_token_end(char *str)
@@ -29,14 +35,26 @@ char	*find_token_end(char *str)
 	char	end;
 
 	end = ' ';
+	if (is_special_char(*str) != 0)
+	{
+		printf("S char at the start c == %c \n", *str);
+		return (str++);
+	}
 	while (*str != '\0' && (*str != end || end != ' '))
 	{
-		quotes_logic(*str, &end);
+		if (quotes_logic(*str, &end))
+		{
+			printf("return '%c'\n", *(str + 1));
+			return (str);
+			// str++;
+			// break ;
+		}
 		str++;
 	}
-	quotes_logic(*str, &end);
 	if (end != ' ')
 		return (NULL);
+	if (quotes_logic(*str, &end) == 1)
+		return (str);
 	return (str++);
 }
 
@@ -56,7 +74,7 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 			tokenchain->token[t].end = find_token_end(&str[i]);
 			str = tokenchain->token[t].end;
 			if (tokenchain->token[t].end == NULL)
-				myerror("quotes not closed");
+				return (error_quotes);
 			t++;
 		}
 		if (*str != '\0')

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 18:22:33 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/10 15:20:06 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ typedef enum e_signal{
 //?-----------PROTOTYPES------------?//
 
 int			is_white_space(int a);
+int			is_special_char(char a);
 
 #endif
