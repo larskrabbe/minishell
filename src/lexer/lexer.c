@@ -29,13 +29,13 @@ char	*find_token_end(char *str)
 	char	end;
 
 	end = ' ';
-	while (*str != '\0' && *str != end)
+	while (*str != '\0' && (*str != end || end != ' '))
 	{
 		quotes_logic(*str, &end);
 		str++;
 	}
 	quotes_logic(*str, &end);
-	if (end != ' ' && *str != '\0')
+	if (end != ' ')
 		return (NULL);
 	return (str++);
 }
