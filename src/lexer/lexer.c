@@ -24,7 +24,7 @@ int inline static	quotes_logic(char c, char *end)
 		*end = ' ';
 	else if (*end == ' ' && is_special_char(c))
 	{
-		printf("S char at the end\n");
+		// printf("S char at the end\n");
 		return (1);
 	}
 	return (0);
@@ -36,19 +36,11 @@ char	*find_token_end(char *str)
 
 	end = ' ';
 	if (is_special_char(*str) != 0)
-	{
-		printf("S char at the start c == %c \n", *str);
-		return (str++);
-	}
+		return (str + 1);
 	while (*str != '\0' && (*str != end || end != ' '))
 	{
 		if (quotes_logic(*str, &end))
-		{
-			printf("return '%c'\n", *(str + 1));
 			return (str);
-			// str++;
-			// break ;
-		}
 		str++;
 	}
 	if (end != ' ')
@@ -71,13 +63,13 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 		if (is_white_space(*str) == 0)
 		{
 			tokenchain->token[t].start = str;
-			tokenchain->token[t].end = find_token_end(&str[i]);
+			tokenchain->token[t].end = find_token_end(str);
 			str = tokenchain->token[t].end;
 			if (tokenchain->token[t].end == NULL)
 				return (error_quotes);
 			t++;
 		}
-		if (*str != '\0')
+		else
 			str++;
 	}
 	return (0);
