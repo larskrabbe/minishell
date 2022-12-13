@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/10 16:06:20 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/13 20:33:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef enum e_error{
 	no_error = 0,
 	error_quotes = 1,
 	error_allocation = 2,
+	error_max_arg = 3,
+	error_syntax = 4,
 }t_error;
 
 //?-----------Structs------------?//
@@ -45,8 +47,10 @@ typedef enum e_error{
  * @param end the end of the token
  */
 typedef struct s_token{
-	char		*start;
-	char		*end;
+	char			*start;
+	char			*end;
+	char			*str;
+	enum e_ttype	type;
 }t_token;
 
 /**

@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_main.c                                       :+:      :+:    :+:   */
+/*   expender.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:32:00 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 20:34:20 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/12/13 14:11:47 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/12/13 15:53:29 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#ifndef EXPENDER_H
+# define EXPENDER_H
 
-int	tmain(char *s)
-{
-	t_tokenchain	*tokenchain;
+//?-----------Includes------------?//
 
-	tokenchain = tokenchain_create();
-	if (tokenchain == NULL)
-		return (error_allocation);
-	lexer(s, tokenchain);
-	print_token_chain(tokenchain);
-	return (0);
-}
+# include	"../../include/minishell.h"
 
-int	main()
-{
+//?-----------Defines-------------?//
+
+//?-----------Enums---------------?//
+
+
+//?-----------Structs-------------?//
+
+typedef struct s_s1{
 	char	*str;
-	char	prompt[] = "<minishell>";//need to show the path
+	t_type	type;
+}t_s1;
 
-	while (1)
-	{	
-		str = readline(prompt);
-		tmain(str);
-		free(str);
-	}
-	return (0);
-}
+//?-----------Protoypes-----------?//
+
+#endif

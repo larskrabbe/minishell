@@ -1,39 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_main.c                                       :+:      :+:    :+:   */
+/*   expender_memory.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 17:32:00 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 20:34:20 by lkrabbe          ###   ########.fr       */
+/*   Created: 2022/12/13 14:54:20 by lkrabbe           #+#    #+#             */
+/*   Updated: 2022/12/13 14:59:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"expender.h"
 
-int	tmain(char *s)
-{
-	t_tokenchain	*tokenchain;
-
-	tokenchain = tokenchain_create();
-	if (tokenchain == NULL)
-		return (error_allocation);
-	lexer(s, tokenchain);
-	print_token_chain(tokenchain);
-	return (0);
-}
-
-int	main()
-{
-	char	*str;
-	char	prompt[] = "<minishell>";//need to show the path
-
-	while (1)
-	{	
-		str = readline(prompt);
-		tmain(str);
-		free(str);
-	}
-	return (0);
-}

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 13:23:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/10 15:18:32 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/13 16:02:42 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	is_white_space(int a)
 int	is_special_char(char a)
 {
 	if (a == '>')
-		return (1);
+		return (type_redirection);
 	if (a == '<')
-		return (1);
+		return (type_input_file);
 	if (a == '|')
-		return (1);
+		return (type_pipe);
 	return (0);
 }

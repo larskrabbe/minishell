@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 16:29:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 19:39:15 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/13 14:58:10 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,10 @@ t_tokenchain	*tokenchain_create(void)
 		return (NULL);
 	}
 	return (head);
+}
+
+void	tokenchain_free(t_tokenchain *tokenchain)
+{
+	free(tokenchain->token);
+	free(tokenchain);
 }
