@@ -43,3 +43,4 @@ wildcards in tokenizer:
 executable and builins and flag inside of Qutationmarks: so there is a order of tokentypes (for example "exe" "flag" "arg1" "arg2")
 cat execute one file after another: example "cat" "file1" "file2" first file1 will be printed the file2
 capilisation for executable and builtins
+$$ is the pid of the shell	

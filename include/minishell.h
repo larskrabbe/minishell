@@ -6,12 +6,18 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/12/15 20:02:09 by bogunlan         ###   ########.fr       */
+=======
+/*   Updated: 2022/12/13 20:39:15 by lkrabbe          ###   ########.fr       */
+>>>>>>> 522d3f2dfb81c5fc67ba4d2cbd98472c86a9db03
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+//?-----------Includes------------?//
 
 # include	<stdio.h>
 # include	<readline/readline.h>
@@ -20,6 +26,17 @@
 # include	<stdlib.h>
 # include	<signal.h>
 # include	"libft.h"
+# include	"../src/lexer/lexer.h"
+
+//?-----------Defines------------?//
+
+# ifndef FALSE
+#  define FALSE 0
+# endif
+
+# ifndef TRUE
+#  define TRUE 1
+# endif
 
 //?-----------ENUMS------------?//
 
@@ -28,6 +45,17 @@ typedef enum e_signal{
 	exit_signal = 1,
 	c_signal = 2,
 }t_sigal;
+
+typedef enum e_ttype{
+	type_built_exe = 1,
+	type_str = 2,
+	type_redirection = 3,
+	type_app_redirection = 4,
+	type_input_file = 5,
+	type_heredoc = 6,
+	type_pipe = 10,
+}t_ttype;
+
 
 //?-----------PROTOTYPES------------?//
 
