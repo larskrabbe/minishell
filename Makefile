@@ -35,9 +35,14 @@ LEXER = src/lexer/lexer.c\
 		src/lexer/is_white_space.c\
 		src/lexer/lexer_utiels.c\
 
+ENV =	src/environment/add_var.c \
+		src/environment/create_env.c \
+		src/environment/delete_env_var.c \
+		src/environment/read_env_var.c \
+		src/environment/libft.c
 
-lexer_main:$(LEXER) | $(LIBFT)
-	cc $(FLAGS) $(LEXER) $(LIBFT)
+lexer_main:$(LEXER) $(ENV) | $(LIBFT) 
+	cc $(FLAGS) $(LEXER) $(ENV) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIB_DIR)

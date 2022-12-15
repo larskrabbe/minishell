@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/15 19:18:08 by bogunlan          #+#    #+#             */
+/*   Updated: 2022/12/15 20:23:47 by bogunlan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include	"../../include/minishell.h"
+
+// NOTE: Moved all declarations here into mininshell.h
 
 typedef struct	s_env
 {
@@ -86,6 +100,6 @@ void	ft_unsetenv(t_env *env_lst, char *name);
 char	*ft_getenv(t_env *env_lst, char *name);
 
 char	*ft_strjoin(char const *s1, char const *s2);
-char	**ft_split(char const *s, char c);
+char	**ft_slice(char const *s, char c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);

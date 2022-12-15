@@ -1,4 +1,17 @@
-#include	"environment.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/15 19:18:21 by bogunlan          #+#    #+#             */
+/*   Updated: 2022/12/15 20:25:15 by bogunlan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include	"../../include/minishell.h"
+
 #define TRUE 1
 #define FALSE 0
 
@@ -16,7 +29,7 @@ size_t	ft_strlen(const char *s)
 }
 
 // ft_strncmp
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+/* int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	while ((n > 0) && (*s1 == *s2) && (*s1 != '\0'))
 	{
@@ -28,8 +41,9 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (0);
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
+ */
 
-// ft_split
+// ft_slice
 char	**ft_free(char **res)
 {
 	int	i;
@@ -71,7 +85,7 @@ static int	ft_word_count(char const *s, char c)
 	return (word_count);
 }
 
-static char	**ft_gen(const char *s, char c, char **res, int res_st_i)
+char	**ft_gen_slice(const char *s, char c, char **res, int res_st_i)
 {
 	unsigned int	i;
 	int				in_word;
@@ -99,7 +113,7 @@ static char	**ft_gen(const char *s, char c, char **res, int res_st_i)
 	return (res);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_slice(char const *s, char c)
 {
 	char	**sarray;
 	int		sarray_start_index;
@@ -110,7 +124,7 @@ char	**ft_split(char const *s, char c)
 	sarray = (char **) malloc(sizeof(char *) * (ft_word_count(s, c) + 1));
 	if (!sarray)
 		return (NULL);
-	sarray = ft_gen(s, c, sarray, sarray_start_index);
+	sarray = ft_gen_slice(s, c, sarray, sarray_start_index);
 	return (sarray);
 }
 
