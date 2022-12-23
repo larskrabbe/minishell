@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 20:33:21 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/23 19:03:56 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_token{
 	char			*start;
 	char			*end;
 	char			*str;
-	enum e_ttype	type;
+	enum	e_ttype	type; // bogunlan: I commented this, it threw an error during compilation
 }t_token;
 
 /**

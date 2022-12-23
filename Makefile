@@ -39,10 +39,19 @@ ENV =	src/environment/add_var.c \
 		src/environment/create_env.c \
 		src/environment/delete_env_var.c \
 		src/environment/read_env_var.c \
-		src/environment/libft.c
+		src/environment/utils_env.c
 
-lexer_main:$(LEXER) $(ENV) | $(LIBFT) 
-	cc $(FLAGS) $(LEXER) $(ENV) $(LIBFT)
+BUILTINS =	src/builtins/echo.c \
+			src/builtins/pwd.c \
+			src/builtins/env.c \
+			src/builtins/export.c \
+			src/builtins/unset.c \
+			src/builtins/cd.c \
+			src/builtins/cd_utils.c
+
+lexer_main:$(LEXER) $(ENV) $(BUILTINS) | $(LIBFT)
+	cc $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
+	@#cc -L LeakSanitizer/ -llsan -lc++ $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIB_DIR)

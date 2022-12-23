@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/15 19:52:46 by bogunlan         ###   ########.fr       */
+/*   Updated: 2022/12/23 18:45:23 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	ft_printenv(t_env *env_lst)
 	}
 	while (env_curr)
 	{
-		printf("%s=%s\n", env_curr->name, env_curr->value);
+		if (!env_curr->value)
+			printf("%s=%s\n", env_curr->name, "");
+		else
+			printf("%s=%s\n", env_curr->name, env_curr->value);
 		env_curr = env_curr->next;
 	}
 }
@@ -45,10 +48,24 @@ int	find_env_match(t_env *env_lst, char *name)
 	return (0);
 }
 
-t_env	*ft_getenv_lst(char **envp)
+int	oldpwd_present(t_env *env_new)
 {
-	t_env	*env_new;
-	t_env	*env_lst;
+	t_env	*env_curr;
+
+	env_curr = env_new;
+	if (!ft_strncmp(env_curr->name, "OLDPWD", ft_strlen(env_curr->name)))
+	{
+		if (!ft_strncmp("OLDPWD", env_curr->name, 6))
+			return (1);
+	}
+	return (0);
+}
+
+t_env	**ft_getenv_lst(char **envp)
+{
+	t_env			*env_new;
+	static t_env	*env_lst;
+	int				oldpwd;
 
 	env_lst = NULL;
 	if (!(*envp))
@@ -57,21 +74,27 @@ t_env	*ft_getenv_lst(char **envp)
 	{
 		env_new = env_lstnew(*envp);
 		env_add_back(&env_lst, env_new);
+		oldpwd = oldpwd_present(env_new);
 		envp++;
 	}
-	return (env_lst);
+	if (!oldpwd)
+		ft_setenv(env_lst, "OLDPWD");
+	return (&env_lst);
 }
 
-char *ft_getenv(t_env *env_lst, char *name)
+char	*ft_getenv(t_env *env_lst, char *name)
 {
 	t_env	*env_curr;
 
 	env_curr = env_lst;
-	while (env_curr)
+	if (name)
 	{
-		if (find_env_match(env_curr, name))
-			return (env_curr->value);
-		env_curr = env_curr->next;
+		while (env_curr)
+		{
+			if (find_env_match(env_curr, name))
+				return (env_curr->value);
+			env_curr = env_curr->next;
+		}
 	}
 	return (NULL);
 }
