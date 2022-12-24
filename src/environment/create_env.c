@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/15 19:52:24 by bogunlan         ###   ########.fr       */
+/*   Updated: 2022/12/23 18:43:50 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,16 @@ t_env	*env_lstnew(char *content)
 		return (NULL);
 	split = ft_split(content, '=');
 	new->name = split[0];
-	new->value = split[1];
+	if (!ft_strncmp("OLDPWD", new->name, 6))
+	{
+		if (!ft_strncmp("OLDPWD", new->name, ft_strlen(new->name)))
+		{
+			free(split[1]);
+			new->value = NULL;
+		}
+	}
+	else
+		new->value = split[1];
 	new->next = NULL;
 	free(split);
 	return (new);
@@ -30,7 +39,7 @@ t_env	*env_lstnew(char *content)
 
 void	env_add_back(t_env **lst, t_env *new)
 {
-	t_env *curr;
+	t_env	*curr;
 
 	if (*lst == NULL)
 	{

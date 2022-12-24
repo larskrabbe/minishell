@@ -6,50 +6,88 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/15 19:58:52 by bogunlan         ###   ########.fr       */
+/*   Updated: 2022/12/23 18:43:14 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-void	ft_putenv(t_env *env_list, char *name, char *value)
+void	ft_putenv(t_env *env_lst, char *name, char *value)
 {
 	t_env	*env_new;
 	char	*content;
+	char	*tmp;
 
-	if (!env_list || !name || !value)
+	if (!env_lst || !name || !value)
 		return ;
-	content = ft_strjoin(name, "=");
-	content = ft_strjoin(content, value);
+	tmp = ft_strjoin(name, "=");
+	content = ft_strjoin(tmp, value);
+	free(tmp);
 	env_new = env_lstnew(content);
-	env_add_back(&env_list, env_new);
+	free(content);
+	env_add_back(&env_lst, env_new);
 }
 
-void	ft_setenv(t_env *env_lst, char *new_env)
+int	env_id_isvalid(char *new_env_var)
 {
-	t_env	*env_curr;
-	char	*name;
-	char	*value;
-	char	**split;
-
-	env_curr = env_lst;
-	split = ft_slice(new_env, '=');
-	if (!env_lst || !split)
-		return ;
-	name = split[0];
-	value = split[1];
-	while (env_curr)
+	if (ft_isdigit(*new_env_var))
 	{
-		if (find_env_match(env_curr, name))
+		printf("export: not an identifier ");
+		while (*new_env_var != '\0'
+			&& *new_env_var != '=')
+		{
+			printf("%c", *new_env_var);
+			new_env_var++;
+		}
+		printf("\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	env_var_maker(t_setenv *setter, t_env *env_lst, char *new_env_var)
+{
+	setter->split = ft_slice(new_env_var, '=');
+	if (!env_lst || !setter->split)
+		return (0);
+	setter->name = setter->split[0];
+	setter->value = setter->split[1];
+	free(setter->split);
+	return (1);
+}
+
+int	env_var_exists(t_env *env_lst, char *name, char *value)
+{
+	while (env_lst)
+	{
+		if (find_env_match(env_lst, name))
 		{
 			printf("Match found\n");
-			env_curr->value = value;
-			free(split);
-			return ;
+			free(env_lst->value);
+			free(env_lst->name);
+			env_lst->value = value;
+			env_lst->name = name;
+			return (1);
 		}
-		env_curr = env_curr->next;
+		env_lst = env_lst->next;
 	}
-	printf("No Match found\n");
-	ft_putenv(env_lst, name, value);
-	free(split);
+	return (0);
+}
+
+int	ft_setenv(t_env *env_lst, char *new_env_var)
+{
+	t_setenv	setter;
+
+	setter.env_curr = env_lst;
+	setter.split = NULL;
+	if (!env_id_isvalid(new_env_var))
+		return (0);
+	if (!env_var_maker(&setter, env_lst, new_env_var))
+		return (0);
+	if (env_var_exists(setter.env_curr, setter.name, setter.value))
+		return (1);
+	ft_putenv(env_lst, setter.name, setter.value);
+	free(setter.name);
+	free(setter.value);
+	return (1);
 }

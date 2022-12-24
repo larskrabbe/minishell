@@ -6,9 +6,11 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/23 15:40:15 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:39:46 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -119,6 +121,15 @@ int	expander(t_tokenchain *tokenchain,t_env *env_lst);
                       Environment                   
 ====================================================
  */
+// The s_setenv is used to add a new environment variable
+// It is used in add_var.c by the ft_setenv function
+typedef struct s_setenv
+{
+	char	*name;
+	char	*value;
+	char	**split;
+	t_env	*env_curr;
+}				t_setenv;
 
 /**
  * @brief The env_lstnew() function creates a new
@@ -145,7 +156,7 @@ void	env_add_back(t_env **lst, t_env *new_env);
  * 
  * @param envp 
  */
-t_env	*ft_getenv_lst(char **envp);
+t_env	**ft_getenv_lst(char **envp);
 
 /**
  * @brief The ft_printenv() function prints out the names and
@@ -178,7 +189,7 @@ int		find_env_match(t_env *env_list, char *name);
  * variable name in the current environment list
  * 
  */
-void	ft_setenv(t_env *env_list, char *new_env);
+int		ft_setenv(t_env *env_list, char *new_env);
 
 /**
  * @brief  The ft_unsetenv() function deletes all instances of the
@@ -187,7 +198,7 @@ void	ft_setenv(t_env *env_list, char *new_env);
  * @param env_lst 
  * @param name 
  */
-void	ft_unsetenv(t_env *env_lst, char *name);
+void	ft_unsetenv(t_env **env_lst, char *name);
 
 /**
  * @brief The ft_getenv() function obtains the current
@@ -205,15 +216,56 @@ char	*ft_getenv(t_env *env_lst, char *name);
 char	**ft_gen_slice(const char *s, char c, char **res, int res_s_i);
 
 /**
+ * @brief The clean_env frees all dynamically allocated memory used
+ * in creating an environment list
+ * 
+ * @param env_lst 
+ */
+void	clean_env(t_env **env_lst);
+
+/**
  * @brief The ft_slice() function splits a string at the point of the 
  * first matching character provided as the delimiter
  * @param s string to be sliced
  * @param c delimeter
  */
 char	**ft_slice(char const *s, char c);
+char	**ft_free(char **res);
 
 // char		*ft_strjoin(char const *s1, char const *s2);
 // int		ft_strncmp(const char *s1, const char *s2, size_t n);
 // size_t	ft_strlen(const char *s);
+
+
+/* 
+====================================================
+                      BuiltIns                   
+====================================================
+ */
+
+// The s_cd structure is used for the cd builtin
+typedef struct s_cd
+{
+	char	pwd[256];
+	char	*old_pwd;
+	char	*new_pwd;
+	char	*new_path;
+	char	*tmp;
+	char	*rest_of_path;
+	int		res;
+}				t_cd;
+
+int		ft_pwd(t_env **env_lst);
+int		ft_echo(char **args);
+int		ft_env(t_env **env_lst);
+int		ft_export(t_env **env_lst, char *new_env);
+int		ft_unset(t_env **env_lst, char *name);
+
+int		ft_cd(t_env **env_lst, char **path_name);
+int		cd_tilde_with_path(t_env *env_lst, char **path_name);
+void	set_old_pwd(t_env *env_lst, char *pwd);
+void	cd_old_error(char **path_name);
+void	set_old_pwd(t_env *env_lst, char *pwd);
+int		old_pwdis_set(t_env *env_lst);
 
 #endif

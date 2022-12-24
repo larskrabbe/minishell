@@ -6,13 +6,14 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:32:00 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/23 14:13:16 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:36:43 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"../../include/minishell.h"
 
-int	tmain(char *s)
+#include	"lexer.h"
+
+int	tmain(char *s) // tmain leaks after exiting the program, the tokenchain should be freed
 {
 	t_tokenchain	*tokenchain;
 
@@ -28,16 +29,16 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	char	prompt[] = "<minishell>";//need to show the path
-	t_env	*env_lst;
+	t_env	**env_lst;
 	(void) argv;
 	(void) argc;
 
 	env_lst = ft_getenv_lst(envp);
-	ft_printenv(env_lst);
+	ft_env(env_lst);
 	while (1)
 	{	
 		str = readline(prompt);
-		printf("%s\n",ft_getenv(env_lst, str));
+		printf("**VALUE: %s**\n",ft_getenv(*env_lst, str));
 		tmain(str);
 		free(str);
 	}
