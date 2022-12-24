@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:11:47 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 15:53:29 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/23 14:11:03 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //?-----------Includes------------?//
 
 # include	"../../include/minishell.h"
+//# include	"../lexer/lexer.h"
 
 //?-----------Defines-------------?//
 
@@ -24,11 +25,7 @@
 
 //?-----------Structs-------------?//
 
-typedef struct s_s1{
-	char	*str;
-	t_type	type;
-}t_s1;
-
 //?-----------Protoypes-----------?//
+
 
 #endif

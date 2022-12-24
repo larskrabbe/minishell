@@ -18,19 +18,7 @@ LIBFT=$(LIB_DIR)libft.a
 
 LIB_DIR=libft/
 
-all:$(NAME)
-
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) src/main.c -o $(NAME)
-
-$(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(DIR_OBJ):
-	@mkdir -p $(DIR_OBJ)
-
 LEXER = src/lexer/lexer.c\
-		src/lexer/lexer_main.c\
 		src/lexer/lexer_memory.c\
 		src/lexer/is_white_space.c\
 		src/lexer/lexer_utiels.c\
@@ -40,6 +28,19 @@ ENV =	src/environment/add_var.c \
 		src/environment/delete_env_var.c \
 		src/environment/read_env_var.c \
 		src/environment/libft.c
+
+EXP = src/expander/expender.c
+
+all:$(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) src/main.c -o $(NAME)
+
+$(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(DIR_OBJ):
+	@mkdir -p $(DIR_OBJ)
 
 lexer_main:$(LEXER) $(ENV) | $(LIBFT) 
 	cc $(FLAGS) $(LEXER) $(ENV) $(LIBFT)

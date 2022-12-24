@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_env_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/15 19:52:46 by bogunlan         ###   ########.fr       */
+/*   Updated: 2022/12/22 10:00:37 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_printenv(t_env *env_lst)
 	env_curr = env_lst;
 	if (!env_lst)
 	{
-		printf("%s", NULL);
+		printf("%s", "No enviroment");
 		return ;
 	}
 	while (env_curr)

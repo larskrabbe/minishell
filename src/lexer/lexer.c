@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../../include/minishell.h"
 
 int inline static	quotes_logic(char c, char *end)
 {
@@ -53,10 +53,8 @@ char	*find_token_end(char *str)
 
 int	lexer(char *str, t_tokenchain *tokenchain)
 {
-	int	i;
 	int	t;
 
-	i = 0;
 	t = 1;
 	tokenchain->str = str;
 	while (*str != '\0' && t < ARG_MAX)

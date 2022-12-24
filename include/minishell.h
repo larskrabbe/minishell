@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/12/15 20:02:09 by bogunlan         ###   ########.fr       */
-=======
-/*   Updated: 2022/12/13 20:39:15 by lkrabbe          ###   ########.fr       */
->>>>>>> 522d3f2dfb81c5fc67ba4d2cbd98472c86a9db03
+/*   Updated: 2022/12/23 15:40:15 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +23,7 @@
 # include	<signal.h>
 # include	"libft.h"
 # include	"../src/lexer/lexer.h"
+# include	"../src/expander/expender.h"
 
 //?-----------Defines------------?//
 
@@ -38,7 +35,23 @@
 #  define TRUE 1
 # endif
 
+//!max amount of 'token' not sure if needed
+# define ARG_MAX 1000
+
 //?-----------ENUMS------------?//
+
+/**
+ * @brief enums for error values
+ * 
+ */
+typedef enum e_error{
+	no_error = 0,
+	error_quotes = 1,
+	error_allocation = 2,
+	error_max_arg = 3,
+	error_syntax = 4,
+}t_error;
+
 
 typedef enum e_signal{
 	no_signal = 0,
@@ -57,17 +70,30 @@ typedef enum e_ttype{
 }t_ttype;
 
 
-//?-----------PROTOTYPES------------?//
-
-int			is_white_space(int a);
-int			is_special_char(char a);
-
-
-/* 
-====================================================
-                      Environment                   
-====================================================
+/**
+ * @brief stores each position of a token inside of the input string
+ * 
+ * @param tokentype int that represent the type of token
+ * @param start the start of the token
+ * @param end the end of the token
  */
+typedef struct s_token{
+	char			*start;
+	char			*end;
+	char			*str;
+	int				type;
+}t_token;
+
+/**
+ * @brief Head structure of the tokenchain
+ * 
+ * @param str string that is tokenize
+ * @param tokenchain the pointer to all token
+ */
+typedef struct s_tokenchain{
+	char	*str;
+	t_token	*token;
+}t_tokenchain;
 
 typedef struct	s_env
 {
@@ -75,6 +101,24 @@ char			*name;
 char			*value;
 struct s_env	*next;
 }					t_env;
+
+//?-----------PROTOTYPES------------?//
+
+int			is_white_space(int a);
+int			is_special_char(char a);
+
+void			myerror(char *str);
+int				lexer(char *str, t_tokenchain *tokenchain);
+t_tokenchain	*tokenchain_create(void);
+void			print_token_chain(t_tokenchain *tokenchain);
+
+int	expander(t_tokenchain *tokenchain,t_env *env_lst);
+
+/* 
+====================================================
+                      Environment                   
+====================================================
+ */
 
 /**
  * @brief The env_lstnew() function creates a new

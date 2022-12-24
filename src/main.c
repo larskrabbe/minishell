@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/15 20:10:47 by bogunlan         ###   ########.fr       */
+/*   Updated: 2022/12/23 15:45:37 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,32 @@ void	free_before_exit(void)
 
 }
 
+
+
 int	main()
 {
 	char	*str;
 	char	prompt[] = "<minishell>";//need to show the path
 	struct	sigaction signal_handler;
+	t_env	*env = NULL;
+	t_tokenchain	*tokenchain;
 
+	tokenchain = tokenchain_create();
+	if (tokenchain == NULL)
+		return (error_allocation);
 	signal_setup(&signal_handler);
+	// env_lstnew(env);
 	while (g_signal == 0)
 	{	
 		str = readline(prompt);
 		if (str != NULL)
 		{
 			add_history(str);
+			lexer(str, tokenchain);
+			// print_token_chain(tokenchain);
+			expander(tokenchain, env);
+	 		//execve("./simple_exe",NULL,NULL);
+
 			printf("%s\n", str);//stoneage echo version
 		}
 		//free(str);

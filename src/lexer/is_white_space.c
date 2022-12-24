@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_white_space.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 13:23:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 16:02:42 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/23 14:13:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

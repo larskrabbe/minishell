@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utiels.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/10 16:06:13 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/23 14:13:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../../include/minishell.h"
 
 void	print_token(t_token *token)
 {

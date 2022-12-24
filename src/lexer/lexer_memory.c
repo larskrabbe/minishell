@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_memory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 16:29:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 14:58:10 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/23 14:13:11 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"lexer.h"
+#include	"../../include/minishell.h"
 
 /**
  * @brief allocate memory for the tokens

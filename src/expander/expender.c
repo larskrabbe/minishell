@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/13 21:40:03 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:22:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"expender.h"
+# include	"../../include/minishell.h"
 
 int	check_type(t_token *token)
 {
@@ -26,9 +26,9 @@ int	check_type(t_token *token)
 			token->type = type_pipe;
 		else
 			printf("missing type for %c\n", *token->start);
-		if (*token->start + 1 == *token->start)
+		if (*(token->start + 1) == *token->start)
 			token->type++;
-		if (*token->start + 2 != *token->end)
+		if (*(token->start + 2) != *token->end && (*(token->start + 1) == *token->start))
 			return (error_syntax);
 	}
 	else
@@ -46,36 +46,53 @@ int	check_type(t_token *token)
 	return (0);
 }
 
-int	expend(t_token *token);
-{
-	int	l;
+// int	get_envvar_len(char *var_name,);
+// {
+// 	char *t;
+	
+// 	t = ft_getenv();
+	
+// }
 
+int	get_token_length(t_token *token, t_env *env_lst)
+{
+	int		l;
+	char	*ptr;
+	int		q;
+
+	q = 0;
+	ptr = token->start;
 	l = 0;
-	i++;
-	while (token.start + i != token.end)
+	while (ptr != token->end)
 	{
-		if (*token.start == '"' || *token.start == '\'')
-			
-		if else
-		
+		if ((*ptr == '"' || *ptr == '\'' ) && q == 0)
+			q = *ptr;
+		else if ((*ptr == '"' || *ptr == '\'' ) && q == *ptr)
+			q = 0;
+		else if (*ptr == '$' && q != '\'')
+		{
+			l += ft_strlen( ft_getenv(env_lst,ptr));
+			printf(">>env\n");
+		}
 		else
-		i++;
+			l++;
+		ptr++;
 	}
 	return (0);
 }
 
-int	f1(t_tokenchain *tokenchain)
+int	expander(t_tokenchain *tokenchain, t_env *env_lst)
 {
 	int	t;
 
-	t = 0;
-	while (tokenchain->token[t].end != NULL)
+	t = 1;
+	while (tokenchain->token[t].start != NULL)
 	{
-		if (check_type(tokenchain->token) != 0)
+		if (check_type(&tokenchain->token[t]) != 0)
 			return (1);
-		if (tokenchain->token->type <= type_str)
+		if (tokenchain->token[t].type <= type_str)
 		{
-			expend();
+			get_token_length(&tokenchain->token[t], env_lst);
 		}
 		t++;
 	}
