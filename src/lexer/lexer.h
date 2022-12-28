@@ -6,7 +6,7 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 16:24:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/24 12:37:07 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:41:29 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,6 @@
 
 
 //?-----------Structs------------?//
-
-/**
- * @brief stores each position of a token inside of the input string
- * 
- * @param tokentype int that represent the type of token
- * @param start the start of the token
- * @param end the end of the token
- */
-typedef struct s_token{
-	char			*start;
-	char			*end;
-	char			*str;
-	enum	e_ttype	type; // bogunlan: I commented this, it threw an error during compilation
-}t_token;
-
-/**
- * @brief Head structure of the tokenchain
- * 
- * @param str string that is tokenize
- * @param tokenchain the pointer to all token
- */
-typedef struct s_tokenchain{
-	char	*str;
-	t_token	*token;
-}t_tokenchain;
 
 //?-----------Protoypes------------?//
 

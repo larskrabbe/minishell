@@ -6,7 +6,7 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/24 12:37:14 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/27 19:41:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	*ft_getenv(t_env *env_lst, char *name)
 		{
 			if (find_env_match(env_curr, name))
 				return (env_curr->value);
+			
 			env_curr = env_curr->next;
 		}
 	}

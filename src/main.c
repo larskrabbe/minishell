@@ -6,7 +6,7 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/23 15:45:37 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 14:19:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_before_exit(void)
 
 
 
-int	main()
+int	main(int argc, char *argv[], char *envp[])
 {
 	char	*str;
 	char	prompt[] = "<minishell>";//need to show the path
@@ -51,11 +51,13 @@ int	main()
 	t_env	*env = NULL;
 	t_tokenchain	*tokenchain;
 
+	if (argc <= 1 && argv == NULL)
+		return(0);
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
 	signal_setup(&signal_handler);
-	// env_lstnew(env);
+	env = *ft_getenv_lst(envp);
 	while (g_signal == 0)
 	{	
 		str = readline(prompt);

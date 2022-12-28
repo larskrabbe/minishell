@@ -6,7 +6,7 @@
 /*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/24 12:39:46 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/24 15:09:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 
 //!max amount of 'token' not sure if needed
 # define ARG_MAX 1000
+# define MAX_VAR_NAME 1000
 
 //?-----------ENUMS------------?//
 
