@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/24 15:09:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2022/12/31 14:44:24 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_env	*env_lstnew(char *content);
  * @param lst 
  * @param new 
  */
-void	env_add_back(t_env **lst, t_env *new_env);
+void	env_add_back(t_env **env_lst, t_env *new_env);
 
 /**
  * @brief  The ft_getenv_lst() fucntion obtains all names and 
@@ -173,24 +173,24 @@ void	ft_printenv(t_env *env_lst);
  * list
  * ft_setenv()
  */
-void	ft_putenv(t_env *env_list, char *name, char *value);
+void	ft_putenv(t_env *env_lst, char *name, char *value);
 
 /**
  * @brief The find_env_match searches for a matching name
  * in the environment list. 1 is returned if found and 0 
  * if there is no match
- * @param env_list 
+ * @param env_lst 
  * @param name 
  * @return int 
  */
-int		find_env_match(t_env *env_list, char *name);
+int		find_env_match(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_setenv() function inserts or resets the environment
  * variable name in the current environment list
  * 
  */
-int		ft_setenv(t_env *env_list, char *new_env);
+int		ft_setenv(t_env *env_lst, char *new_env);
 
 /**
  * @brief  The ft_unsetenv() function deletes all instances of the
@@ -268,5 +268,20 @@ void	set_old_pwd(t_env *env_lst, char *pwd);
 void	cd_old_error(char **path_name);
 void	set_old_pwd(t_env *env_lst, char *pwd);
 int		old_pwdis_set(t_env *env_lst);
+
+/* 
+====================================================
+                      Path                          
+====================================================
+ */
+
+/**
+ * @brief Get the cmd path function
+ * 
+ * @param env_lst 
+ * @param cmd 
+ * @return returns a char pointer or NULL if no path was found
+ */
+char	*get_cmd_path(t_env **env_lst, char *cmd);
 
 #endif
