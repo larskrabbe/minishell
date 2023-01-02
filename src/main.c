@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 13:29:03 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:40:43 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,62 @@ void	signal_setup(struct sigaction *signal_handler)
 
 void	free_before_exit(void)
 {
-	//printf("start freeing");
 	clear_history();
 
 }
 
+char	**create_argv(t_tokenchain *tokenchain, char **argv)
+{
+	int	i;
+	int	a;
 
+	a = 0;
+	i = 1;
+	while (*tokenchain->token[i].end != '\0' || \
+	tokenchain->token[i].type == type_pipe)
+	{
+		if (tokenchain->token[i].type == type_str || tokenchain->token[i].type == type_built_exe)
+		{
+			argv[a] = tokenchain->token[i].str;
+			a++;
+		}
+		i++;
+	}
+	return (argv);
+}
+
+
+int execution(t_tokenchain *tokechain, t_env *env_lst, char **tmp_env)
+{
+	char	*ptr;
+	char	*argv[ARG_MAX];
+
+	// check if builtins
+	ptr = get_cmd_path(&env_lst, tokechain->token[1].str);
+	// error if ptr == null
+	create_argv(tokechain, argv);
+	printf("path = %s\n", ptr);
+	// need to turn all arg in a double pointer
+	if (execve(ptr, argv, tmp_env) == -1)
+		printf("execve failed\n");
+	printf("arg = %s\n", argv[0]);
+	printf("arg = %s\n", argv[1]);
+	return (0);
+}
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*str;
-	char	prompt[] = "<minishell>";//need to show the path
-	struct	sigaction signal_handler;
-	t_env	*env = NULL;
-	t_tokenchain	*tokenchain;
+	char				*str;
+	char				prompt[] = "<minishell>";
+	struct sigaction	signal_handler;
+	t_env				*env = NULL;
+	t_tokenchain		*tokenchain;
+	char	*s[2];
 
+	s[0] = "ls";
+	s[1] = "-la";
 	if (argc <= 1 && argv == NULL)
-		return(0);
+		return (0);
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
@@ -66,8 +105,7 @@ int	main(int argc, char *argv[], char *envp[])
 			add_history(str);
 			lexer(str, tokenchain);
 			expander(tokenchain, env);
-			//print_token_chain(tokenchain);
-	 		//execve("./simple_exe",NULL,NULL);
+			execution(tokenchain, env, envp);
 			free_str_in_token(tokenchain);
 		}
 		free(str);
