@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/24 14:19:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 11:29:14 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			add_history(str);
 			lexer(str, tokenchain);
-			// print_token_chain(tokenchain);
 			expander(tokenchain, env);
 	 		//execve("./simple_exe",NULL,NULL);
-
+			print_token_chain(tokenchain);
+			free_str_in_token(tokenchain);
 			printf("%s\n", str);//stoneage echo version
 		}
-		//free(str);
+		free(str);
 	}
 	free_before_exit();
 	return (0);

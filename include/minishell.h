@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/24 15:09:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 11:35:36 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,14 @@ typedef enum e_signal{
 	c_signal = 2,
 }t_sigal;
 
+
+/**
+ * @brief 
+ * 
+ * @note the order and number are should not be changed  because i increament it in a funktion to 'upgrade' a type
+ */
 typedef enum e_ttype{
+	type_null = 0,
 	type_built_exe = 1,
 	type_str = 2,
 	type_redirection = 3,
@@ -107,15 +114,15 @@ struct s_env	*next;
 
 //?-----------PROTOTYPES------------?//
 
-int			is_white_space(int a);
-int			is_special_char(char a);
+int				is_white_space(int a);
+int				is_special_char(char a);
 
 void			myerror(char *str);
 int				lexer(char *str, t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
-
-int	expander(t_tokenchain *tokenchain,t_env *env_lst);
+void			free_str_in_token(t_tokenchain *tokenchain);
+int				expander(t_tokenchain *tokenchain,t_env *env_lst);
 
 /* 
 ====================================================

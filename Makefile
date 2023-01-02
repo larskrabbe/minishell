@@ -29,7 +29,8 @@ ENV =	src/environment/add_var.c \
 		src/environment/read_env_var.c \
 		src/environment/utils_env.c
 
-EXP = src/expander/expender.c
+EXP =	src/expander/expender.c \
+		src/expander/expender_memory.c \
 
 all:$(NAME)
 

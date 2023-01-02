@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/28 20:09:22 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 12:27:36 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,33 @@ int	check_type(t_token *token)
 			printf("missing type for %c\n", *token->start);
 		if (*(token->start + 1) == *token->start)
 			token->type++;
-		if (*(token->start + 2) != *token->end && (*(token->start + 1) == *token->start))
+		if (*(token->start + 2) != *token->end && \
+		(*(token->start + 1) == *token->start))
 			return (error_syntax);
 	}
 	else
 	{
 		if (exe == FALSE)
 		{
-			token->type = type_str;
+			token->type = type_built_exe;
 			exe = TRUE;
 		}
 		else
-			token->type = type_built_exe;
+			token->type = type_str;
 	}
-	if (token->type == type_pipe)
+	if (token->type == type_pipe || *token->end == '\0')
 		exe = FALSE;
 	return (0);
 }
 
+/**
+ * @brief funktion for telling if a char is valid at the current position for env vars
+ * 
+ * @param c the char
+ * @param i the position of the the char in the var name
+ * 
+ * @return returns 1 it valid or 0 if  invalid
+ */
 int	is_valid_var(char c, int i)
 {
 	if (ft_isalpha(c))
@@ -73,6 +82,7 @@ int	get_env_value_len(t_env	*env_lst, char *var)
 		return (0);
 	while (ptr[l] != '\0')
 		l++;
+	printf("\nlen == %i\n", l);
 	return (l);
 }
 
@@ -92,7 +102,7 @@ char	*get_value(char *str, t_env *env_lst)
 		i++;
 	}
 	var_name[i] = '\0';
-	printf("var_name = %s\n",var_name);
+	printf("var_name = %s\n", var_name);
 	return (ft_getenv(env_lst, var_name));
 }
 
@@ -153,7 +163,6 @@ void	get_token_str(t_token *token, t_env *env_lst)
 			ptr++;
 			i = 0;
 			var_ptr = get_value(ptr, env_lst);
-			//printf("??%s",var_ptr);
 			while (var_ptr != NULL && *var_ptr != '\0')
 			{
 				token->str[l] = *var_ptr;
@@ -174,7 +183,7 @@ void	get_token_str(t_token *token, t_env *env_lst)
 		}
 		ptr++;
 	}
-	//token->str[l] = '\0';
+	token->str[l] = '\0';
 }
 
 int	expander(t_tokenchain *tokenchain, t_env *env_lst)
@@ -187,7 +196,8 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst)
 	{
 		if (check_type(&tokenchain->token[t]) != 0)
 			return (1);
-		if (tokenchain->token[t].type <= type_str)
+		if (tokenchain->token[t].type <= type_str || \
+		tokenchain->token[t].type <= type_built_exe)
 		{
 			l = get_token_length(&tokenchain->token[t], env_lst);
 			tokenchain->token[t].str = ft_calloc(l, sizeof(char));

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/28 19:40:38 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 11:45:30 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	ft_printenv(t_env *env_lst)
 	env_curr = env_lst;
 	if (!env_lst)
 	{
-		printf("%s", "No enviroment");
+		//printf("%s", "No enviroment");
 		return ;
 	}
 	while (env_curr)
 	{
-		if (!env_curr->value)
-			printf("%s=%s\n", env_curr->name, "");
-		else
-			printf("%s=%s\n", env_curr->name, env_curr->value);
+		// if (!env_curr->value)
+		// 	//printf("%s=%s\n", env_curr->name, "");
+		// else
+		// 	//printf("%s=%s\n", env_curr->name, env_curr->value);
 		env_curr = env_curr->next;
 	}
 }
@@ -41,7 +41,7 @@ int	find_env_match(t_env *env_lst, char *name)
 	{
 		if (!ft_strncmp(env_curr->name, name, ft_strlen(name)))
 		{
-			//printf("Match: %s\n", env_curr->name);
+			////printf("Match: %s\n", env_curr->name);
 			return (1);
 		}
 	}
@@ -93,7 +93,6 @@ char	*ft_getenv(t_env *env_lst, char *name)
 		{
 			if (find_env_match(env_curr, name))
 				return (env_curr->value);
-			
 			env_curr = env_curr->next;
 		}
 	}

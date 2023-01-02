@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utiels.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/23 14:13:07 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 11:23:44 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	print_token_chain(t_tokenchain *tokenchain)
 	while (tokenchain->token[cur_token].end != 0)
 	{
 		print_token(&tokenchain->token[cur_token]);
+		printf("\ntype == %i\n", tokenchain->token[cur_token].type);
+		printf("str == %s\n", tokenchain->token[cur_token].str);
 		printf("\n");
 		cur_token++;
 	}

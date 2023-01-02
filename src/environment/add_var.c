@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:43:14 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/02 11:41:23 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ int	env_id_isvalid(char *new_env_var)
 {
 	if (ft_isdigit(*new_env_var))
 	{
-		printf("export: not an identifier ");
+		//printf("export: not an identifier ");
 		while (*new_env_var != '\0'
 			&& *new_env_var != '=')
 		{
-			printf("%c", *new_env_var);
+			//printf("%c", *new_env_var);
 			new_env_var++;
 		}
-		printf("\n");
+		//printf("\n");
 		return (0);
 	}
 	return (1);
@@ -62,7 +62,7 @@ int	env_var_exists(t_env *env_lst, char *name, char *value)
 	{
 		if (find_env_match(env_lst, name))
 		{
-			printf("Match found\n");
+			//printf("Match found\n");
 			free(env_lst->value);
 			free(env_lst->name);
 			env_lst->value = value;
