@@ -32,10 +32,12 @@ ENV =	src/environment/add_var.c \
 EXP =	src/expander/expender.c \
 		src/expander/expender_memory.c \
 
+PATH = src/pathing/get_cmd_path.c
+
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) src/main.c -o $(NAME)
+	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) src/main.c -o $(NAME)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -43,8 +45,8 @@ $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 $(DIR_OBJ):
 	@mkdir -p $(DIR_OBJ)
 
-lexer_main:$(LEXER) $(ENV) | $(LIBFT) 
-	cc $(FLAGS) $(LEXER) $(ENV) $(LIBFT)
+# lexer_main:$(LEXER) $(ENV) | $(LIBFT) 
+# 	cc $(FLAGS) $(LEXER) $(ENV) $(LIBFT)
 BUILTINS =	src/builtins/echo.c \
 			src/builtins/pwd.c \
 			src/builtins/env.c \

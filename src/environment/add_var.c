@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/02 11:41:23 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 13:33:49 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,11 @@ int	env_id_isvalid(char *new_env_var)
 {
 	if (ft_isdigit(*new_env_var))
 	{
-		//printf("export: not an identifier ");
 		while (*new_env_var != '\0'
 			&& *new_env_var != '=')
 		{
-			//printf("%c", *new_env_var);
 			new_env_var++;
 		}
-		//printf("\n");
 		return (0);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 12:27:36 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/02 13:28:29 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,14 @@ int	is_valid_var(char c, int i)
 }
 
 /**
- * @brief returns the value len
+ * @brief strlen with check for null
  * 
  */
-int	get_env_value_len(t_env	*env_lst, char *var)
+int	strlen_with_check(char *str)
 {
-	char	*ptr;
-	int		l;
-
-	l = 0;
-	ptr = ft_getenv(env_lst, var);
-	printf("value = %s\n", ptr);
-	if (ptr == NULL)
+	if (str == NULL)
 		return (0);
-	while (ptr[l] != '\0')
-		l++;
-	printf("\nlen == %i\n", l);
-	return (l);
+	return (ft_strlen(str));
 }
 
 /**
@@ -102,7 +93,6 @@ char	*get_value(char *str, t_env *env_lst)
 		i++;
 	}
 	var_name[i] = '\0';
-	printf("var_name = %s\n", var_name);
 	return (ft_getenv(env_lst, var_name));
 }
 
@@ -126,7 +116,7 @@ int	get_token_length(t_token *token, t_env *env_lst)
 		{
 			i = 0;
 			ptr++;
-			l += get_env_value_len(env_lst, get_value(ptr, env_lst));
+			l += strlen_with_check(get_value(ptr, env_lst));
 			while (is_valid_var(*ptr, i))
 			{
 				ptr++;
@@ -204,7 +194,6 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst)
 			if (tokenchain->token[t].str == NULL)
 				return (error_allocation);
 			get_token_str(&tokenchain->token[t], env_lst);
-			printf(">>%s\n",tokenchain->token[t].str);
 		}
 		t++;
 	}
