@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/03 18:56:24 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 21:37:02 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,14 @@ int	env_id_isvalid(char *new_env_var);
  * @return
  */
 int		invalid_env_id(char *new_env);
+
+typedef struct s_env_string
+{
+	char			*name;
+	char			*join_equal;
+	char			*join_value;
+}
+				t_env_string;
 /**
  * @brief The env_as_string() function gives a pointer to strings
  * of list of environment variables
@@ -382,6 +390,15 @@ int		old_pwdis_set(t_env *env_lst);
                       Path                          
 ====================================================
  */
+
+typedef struct	s_path
+{
+	char	*paths;
+	char	*tmp_path;
+	char	*join_fwd_slash;
+	char	*new_path;
+}
+				t_path;
 
 /**
  * @brief The get_cmd_path() function returns the path

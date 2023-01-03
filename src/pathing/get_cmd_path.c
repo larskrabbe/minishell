@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/31 14:42:25 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 21:30:58 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,32 @@
 
 void	free_path_helpers(char *tmp_path, char *join, char *new_path)
 {
-		free(tmp_path);
-		free(join);
-		free(new_path);
+	free(tmp_path);
+	free(join);
+	free(new_path);
 }
 
 char	**get_all_paths(t_env **env_lst, char *cmd)
 {
+	t_path	path;
 	char	**split_paths;
-	char	*paths;
-	char	*tmp_path;
-	char	*join;
-	char	*new_path;
 	int		i;
 
-	paths = ft_getenv(*env_lst, "PATH");
-	if (!paths)
+	path.paths = ft_getenv(*env_lst, "PATH");
+	if (!path.paths)
 		return (NULL);
-	split_paths = ft_split(paths, ':');
+	split_paths = ft_split(path.paths, ':');
 	if (!split_paths)
 		return (NULL);
 	i = -1;
 	while (split_paths[++i])
 	{
-		tmp_path = ft_strdup(split_paths[i]);
-		join = ft_strjoin(tmp_path, "/");
-		new_path = ft_strjoin(join, cmd);
+		path.tmp_path = ft_strdup(split_paths[i]);
+		path.join_fwd_slash = ft_strjoin(path.tmp_path, "/");
+		path.new_path = ft_strjoin(path.join_fwd_slash, cmd);
 		free(split_paths[i]);
-		split_paths[i] = ft_strdup(new_path);
-		free_path_helpers(tmp_path, join, new_path);
+		split_paths[i] = ft_strdup(path.new_path);
+		free_path_helpers(path.tmp_path, path.join_fwd_slash, path.new_path);
 	}
 	return (split_paths);
 }

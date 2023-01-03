@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:18:21 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 16:15:33 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 21:36:49 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,7 @@ void	clean_env(t_env **env_lst)
 char	**env_as_string(t_env **env_lst)
 {
 	t_env			*head;
-	char			*name;
-	char			*join_equal;
-	char			*join_value;
+	t_env_string	str;
 	static char		*env[1000000];
 	int				i;
 
@@ -98,17 +96,17 @@ char	**env_as_string(t_env **env_lst)
 	i = 0;
 	while (head)
 	{
-		name = ft_strdup(head->name);
-		join_equal = ft_strjoin(name, "=");
+		str.name = ft_strdup(head->name);
+		str.join_equal = ft_strjoin(str.name, "=");
 		if (head->value)
-			join_value = ft_strjoin(join_equal, head->value);
+			str.join_value = ft_strjoin(str.join_equal, head->value);
 		else
-			join_value = ft_strjoin(join_equal, "");
-		env[i] = ft_strdup(join_value);
+			str.join_value = ft_strjoin(str.join_equal, "");
+		env[i] = ft_strdup(str.join_value);
 		head = head->next;
-		free(name);
-		free(join_equal);
-		free(join_value);
+		free(str.name);
+		free(str.join_equal);
+		free(str.join_value);
 		i++;
 	}
 	return (env);
