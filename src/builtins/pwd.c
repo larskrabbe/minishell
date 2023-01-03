@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:40:05 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:02:27 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:46:02 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	ft_pwd(t_env **env_lst)
 {
 	char	*pwd;
 
+	if (!env_lst)
+		return (error_allocation);
 	pwd = ft_getenv(*env_lst, "PWD");
 	if (!pwd)
-		return (0);
+		return (error_allocation);
 	printf("%s\n", pwd);
-	return (1);
+	return (no_error);
 }

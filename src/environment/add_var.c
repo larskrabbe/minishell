@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/02 13:33:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:35:10 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,15 @@ void	ft_putenv(t_env *env_lst, char *name, char *value)
 	env_add_back(&env_lst, env_new);
 }
 
-int	env_id_isvalid(char *new_env_var)
-{
-	if (ft_isdigit(*new_env_var))
-	{
-		while (*new_env_var != '\0'
-			&& *new_env_var != '=')
-		{
-			new_env_var++;
-		}
-		return (0);
-	}
-	return (1);
-}
-
 int	env_var_maker(t_setenv *setter, t_env *env_lst, char *new_env_var)
 {
 	setter->split = ft_slice(new_env_var, '=');
 	if (!env_lst || !setter->split)
-		return (0);
+		return (FALSE);
 	setter->name = setter->split[0];
 	setter->value = setter->split[1];
 	free(setter->split);
-	return (1);
+	return (TRUE);
 }
 
 int	env_var_exists(t_env *env_lst, char *name, char *value)
@@ -59,16 +45,16 @@ int	env_var_exists(t_env *env_lst, char *name, char *value)
 	{
 		if (find_env_match(env_lst, name))
 		{
-			//printf("Match found\n");
+			// printf("Match found\n");
 			free(env_lst->value);
 			free(env_lst->name);
 			env_lst->value = value;
 			env_lst->name = name;
-			return (1);
+			return (TRUE);
 		}
 		env_lst = env_lst->next;
 	}
-	return (0);
+	return (FALSE);
 }
 
 int	ft_setenv(t_env *env_lst, char *new_env_var)
@@ -77,14 +63,12 @@ int	ft_setenv(t_env *env_lst, char *new_env_var)
 
 	setter.env_curr = env_lst;
 	setter.split = NULL;
-	if (!env_id_isvalid(new_env_var))
-		return (0);
 	if (!env_var_maker(&setter, env_lst, new_env_var))
-		return (0);
+		return (error_syntax);
 	if (env_var_exists(setter.env_curr, setter.name, setter.value))
-		return (1);
+		return (no_error);
 	ft_putenv(env_lst, setter.name, setter.value);
 	free(setter.name);
 	free(setter.value);
-	return (1);
+	return (no_error);
 }

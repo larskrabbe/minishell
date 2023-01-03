@@ -27,7 +27,8 @@ ENV =	src/environment/add_var.c \
 		src/environment/create_env.c \
 		src/environment/delete_env_var.c \
 		src/environment/read_env_var.c \
-		src/environment/utils_env.c
+		src/environment/utils_env.c \
+		src/environment/add_var_helper.c
 
 EXP =	src/expander/expender.c \
 		src/expander/expender_memory.c \

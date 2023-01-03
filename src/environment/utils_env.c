@@ -6,16 +6,12 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:18:21 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:47:46 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 16:15:33 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-#define TRUE 1
-#define FALSE 0
-
-// ft_slice
 char	**ft_free(char **res)
 {
 	int	i;
@@ -87,4 +83,33 @@ void	clean_env(t_env **env_lst)
 		(*env_lst) = (*env_lst)->next;
 		free(tmp);
 	}
+}
+
+char	**env_as_string(t_env **env_lst)
+{
+	t_env			*head;
+	char			*name;
+	char			*join_equal;
+	char			*join_value;
+	static char		*env[1000000];
+	int				i;
+
+	head = *env_lst;
+	i = 0;
+	while (head)
+	{
+		name = ft_strdup(head->name);
+		join_equal = ft_strjoin(name, "=");
+		if (head->value)
+			join_value = ft_strjoin(join_equal, head->value);
+		else
+			join_value = ft_strjoin(join_equal, "");
+		env[i] = ft_strdup(join_value);
+		head = head->next;
+		free(name);
+		free(join_equal);
+		free(join_value);
+		i++;
+	}
+	return (env);
 }
