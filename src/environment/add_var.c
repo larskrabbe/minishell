@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 16:35:10 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:21:23 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ int	ft_setenv(t_env *env_lst, char *new_env_var)
 	setter.env_curr = env_lst;
 	setter.split = NULL;
 	if (!env_var_maker(&setter, env_lst, new_env_var))
-		return (error_syntax);
+		return (FALSE);
 	if (env_var_exists(setter.env_curr, setter.name, setter.value))
-		return (no_error);
+		return (TRUE);
 	ft_putenv(env_lst, setter.name, setter.value);
 	free(setter.name);
 	free(setter.value);
-	return (no_error);
+	return (TRUE);
 }
