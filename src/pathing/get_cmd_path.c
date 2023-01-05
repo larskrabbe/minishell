@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 16:19:48 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:26:47 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ char	*get_working_path(char **paths)
 int	cmd_has_current_path(char *cmd)
 {
 	int	i;
-	char **split = ft_split(cmd, '/');
+	char **split;
 
+	split = ft_split(cmd, '/');
+	if (!split)
+		return (FALSE);
 	i = 0;
 	while (split[i])
 		i++;
