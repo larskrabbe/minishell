@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_env_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/02 12:35:26 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/03 18:36:34 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	ft_printenv(t_env *env_lst)
 	}
 	while (env_curr)
 	{
+		if (!env_curr->value)
+			printf("%s=%s\n", env_curr->name, "");
+		else
+			printf("%s=%s\n", env_curr->name, env_curr->value);
 		env_curr = env_curr->next;
 	}
 }
@@ -36,10 +40,10 @@ int	find_env_match(t_env *env_lst, char *name)
 	{
 		if (!ft_strncmp(env_curr->name, name, ft_strlen(name)))
 		{
-			return (1);
+			return (TRUE);
 		}
 	}
-	return (0);
+	return (FALSE);
 }
 
 int	oldpwd_present(t_env *env_new)
@@ -50,9 +54,9 @@ int	oldpwd_present(t_env *env_new)
 	if (!ft_strncmp(env_curr->name, "OLDPWD", ft_strlen(env_curr->name)))
 	{
 		if (!ft_strncmp("OLDPWD", env_curr->name, 6))
-			return (1);
+			return (TRUE);
 	}
-	return (0);
+	return (FALSE);
 }
 
 t_env	**ft_getenv_lst(char **envp)

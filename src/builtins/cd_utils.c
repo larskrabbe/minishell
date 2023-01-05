@@ -6,13 +6,15 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:19:06 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:41:23 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:10:20 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	cd_old_error(char **path_name)
+// Helper functions used by the ft_cd function
+
+void	cd_error_mssg(char **path_name)
 {
 	if (*(*path_name + 1) != '\0')
 		printf("cd: invalid\n");
@@ -36,8 +38,8 @@ int	old_pwdis_set(t_env *env_lst)
 
 	cd.old_pwd = ft_getenv(env_lst, "OLDPWD");
 	if (cd.old_pwd == NULL || *cd.old_pwd == '\0')
-		return (0);
-	return (1);
+		return (FALSE);
+	return (TRUE);
 }
 
 int	cd_tilde_with_path(t_env *env_lst, char **path_name)
@@ -53,7 +55,7 @@ int	cd_tilde_with_path(t_env *env_lst, char **path_name)
 	{
 		free(cd.rest_of_path);
 		free(cd.new_path);
-		return (0);
+		return (FALSE);
 	}
 	set_old_pwd(env_lst, cd.pwd);
 	getcwd(cd.pwd, sizeof(cd.pwd));
@@ -62,5 +64,5 @@ int	cd_tilde_with_path(t_env *env_lst, char **path_name)
 	free(cd.rest_of_path);
 	free(cd.new_path);
 	free(cd.new_pwd);
-	return (1);
+	return (TRUE);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 13:43:00 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/04 19:35:54 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,8 @@ int				expander(t_tokenchain *tokenchain,t_env *env_lst);
                       Environment                   
 ====================================================
  */
-// The s_setenv is used to add a new environment variable
-// It is used in add_var.c by the ft_setenv function
+// The struct s_setenv is used to add a new environment variable
+// It is used in add_var.c by the ft_setenv() function
 typedef struct s_setenv
 {
 	char	*name;
@@ -160,7 +160,8 @@ void	env_add_back(t_env **env_lst, t_env *new_env);
  * @brief  The ft_getenv_lst() fucntion obtains all names and 
  * values of the environment variable
  * 
- * @param envp 
+ * @param envp
+ * @return double pointer to t_env structure
  */
 t_env	**ft_getenv_lst(char **envp);
 
@@ -181,19 +182,19 @@ void	ft_printenv(t_env *env_lst);
 void	ft_putenv(t_env *env_lst, char *name, char *value);
 
 /**
- * @brief The find_env_match searches for a matching name
- * in the environment list. 1 is returned if found and 0 
- * if there is no match
+ * @brief The find_env_match() function searches for a
+ * matching environment variable name in the environment list.
  * @param env_lst 
  * @param name 
- * @return int 
+ * @return 1 is returned if a match is found,
+ * 0 if there is no match
  */
 int		find_env_match(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_setenv() function inserts or resets the environment
  * variable name in the current environment list
- * 
+ * @return 1 if variable is added, otherwise 0
  */
 int		ft_setenv(t_env *env_lst, char *new_env);
 
@@ -208,18 +209,19 @@ void	ft_unsetenv(t_env **env_lst, char *name);
 
 /**
  * @brief The ft_getenv() function obtains the current
- * value of the environment variable, name.
+ * value of the environment variable whose name is provided
  * 
  * @param env_lst 
- * @param name 
+ * @param name
+ * @return pointer to environment value, otherwise NULL
  */
-char	*ft_getenv(t_env *env_lst, char *name);
+char	*ft_getenv(t_env *env_lst, char *env_name);
 
 /**
  * @brief The ft_gen_slice() function helps the ft_slice() function 
  * obtain an array of strings
  */
-char	**ft_gen_slice(const char *s, char c, char **res, int res_s_i);
+char	**ft_gen_slice(const char *s, char c, char **ptr, int ptr_index);
 
 /**
  * @brief The clean_env frees all dynamically allocated memory used
@@ -236,7 +238,46 @@ void	clean_env(t_env **env_lst);
  * @param c delimeter
  */
 char	**ft_slice(char const *s, char c);
-char	**ft_free(char **res);
+/**
+ * @brief The ft_free() function deallocates memory from a **char
+ * @param ptr pointer to be deallocated
+ * @return NULL
+ */
+char	**ft_free(char **ptr);
+/**
+ * @brief The env_id_isvalid() function checks if a variable
+ * has the right name
+ * 
+ * @param new_env_var 
+ * @return  
+ */
+int	env_id_isvalid(char *new_env_var);
+
+/**
+ * @brief The invalid_env_id() function is an env_id_isvalid() helper
+ * function that checks if the environment variable to be added has
+ * the right naming convention
+ * 
+ * @param new_env 
+ * @return
+ */
+int		invalid_env_id(char *new_env);
+
+typedef struct s_env_string
+{
+	char			*name;
+	char			*join_equal;
+	char			*join_value;
+}
+				t_env_string;
+/**
+ * @brief The env_as_string() function gives a pointer to strings
+ * of list of environment variables
+ * 
+ * @param env_lst 
+ * @return char** 
+ */
+char	**env_as_string(t_env **env_lst);
 
 // char		*ft_strjoin(char const *s1, char const *s2);
 // int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -261,17 +302,93 @@ typedef struct s_cd
 	int		res;
 }				t_cd;
 
+/**
+ * @brief The ft_pwd() prints the current working directory
+ * 
+ * @param env_lst 
+ * @return returns an int defined by enum e_error
+ */
 int		ft_pwd(t_env **env_lst);
+/**
+ * @brief The ft_echo() function prints arguments passed
+ * to it delimited by only a single space followed by a new line.
+ * The new line is removed when the option -n is used
+ * 
+ * @param args 
+ * @return returns an int defined by enum e_error
+ */
 int		ft_echo(char **args);
+/**
+ * @brief The ft_env() function prints a list of environment variables
+ * 
+ * @param env_lst 
+ * @return returns an int defined by enum e_error
+ */
 int		ft_env(t_env **env_lst);
-int		ft_export(t_env **env_lst, char *new_env);
-int		ft_unset(t_env **env_lst, char *name);
+/**
+ * @brief The ft_export() function adds valid variables to the list
+ * of environment variables.
+ * If the variable is already in the list, it is updated, else it is added.
+ * When nothing is specified the list of environment variables is printed
+ * 
+ * @param env_lst 
+ * @param new_env 
+ * @return returns an int defined by enum e_error
+ */
+int		ft_export(t_env **env_lst, char **new_env);
+/**
+ * @brief The ft_unset() function deletes all specified variables from the
+ * list of environment variables if it exists
+ * 
+ * @param env_lst 
+ * @param env_name 
+ * @return returns an int defined by enum e_error
+ */
+int		ft_unset(t_env **env_lst, char **env_name);
 
+/**
+ * @brief ft_cd() function changes the current directory
+ * to the specified directory
+ * 
+ * @param env_lst 
+ * @param path_name 
+ * @return returns an int defined by enum e_error
+ */
 int		ft_cd(t_env **env_lst, char **path_name);
+/**
+ * @brief The cd_tilde_with_path() is an ft_cd() helper function to move 
+ * into a directory in case the tilde (~) sign is used as a prefix.
+ * An example is: ~/Documents/myfiles
+ * 
+ * @param env_lst 
+ * @param path_name 
+ * @return returns 1 if true, otherwise 0
+ */
 int		cd_tilde_with_path(t_env *env_lst, char **path_name);
+/**
+ * @brief The cd_error_mssg() function is an 
+ * ft_cd() helper function that prints an error message
+ * when the path provided is not valid
+ * 
+ * @param path_name 
+ */
+void	cd_error_mssg(char **path_name);
+/**
+ * @brief The set_old_pwd() function is an ft_cd() helper function
+ * that sets the old pwd
+ * 
+ * @param env_lst 
+ * @param pwd 
+ */
 void	set_old_pwd(t_env *env_lst, char *pwd);
-void	cd_old_error(char **path_name);
-void	set_old_pwd(t_env *env_lst, char *pwd);
+/**
+ * @brief The old_pwdis_set() function is 
+ * ft_cd() helper function that checks if old pwd is
+ * among the environment list upon first initialization of
+ * all environment variables
+ * @param env_lst 
+ * @return returns 1 if true, otherwise 0
+ */
 int		old_pwdis_set(t_env *env_lst);
 
 /* 
@@ -280,12 +397,22 @@ int		old_pwdis_set(t_env *env_lst);
 ====================================================
  */
 
+typedef struct	s_path
+{
+	char	*paths;
+	char	*tmp_path;
+	char	*join_fwd_slash;
+	char	*new_path;
+}
+				t_path;
+
 /**
- * @brief Get the cmd path function
+ * @brief The get_cmd_path() function returns the path
+ * of an executable file
  * 
  * @param env_lst 
  * @param cmd 
- * @return returns a char pointer or NULL if no path was found
+ * @return returns a pointer to char or NULL if no path was found
  */
 char	*get_cmd_path(t_env **env_lst, char *cmd);
 

@@ -6,22 +6,78 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:35:10 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:42:37 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:47:48 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_unset(t_env **env_lst, char *name)
+void	unset_error(char *env_name)
 {
-	if (name && ((*name >= 33 && *name <= 64)
-			|| (*name >= 91 && *name <= 94)
-			|| (*name >= 123 && *name <= 127))
+	printf("unset %s: not a valid identifier\n", env_name);
+}
+
+int	check_invalid_char(char *env_name)
+{
+	int	j;
+	int	tmp;
+	int	error;
+
+	j = 0;
+	tmp = 0;
+	error = FALSE;
+	while (tmp == 0 && (*(env_name + j))
 	)
 	{
-		printf("unset %s: not a valid identifier\n", name);
-		return (0);
+		if (((*(env_name + j)) >= 33 && (*(env_name + j)) <= 47)
+			|| ((*(env_name + j)) >= 58 && (*(env_name + j)) <= 64)
+			|| ((*(env_name + j)) >= 91 && (*(env_name + j)) <= 94)
+			|| ((*(env_name + j)) >= 123 && (*(env_name + j)) <= 127))
+		{					
+			unset_error(env_name);
+			error = TRUE;
+			tmp = 1;
+		}
+		j++;
 	}
-	ft_unsetenv(env_lst, name);
-	return (1);
+	return (error);
+}
+
+int	check_unset_args_name(char **env_name)
+{
+	int	i;
+	int	error1;
+	int	error2;
+
+	error1 = FALSE;
+	i = 0;
+	while (env_name[i])
+	{
+		if (ft_isdigit(*env_name[i]))
+		{
+			unset_error(*(env_name + i));
+			error1 = TRUE;
+		}
+		else
+			error2 = check_invalid_char((env_name[i]));
+		i++;
+	}
+	return (error1 || error2);
+}
+
+int	ft_unset(t_env **env_lst, char **env_name)
+{
+	int	error;
+
+	if (!env_lst || !env_name)
+		return (error_allocation);
+	error = check_unset_args_name(env_name);
+	while (*env_name)
+	{
+		ft_unsetenv(env_lst, *env_name);
+		env_name++;
+	}
+	if (error)
+		return (error_syntax);
+	return (no_error);
 }

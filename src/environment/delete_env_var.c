@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:29 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:44:05 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 16:13:10 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	unset_first_env(t_env **env_lst, char *name)
 		env_prev = *env_lst;
 		*env_lst = (*env_lst)->next;
 		free_env(env_prev);
-		return (1);
+		return (TRUE);
 	}
-	return (0);
+	return (FALSE);
 }
 
 void	ft_unsetenv(t_env **env_lst, char *name)

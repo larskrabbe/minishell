@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 18:02:32 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:03:18 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:38:07 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_env(t_env **env_lst)
 {
+	if (!env_lst)
+		return (error_allocation);
 	ft_printenv(*env_lst);
-	return (1);
+	return (no_error);
 }
