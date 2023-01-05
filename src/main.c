@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 10:01:09 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/05 10:32:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,47 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv)
 	while (*tokenchain->token[i].end != '\0' || \
 	tokenchain->token[i].type == type_pipe)
 	{
-		if (tokenchain->token[i].type == type_str || tokenchain->token[i].type == type_built_exe)
+		if (tokenchain->token[i].type == type_str || \
+		tokenchain->token[i].type == type_built_exe)
 		{
 			argv[a] = tokenchain->token[i].str;
+			printf("> %s\n",argv[a]);
 			a++;
 		}
 		i++;
 	}
+	if (tokenchain->token[i].type == type_str || \
+	tokenchain->token[i].type == type_built_exe)
+	{
+		argv[a] = tokenchain->token[i].str;
+		printf("> %s\n",argv[a]);
+		a++;
+	}
+	argv[a] = NULL;
 	return (argv);
 }
 
 
 int execution(t_tokenchain *tokechain, t_env *env_lst, char **tmp_env)
 {
-	char	*ptr;
+	char	*path;
 	char	*argv[ARG_MAX];
-
+	pid_t	pid;
+	int status;
 	// check if builtins
-	ptr = get_cmd_path(&env_lst, tokechain->token[1].str);
-	// error if ptr == null
 	create_argv(tokechain, argv);
-	printf("path = %s\n", ptr);
+	path = get_cmd_path(&env_lst,argv[0]);
+	// error if ptr == null
+	printf("path = %s\n", path);
 	// need to turn all arg in a double pointer
-	if (execve(ptr, argv, tmp_env) == -1)
-		printf("execve failed\n");
+	pid = fork();
+	if (pid == 0)
+	{
+		if (execve(path, argv, tmp_env) == -1)
+			printf("execve failed\n");
+	}
+	else
+		waitpid(pid, &status, 0);
 	printf("arg = %s\n", argv[0]);
 	printf("arg = %s\n", argv[1]);
 	return (0);
@@ -85,10 +102,7 @@ int	main(int argc, char *argv[], char *envp[])
 	struct sigaction	signal_handler;
 	t_env				*env = NULL;
 	t_tokenchain		*tokenchain;
-	char	*s[2];
 
-	s[0] = "ls";
-	s[1] = "-la";
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	tokenchain = tokenchain_create();
