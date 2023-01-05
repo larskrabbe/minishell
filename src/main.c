@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 15:40:43 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/05 09:59:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	signal_setup(struct sigaction *signal_handler)
 void	free_before_exit(void)
 {
 	clear_history();
-
 }
 
 char	**create_argv(t_tokenchain *tokenchain, char **argv)
