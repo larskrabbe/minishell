@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 18:49:48 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:53:52 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*string_to_lower(char *str)
 		i++;
 		str++;
 	}
-	printf("%s\n", new_str);
 	return (new_str);
 }
 
