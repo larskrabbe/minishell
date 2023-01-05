@@ -57,7 +57,7 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 
 	t = 1;
 	tokenchain->str = str;
-	while (*str != '\0' && t < ARG_MAX)
+	while (*str != '\0' && t < MAX_ARG)
 	{
 		if (is_white_space(*str) == 0)
 		{
@@ -71,7 +71,7 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 		else
 			str++;
 	}
-	if (t >= ARG_MAX)
+	if (t >= MAX_ARG)
 		return (error_max_arg);
 	return (0);
 }

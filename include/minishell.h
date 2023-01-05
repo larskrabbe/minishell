@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 10:16:17 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/05 16:30:19 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@
 # endif
 
 //!max amount of 'token' not sure if needed
-# define ARG_MAX 4096
+# define MAX_ARG 4096
 # define MAX_VAR_NAME 1000
-
+# define MAX_FILENAME 256
+# define MAX_PATH 4096
+// # define MAX_EXE 100 // not sure if this is a good idea 
 //?-----------ENUMS------------?//
 
 /**
@@ -53,13 +55,11 @@ typedef enum e_error{
 	error_syntax = 4,
 }t_error;
 
-
 typedef enum e_signal{
 	no_signal = 0,
 	exit_signal = 1,
 	c_signal = 2,
 }t_sigal;
-
 
 /**
  * @brief 
@@ -103,12 +103,20 @@ typedef struct s_tokenchain{
 	t_token	*token;
 }t_tokenchain;
 
-typedef struct	s_env
+typedef struct s_env
 {
-char			*name;
-char			*value;
-struct s_env	*next;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
 }					t_env;
+
+typedef struct s_exe_data{
+	char				*argv[MAX_ARG];
+	char				*path;
+	char				input;
+	int 				fd;
+	struct s_exe_data	*next;
+}t_exe_data;
 
 //?-----------PROTOTYPES------------?//
 
@@ -120,7 +128,7 @@ int				lexer(char *str, t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
-int				expander(t_tokenchain *tokenchain,t_env *env_lst);
+int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data);
 
 /* 
 ====================================================

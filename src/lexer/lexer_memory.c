@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_memory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 16:29:10 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/23 14:13:11 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/05 13:23:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_tokenchain	*tokenchain_create(void)
 	head = ft_calloc(sizeof(t_tokenchain), 1);
 	if (head == NULL)
 		return (NULL);
-	head->token = ft_calloc(sizeof(t_tokenchain), ARG_MAX);
+	head->token = ft_calloc(sizeof(t_tokenchain), MAX_ARG);
 	if (head->token == NULL)
 	{
 		free(head);
