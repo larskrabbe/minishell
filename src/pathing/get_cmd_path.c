@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 21:30:58 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:19:48 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,31 @@ char	*get_working_path(char **paths)
 	return (path_to_cmd);
 }
 
+int	cmd_has_current_path(char *cmd)
+{
+	int	i;
+	char **split = ft_split(cmd, '/');
+
+	i = 0;
+	while (split[i])
+		i++;
+	ft_free(split);
+	if (i <= 1)
+		return (FALSE);
+	return (TRUE);
+}
+
 char	*get_cmd_path(t_env **env_lst, char *cmd)
 {
 	char	**paths;
 	char	*path_to_cmd;
 
 	if (access(cmd, X_OK) == 0)
+	{
+		if (!cmd_has_current_path(cmd))
+			return (NULL);
 		return (cmd);
+	}
 	if (!env_lst || !cmd)
 		return (NULL);
 	paths = get_all_paths(env_lst, cmd);
