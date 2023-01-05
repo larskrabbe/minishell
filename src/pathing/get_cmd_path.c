@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 16:26:47 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 17:12:12 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	**get_all_paths(t_env **env_lst, char *cmd)
 	char	**split_paths;
 	int		i;
 
+	if (!env_lst || !cmd || *cmd == '/')
+		return (NULL);
 	path.paths = ft_getenv(*env_lst, "PATH");
 	if (!path.paths)
 		return (NULL);
