@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 18:48:48 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:51:54 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -424,7 +424,7 @@ char	*get_cmd_path(t_env **env_lst, char *cmd);
  */
 
 /**
- * @brief The handle_inbuilt() function checks if the passed
+ * @brief The cmd_is_builtin() function checks if the passed
  * argument is a shell builtin
  * 
  * @return 1 if true, otherwise 0
