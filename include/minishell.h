@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 10:16:17 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/05 18:48:48 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -415,5 +415,20 @@ typedef struct	s_path
  * @return returns a pointer to char or NULL if no path was found
  */
 char	*get_cmd_path(t_env **env_lst, char *cmd);
+
+
+/* 
+====================================================
+                      Execution                     
+====================================================
+ */
+
+/**
+ * @brief The handle_inbuilt() function checks if the passed
+ * argument is a shell builtin
+ * 
+ * @return 1 if true, otherwise 0
+ */
+int		cmd_is_builtin(char *cmd);
 
 #endif

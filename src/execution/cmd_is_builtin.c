@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_builtin.c                                   :+:      :+:    :+:   */
+/*   cmd_is_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 18:42:44 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:49:48 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	find_builtin_match(char *cmd, char *builtin)
 	return (FALSE);
 }
 
-int	handle_builtin(char *cmd)
+int	cmd_is_builtin(char *cmd)
 {
 	char	*command;
 
