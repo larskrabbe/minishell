@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:43:56 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 18:10:15 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:10:45 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,24 @@ int	cd_tilde(t_env *env_lst, char **path_name)
 
 int	ft_cd(t_env **env_lst, char **path_name)
 {
+	int ret_val;
+
+	ret_val = no_error;
 	if (!env_lst)
 		return (error_allocation);
 	if (!path_name || !(*path_name) || **path_name == '\0')
-		return (cd_home_dir(*env_lst));
-	if (!old_pwdis_set(*env_lst)
-		&& **path_name == '-'
-	)
-		cd_error_mssg(path_name);
+		ret_val = cd_home_dir(*env_lst);
+	else if (!old_pwdis_set(*env_lst)
+		&& **path_name == '-')
+		ret_val = error_syntax;
 	else if (**path_name == '-'
-		&& *(*path_name + 1) == '\0'
-	)
-		return (cd_old_dir(*env_lst));
+		&& *(*path_name + 1) == '\0')
+		ret_val = cd_old_dir(*env_lst);
 	else if (**path_name == '~')
-		return (cd_tilde(*env_lst, path_name));
+		ret_val = cd_tilde(*env_lst, path_name);
 	else
-		return (cd_x_dir(*env_lst, path_name));
-	return (no_error);
+		ret_val = cd_x_dir(*env_lst, path_name);
+	if (ret_val != no_error)
+		cd_error_mssg(path_name);
+	return (ret_val);
 }

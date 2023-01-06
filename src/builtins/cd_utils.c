@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:19:06 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 18:10:20 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:22:04 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 
 void	cd_error_mssg(char **path_name)
 {
-	if (*(*path_name + 1) != '\0')
-		printf("cd: invalid\n");
+	if (access(*path_name, F_OK) == 0)
+		printf("cd: %s: Not a directory\n", *path_name);
+	else if (*(*path_name) != '\0')
+		printf("cd: %s: No such file or directory\n", *path_name);
 	else
 		printf("cd: OLDPWD not set\n");
 }
