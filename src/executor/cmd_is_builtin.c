@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 18:53:52 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:09:16 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ int	cmd_is_builtin(char *cmd)
 	if (!command)
 		return (FALSE);
 	if (find_builtin_match(command, "echo")
-		|| find_builtin_match(command, "cd")
 		|| find_builtin_match(command, "pwd")
 		|| find_builtin_match(command, "env")
+		|| (find_builtin_match(command, "cd") && !has_upper_case(cmd))
 		|| (find_builtin_match(command, "export") && !has_upper_case(cmd))
 		|| (find_builtin_match(command, "unset") && !has_upper_case(cmd))
 		|| (find_builtin_match(command, "exit") && !has_upper_case(cmd)))
