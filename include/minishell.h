@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 19:08:50 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/07 14:48:36 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,8 @@ int		ft_env(t_env **env_lst);
  * @brief The ft_export() function adds valid variables to the list
  * of environment variables.
  * If the variable is already in the list, it is updated, else it is added.
- * When nothing is specified the list of environment variables is printed
+ * When NULL is passed as the second argument (new_env) the environment
+ * variables list is printed
  * 
  * @param env_lst 
  * @param new_env 
