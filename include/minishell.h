@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/07 14:48:36 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/09 20:16:03 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,5 +431,22 @@ char	*get_cmd_path(t_env **env_lst, char *cmd);
  * @return 1 if true, otherwise 0
  */
 int		cmd_is_builtin(char *cmd);
+
+
+/* 
+====================================================
+                      Heredoc (Expander)                     
+====================================================
+ */
+
+/**
+ * @brief The heredoc() function returns an array of strings
+ * passed from the standard input
+ * 
+ * @param delimiter 
+ * @return char** 
+ */
+char	**heredoc(char *delimiter);
+
 
 #endif
