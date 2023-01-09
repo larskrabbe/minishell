@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/09 20:13:30 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/09 22:23:11 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ int	at_eof(char *str, char *delimiter)
 char	**heredoc(char *delimiter)
 {
 	static char	*ret[ARG_MAX];
-	char		*prompt;
 	char		*str;
 	char		*new_str;
 	int			i;
 
 	i = 0;
-	prompt = "heredoc>";
 	while (TRUE)
 	{
-		str = readline(prompt);
+		str = readline("> ");
 		if (at_eof(str, delimiter))
 		{
 			free(str);
