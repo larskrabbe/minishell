@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:43:56 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/06 16:10:45 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:27:39 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	cd_home_dir(t_env *env_lst)
 int	cd_old_dir(t_env *env_lst)
 {
 	t_cd	cd;
+	char	*present_working_dir;
 
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.res = chdir(ft_getenv(env_lst, "OLDPWD"));
@@ -42,6 +43,8 @@ int	cd_old_dir(t_env *env_lst)
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
 	ft_setenv(env_lst, cd.new_pwd);
+	present_working_dir = ft_getenv(env_lst, "PWD");
+	printf("%s\n", present_working_dir);
 	free(cd.new_pwd);
 	return (no_error);
 }
