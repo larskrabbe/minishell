@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/10 16:49:33 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:27:42 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	**heredoc(char *delimiter)
 	while (TRUE)
 	{
 		str = readline("> ");
-		if (!str)
+		if (!str || !delimiter)
 			return (NULL);
 		if (at_eof(str, delimiter))
 		{

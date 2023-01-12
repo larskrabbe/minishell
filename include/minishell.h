@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/09 20:16:03 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/12 12:30:36 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -441,7 +441,7 @@ int		cmd_is_builtin(char *cmd);
 
 /**
  * @brief The heredoc() function returns an array of strings
- * passed from the standard input
+ * passed from the standard input, otherwise NULL
  * 
  * @param delimiter 
  * @return char** 
