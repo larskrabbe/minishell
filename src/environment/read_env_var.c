@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 18:36:34 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/06 18:12:58 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void	ft_printenv(t_env *env_lst)
 	}
 	while (env_curr)
 	{
-		if (!env_curr->value)
-			printf("%s=%s\n", env_curr->name, "");
-		else
+		if (env_curr->value && *(env_curr->value) != '\0')
 			printf("%s=%s\n", env_curr->name, env_curr->value);
 		env_curr = env_curr->next;
 	}

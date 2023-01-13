@@ -34,6 +34,8 @@ EXP =	src/expander/expender.c \
 
 PATH = src/pathing/get_cmd_path.c
 
+EXEC = src/executor/cmd_is_builtin.c
+
 all:$(NAME)
 
 $(NAME): $(OBJ)

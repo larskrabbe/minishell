@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/05 16:30:19 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/13 14:44:24 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,8 @@ int		ft_env(t_env **env_lst);
  * @brief The ft_export() function adds valid variables to the list
  * of environment variables.
  * If the variable is already in the list, it is updated, else it is added.
- * When nothing is specified the list of environment variables is printed
+ * When NULL is passed as the second argument (new_env) the environment
+ * variables list is printed
  * 
  * @param env_lst 
  * @param new_env 
@@ -423,5 +424,37 @@ typedef struct	s_path
  * @return returns a pointer to char or NULL if no path was found
  */
 char	*get_cmd_path(t_env **env_lst, char *cmd);
+
+
+/* 
+====================================================
+                      Executor                     
+====================================================
+ */
+
+/**
+ * @brief The cmd_is_builtin() function checks if the passed
+ * argument is a shell builtin
+ * 
+ * @return 1 if true, otherwise 0
+ */
+int		cmd_is_builtin(char *cmd);
+
+
+/* 
+====================================================
+                      Heredoc (Expander)                     
+====================================================
+ */
+
+/**
+ * @brief The heredoc() function returns an array of strings
+ * passed from the standard input, otherwise NULL
+ * 
+ * @param delimiter 
+ * @return char** 
+ */
+char	**heredoc(char *delimiter);
+
 
 #endif
