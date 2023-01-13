@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:54:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 13:27:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/13 22:03:47 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_str_in_token(t_tokenchain *tokenchain)
 		{			
 			//printf("free this => %s\n", tokenchain->token[i].str);
 			free(tokenchain->token[i].str);
-		}
+		}	
 		tokenchain->token[i].type = type_null;
 		i++;
 	}

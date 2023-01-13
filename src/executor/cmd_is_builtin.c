@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_is_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/07 19:09:16 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:28:39 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
 #include "../../include/minishell.h"
 
 char	*string_to_lower(char *str)

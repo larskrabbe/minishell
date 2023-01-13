@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/09 19:47:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/13 19:46:31 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,21 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 		(*exe_ptr)->next = ft_calloc(1, sizeof(t_exe_data));
 		*exe_ptr = (*exe_ptr)->next;
 	}
+	if (*exe_data == NULL || *exe_ptr == NULL)
+		return (error_allocation);
 	return (0);
 }
+
+// int	redirection(t_exe_data *exe_ptr, t_token *token, int type)
+// {
+
+// 	if (tokenchain->token[t].type == type_pipe)
+// 	{
+// 		exe_ptr->argv[arg_num] = NULL;
+// 		arg_num = 0;
+// 	}
+// 	return (0);
+// }
 
 int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data)
 {
@@ -203,16 +216,11 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data)
 			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num]);
 			arg_num++;
 		}
+		// if (tokenchain->token[t].type >= type_redirection)
+		// 	if (redirection(exe_ptr) == type_pipe)
+		// 		add_lst_t_exe_data(exe_data, &exe_ptr);
 		// redirection input for the exe_data
-		if (tokenchain->token[t].type == type_pipe)
-		{
-			exe_ptr->argv[arg_num] = NULL;
-			arg_num = 0;
-		}
 		t++;
 	}
 	return (0);
 }
-char *ptr[MAX_ARG]
-
-return ptr

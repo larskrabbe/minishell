@@ -45,3 +45,4 @@ cat execute one file after another: example "cat" "file1" "file2" first file1 wi
 capilisation for executable and builtins
 $$ is the pid of the shell
 if the input is just enter, it will not get added to the history for readline
+the exename that will be argv[0] is the input string but expanded

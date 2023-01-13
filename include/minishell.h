@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/13 14:44:24 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/13 21:30:19 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef enum e_error{
 	error_allocation = 2,
 	error_max_arg = 3,
 	error_syntax = 4,
+	error_null_ptr = 5,
 }t_error;
 
 typedef enum e_signal{
@@ -70,11 +71,11 @@ typedef enum e_ttype{
 	type_null = 0,
 	type_built_exe = 1,
 	type_str = 2,
-	type_redirection = 3,
-	type_app_redirection = 4,
-	type_input_file = 5,
-	type_heredoc = 6,
-	type_pipe = 10,
+	type_redirection = 10,
+	type_app_redirection = 11,
+	type_input_file = 12,
+	type_heredoc = 13,
+	type_pipe = 20,
 }t_ttype;
 
 
@@ -438,9 +439,23 @@ char	*get_cmd_path(t_env **env_lst, char *cmd);
  * 
  * @return 1 if true, otherwise 0
  */
-int		cmd_is_builtin(char *cmd);
+int	cmd_is_builtin(char *cmd);
 
 
+/**
+ * @brief //! TODO Write this notes
+ * 
+ */
+int	execution(t_exe_data *exe_data, t_env *env_lst);
+
+/**
+ * @brief move to the next object of the list. The previous one the be deleted
+ * 
+ * @param exe_data the start of the current list
+ * 
+ * @return the next one 
+ */
+t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
 /* 
 ====================================================
                       Heredoc (Expander)                     

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:18:21 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 21:36:49 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:27:18 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

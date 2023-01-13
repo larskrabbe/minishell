@@ -32,14 +32,18 @@ ENV =	src/environment/add_var.c \
 EXP =	src/expander/expender.c \
 		src/expander/expender_memory.c \
 
-PATH = src/pathing/get_cmd_path.c
+PATH =	src/pathing/get_cmd_path.c
 
-EXEC = src/executor/cmd_is_builtin.c
+EXEC =	src/executor/cmd_is_builtin.c\
+		src/executor/execution.c\
+		src/executor/execution_memory.c
+
+
 
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) src/main.c -o $(NAME)
+	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) src/main.c -o $(NAME)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
