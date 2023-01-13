@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/13 21:16:49 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:54:27 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_export(t_env **env_lst, char **new_env)
 	error = FALSE;
 	if (!env_lst)
 		return (error_allocation);
-	if (!new_env)
+	if (!new_env || !*new_env)
 		ft_export_print(*env_lst);
 	else
 	{
