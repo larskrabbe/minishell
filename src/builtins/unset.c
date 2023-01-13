@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:35:10 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 18:47:48 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:11:34 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	unset_error(char *env_name)
 {
-	printf("unset %s: not a valid identifier\n", env_name);
+	printf("unset `%s': not a valid identifier\n", env_name);
 }
 
 int	check_invalid_char(char *env_name)
@@ -29,7 +29,7 @@ int	check_invalid_char(char *env_name)
 	while (tmp == 0 && (*(env_name + j))
 	)
 	{
-		if (((*(env_name + j)) >= 33 && (*(env_name + j)) <= 47)
+		if (((*(env_name + j)) >= 32 && (*(env_name + j)) <= 47)
 			|| ((*(env_name + j)) >= 58 && (*(env_name + j)) <= 64)
 			|| ((*(env_name + j)) >= 91 && (*(env_name + j)) <= 94)
 			|| ((*(env_name + j)) >= 123 && (*(env_name + j)) <= 127))

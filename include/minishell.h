@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/01/13 21:30:19 by lkrabbe          ###   ########.fr       */
+=======
+/*   Updated: 2023/01/13 20:47:09 by bogunlan         ###   ########.fr       */
+>>>>>>> 652822c04af5f7e376b5ed7a79b6386de2f96bbd
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +444,18 @@ char	*get_cmd_path(t_env **env_lst, char *cmd);
  * @return 1 if true, otherwise 0
  */
 int	cmd_is_builtin(char *cmd);
+
+/**
+ * @brief The handle_builtin() function executes the minishell built-ins.
+ *
+ * 
+ * @param cmd minishell built-in to be executed
+ * @param args pointer to an array of str passed to the minishell built-in
+ * @param env pointer to environment variable node
+ * @return returns an int defined by enum e_error
+ */
+int		handle_builtin(char *cmd, char **args, t_env **env);
+
 
 
 /**

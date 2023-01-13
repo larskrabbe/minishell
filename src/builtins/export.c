@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/04 19:35:23 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:54:27 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	export_error_mssg(char *new_env)
 {
-	printf("export: not a valid identifier %s\n", new_env);
+	printf("export: `%s': not a valid identifier \n", new_env);
 }
 
 int	invalid_env_id(char *new_env)
@@ -29,7 +29,7 @@ int	invalid_env_id(char *new_env)
 	while (tmp == 0 && (*(new_env + j))
 	)
 	{
-		if (((*(new_env + j)) >= 33 && (*(new_env + j)) <= 47)
+		if (((*(new_env + j)) >= 32 && (*(new_env + j)) <= 47)
 			|| ((*(new_env + j)) >= 58 && (*(new_env + j)) <= 60)
 			|| ((*(new_env + j)) >= 62 && (*(new_env + j)) <= 64)
 			|| ((*(new_env + j)) >= 91 && (*(new_env + j)) <= 94)
@@ -83,7 +83,7 @@ int	ft_export(t_env **env_lst, char **new_env)
 	error = FALSE;
 	if (!env_lst)
 		return (error_allocation);
-	if (!new_env)
+	if (!new_env || !*new_env)
 		ft_export_print(*env_lst);
 	else
 	{
