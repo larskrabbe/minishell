@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/01/13 21:30:19 by lkrabbe          ###   ########.fr       */
-=======
-/*   Updated: 2023/01/13 20:47:09 by bogunlan         ###   ########.fr       */
->>>>>>> 652822c04af5f7e376b5ed7a79b6386de2f96bbd
+/*   Updated: 2023/01/17 20:21:57 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +24,7 @@
 # include	"libft.h"
 # include	"../src/lexer/lexer.h"
 # include	"../src/expander/expender.h"
+# include	<fcntl.h>
 
 //?-----------Defines------------?//
 
@@ -58,6 +55,8 @@ typedef enum e_error{
 	error_max_arg = 3,
 	error_syntax = 4,
 	error_null_ptr = 5,
+	error_pipe = 6,
+	error_open = 7,
 }t_error;
 
 typedef enum e_signal{
@@ -119,10 +118,15 @@ typedef struct s_exe_data{
 	char				*argv[MAX_ARG];
 	char				*path;
 	char				input;
-	int 				fd;
+	int 				*fd_read;
+	int 				*fd_write;
 	struct s_exe_data	*next;
 }t_exe_data;
 
+typedef struct s_redirection{
+	char	*infile;
+	char	*outfile;
+}t_redirection;
 //?-----------PROTOTYPES------------?//
 
 int				is_white_space(int a);
