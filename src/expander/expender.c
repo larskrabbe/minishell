@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/13 19:46:31 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/17 20:51:54 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,11 +215,9 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data)
 				return (error_allocation);
 			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num]);
 			arg_num++;
+			exe_ptr->fd_read = -1;
+			exe_ptr->fd_write = -1;
 		}
-		// if (tokenchain->token[t].type >= type_redirection)
-		// 	if (redirection(exe_ptr) == type_pipe)
-		// 		add_lst_t_exe_data(exe_data, &exe_ptr);
-		// redirection input for the exe_data
 		t++;
 	}
 	return (0);

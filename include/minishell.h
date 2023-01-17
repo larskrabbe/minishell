@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/17 20:21:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/17 20:28:49 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ typedef struct s_exe_data{
 	char				*argv[MAX_ARG];
 	char				*path;
 	char				input;
-	int 				*fd_read;
-	int 				*fd_write;
+	int					fd_read;
+	int					fd_write;
 	struct s_exe_data	*next;
 }t_exe_data;
 
