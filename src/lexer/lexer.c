@@ -66,6 +66,8 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 			str = tokenchain->token[t].end;
 			if (tokenchain->token[t].end == NULL)
 				return (error_quotes);
+			if (check_type(&tokenchain->token[t]) != 0)
+				return (1);
 			t++;
 		}
 		else

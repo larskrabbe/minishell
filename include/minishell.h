@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/17 20:28:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/18 14:47:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ typedef struct s_env
 typedef struct s_exe_data{
 	char				*argv[MAX_ARG];
 	char				*path;
-	char				input;
 	int					fd_read;
 	int					fd_write;
 	struct s_exe_data	*next;
@@ -137,7 +136,9 @@ int				lexer(char *str, t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
-int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data);
+int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
+void			get_token_str(t_token *token, t_env *env_lst, char *str);
+int				check_type(t_token *token);
 
 /* 
 ====================================================

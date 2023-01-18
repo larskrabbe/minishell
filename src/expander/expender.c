@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/17 20:51:54 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/18 19:32:31 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,21 @@ int	get_token_length(t_token *token, t_env *env_lst)
 			l++;
 		ptr++;
 	}
-	return (l);
+	return (l + 1);
 }
 
+char *tokenstring(t_token *token, t_env *env_lst)// need a way to return error message
+{
+	int		len;
+	char	*str;
+
+	str = NULL;
+	len = get_token_length(token, env_lst);
+	if (str == NULL)
+		return (NULL);
+	get_token_str(token, env_lst, str);
+	return (str);
+}
 void	get_token_str(t_token *token, t_env *env_lst, char *str)
 {
 	char	*ptr;
@@ -168,16 +180,22 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 {
 	if (*exe_data == NULL)
 	{
+		printf("first\n");
 		*exe_data = ft_calloc(1, sizeof(t_exe_data));
 		*exe_ptr = *exe_data;
+		printf("first\n");
 	}
 	else
 	{
+		printf("extra\n");
 		(*exe_ptr)->next = ft_calloc(1, sizeof(t_exe_data));
 		*exe_ptr = (*exe_ptr)->next;
+		printf("extra fin\n");
 	}
 	if (*exe_data == NULL || *exe_ptr == NULL)
 		return (error_allocation);
+	(*exe_ptr)->fd_read = -1;
+	(*exe_ptr)->fd_write = -1;
 	return (0);
 }
 
@@ -192,7 +210,7 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 // 	return (0);
 // }
 
-int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data)
+int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection)
 {
 	int			t;
 	int			l;
@@ -200,23 +218,45 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data)
 	t_exe_data	*exe_ptr;
 
 	exe_ptr = NULL;
-	arg_num = 0;
 	t = 1;
+	arg_num = 0;
+
 	add_lst_t_exe_data(exe_data, &exe_ptr);
 	while (tokenchain->token[t].start != NULL)
 	{
-		if (check_type(&tokenchain->token[t]) != 0)
-			return (1);
-		if (tokenchain->token[t].type <= type_str)
+		printf("in expander\n");
+		// if (tokenchain->token[t].start != NULL && check_type(&tokenchain->token[t]) != 0)// shold be in the tokenizer
+		// add_lst_t_exe_data(exe_data, &exe_ptr);
+		// 	return (1);
+		while (tokenchain->token[t].start != NULL && tokenchain->token[t].type <= type_str)// will be his own funktion
 		{
 			l = get_token_length(&tokenchain->token[t], env_lst);
-			exe_ptr->argv[arg_num] = ft_calloc(l, sizeof(char));
+			exe_ptr->argv[arg_num] = ft_calloc(l + 1, sizeof(char));
+			printf("copy argv %i|",arg_num);
 			if (exe_ptr == NULL)
 				return (error_allocation);
 			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num]);
 			arg_num++;
-			exe_ptr->fd_read = -1;
-			exe_ptr->fd_write = -1;
+			t++;
+		}
+		if (tokenchain->token[t].start != NULL && tokenchain->token[t].type >= type_redirection && tokenchain->token[t].type != type_pipe)// will be his own funktion
+		{
+			printf("redirect\n");// need to check if the next type == str
+			if (tokenchain->token[t].type == type_heredoc)
+				heredoc(tokenstring(&tokenchain->token[t + 1], env_lst));
+			if (tokenchain->token[t].type == type_input_file)
+				redirection->infile = tokenstring(&tokenchain->token[t + 1], env_lst);
+			if (tokenchain->token[t].type == type_redirection)
+				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
+			if (tokenchain->token[t].type == type_app_redirection)
+				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
+			t++;
+		}
+		else if (tokenchain->token[t].type == type_pipe)
+		{
+			printf("pipe\n");
+			arg_num = 0;
+			add_lst_t_exe_data(exe_data, &exe_ptr);
 		}
 		t++;
 	}

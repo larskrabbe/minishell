@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/12 12:27:42 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:13:54 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	at_eof(char *str, char *delimiter)
 
 char	**heredoc(char *delimiter)
 {
-	static char	*ret[ARG_MAX];
+	static char	*ret[MAX_ARG];
 	char		*str;
 	char		*new_str;
 	int			i;

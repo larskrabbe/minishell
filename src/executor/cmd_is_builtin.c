@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/17 20:22:13 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:58:30 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*string_to_lower(char *str)
 
 	if (!str)
 		return (NULL);
-	new_str = (char *) malloc(ft_strlen(str) + 1);
+	new_str = (char *) ft_calloc(ft_strlen(str) + 1 , sizeof(char));
 	if (!new_str)
 		return (NULL);
 	i = 0;
@@ -73,9 +73,11 @@ int	cmd_is_builtin(char *cmd)
 		|| (find_builtin_match(command, "unset") && !has_upper_case(cmd))
 		|| (find_builtin_match(command, "exit") && !has_upper_case(cmd)))
 	{
+		printf("TRUE\n");
 		free(command);
 		return (TRUE);
 	}
+	printf("FALSE\n");
 	free(command);
 	return (FALSE);
 }

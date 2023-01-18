@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/13 21:30:33 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:59:39 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv, int *i)
 	return (argv);
 }
 
+void	free_redirection(t_redirection *redirection)
+{
+	if (redirection->infile != NULL)
+		free(redirection->infile);
+	if (redirection->outfile != NULL)
+		free(redirection->outfile);
+	redirection->infile = NULL;
+	redirection->outfile = NULL;
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char				*str;
@@ -76,7 +86,9 @@ int	main(int argc, char *argv[], char *envp[])
 	t_env				*env = NULL;
 	t_tokenchain		*tokenchain;// maybe use double pointer
 	t_exe_data			*exe_data;// maybe use double pointer
+	t_redirection		redirection;
 
+	int tmp_i = 0;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	tokenchain = tokenchain_create();
@@ -84,19 +96,25 @@ int	main(int argc, char *argv[], char *envp[])
 		return (error_allocation);
 	signal_setup(&signal_handler);
 	env = *ft_getenv_lst(envp);
-	while (g_signal == 0)
+	while (g_signal == 0 && tmp_i < 10)
 	{
 		str = readline(prompt);
-		if (str != NULL)
+		if (str != NULL )
 		{
-			add_history(str);
-			lexer(str, tokenchain);
-			expander(tokenchain, env, &exe_data);
-			execution(exe_data, env);
-			free_str_in_token(tokenchain);
-			exe_data = NULL;
+			if (*str != '\0')
+			{
+				exe_data = NULL;
+				add_history(str);
+				lexer(str, tokenchain);
+				expander(tokenchain, env, &exe_data, &redirection);
+				execution(exe_data, env);
+				//free_str_in_token(tokenchain);
+				free_redirection(&redirection);
+				tmp_i++;
+			}
 		}
 		free(str);
+		str = NULL;
 	}
 	free_before_exit();
 	return (0);

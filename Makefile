@@ -6,13 +6,13 @@ CC = cc
 
 FLAGS = -lreadline $(CFLAGS)
 
-CFLAGS = -Wextra -Werror -Wall
+CFLAGS = -Wextra -Werror -Wall -fsanitize=address -g
 
 SRC = main.c
 
 OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
 
-DIR_OBJ = obj
+DIR_OBJ = obj/a
 
 LIBFT=$(LIB_DIR)libft.a
 
@@ -30,7 +30,8 @@ ENV =	src/environment/add_var.c \
 		src/environment/utils_env.c \
 
 EXP =	src/expander/expender.c \
-		src/expander/expender_memory.c \
+		src/expander/expender_memory.c\
+		src/expander/heredoc.c
 
 PATH =	src/pathing/get_cmd_path.c
 
