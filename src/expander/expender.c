@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/18 19:32:31 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/19 12:21:13 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*get_value(char *str, t_env *env_lst)
 	char	var_name[MAX_VAR_NAME];
 	int		i;
 
+	printf("get value %s\n", str);
 	i = 0;
 	while (is_valid_var(str[i], i))
 	{
