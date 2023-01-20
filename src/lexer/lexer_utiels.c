@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:35:34 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/02 11:23:44 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/19 20:35:37 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_token_chain(t_tokenchain *tokenchain)
 	int	cur_token;
 
 	cur_token = 1;
-	while (tokenchain->token[cur_token].end != 0)
+	while (tokenchain->token[cur_token].start != 0)
 	{
 		print_token(&tokenchain->token[cur_token]);
 		printf("\ntype == %i\n", tokenchain->token[cur_token].type);
@@ -37,6 +37,7 @@ void	print_token_chain(t_tokenchain *tokenchain)
 		printf("\n");
 		cur_token++;
 	}
+	print_token(&tokenchain->token[cur_token]);
 }
 
 void	myerror(char *str)

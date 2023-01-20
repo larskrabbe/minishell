@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/18 14:47:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:10:00 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct s_exe_data{
 
 typedef struct s_redirection{
 	char	*infile;
-	char	*outfile;
+	char	*outfile;//! needs to be the the fd of the already open file//shoud open the file when found and close if a new one is found
 }t_redirection;
 //?-----------PROTOTYPES------------?//
 
@@ -467,7 +467,7 @@ int		handle_builtin(char *cmd, char **args, t_env **env);
  * @brief //! TODO Write this notes
  * 
  */
-int	execution(t_exe_data *exe_data, t_env *env_lst);
+int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection);
 
 /**
  * @brief move to the next object of the list. The previous one the be deleted

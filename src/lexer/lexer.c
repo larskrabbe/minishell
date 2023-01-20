@@ -51,6 +51,31 @@ char	*find_token_end(char *str)
 	return (str++);
 }
 
+int	syntax_checker(t_tokenchain *tokenchain)
+{
+	int	t;
+	int	last_type;
+
+	t = 1;
+	last_type = 0;
+	if (tokenchain->token[t].type == type_pipe)
+		return (error_syntax);
+	while (tokenchain->token[t].type != type_null)
+	{
+		if (last_type == type_pipe && \
+		tokenchain->token[t].type == type_pipe)
+			return (error_syntax);
+		if (last_type >= type_redirection && \
+		tokenchain->token[t].type >= type_redirection)
+			return (error_syntax);
+		last_type = tokenchain->token[t].type;
+		t++;
+	}
+	if (last_type >= type_redirection)
+		return (error_syntax);
+	return (no_error);
+}
+
 int	lexer(char *str, t_tokenchain *tokenchain)
 {
 	int	t;
@@ -72,8 +97,17 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 		}
 		else
 			str++;
+		tokenchain->token[t].start = NULL;
+		tokenchain->token[t].end = NULL;
+		tokenchain->token[t].type = type_null;
+		tokenchain->token[t].str = NULL;
+		// tokenchain->token[t + 1].start = NULL;
+		// tokenchain->token[t + 1].end = NULL;
+		// tokenchain->token[t + 1].type = type_null;
+		// tokenchain->token[t + 1].str = NULL;
+		// printf("t = %i\n",t);
 	}
 	if (t >= MAX_ARG)
 		return (error_max_arg);
-	return (0);
+	return (syntax_checker(tokenchain));
 }

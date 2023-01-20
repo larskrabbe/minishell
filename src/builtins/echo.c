@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:00 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/13 19:56:25 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:39:27 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ int	ft_echo(char **args)
 	int		option_count;
 	int		i;
 
-	printf("in ft_echo\n");
-	// return (0);
-	// printf("after return\n");
 	i = 0;
 	option_count = 0;
 	if (!args)
@@ -62,6 +59,5 @@ int	ft_echo(char **args)
 		ft_echo_args(args);
 	if (!option_count)
 		printf("\n");
-	printf("END\n");
 	return (no_error);
 }

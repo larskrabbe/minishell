@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/18 16:59:39 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/20 13:01:31 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,14 @@ int	main(int argc, char *argv[], char *envp[])
 			{
 				exe_data = NULL;
 				add_history(str);
-				lexer(str, tokenchain);
-				expander(tokenchain, env, &exe_data, &redirection);
-				execution(exe_data, env);
-				//free_str_in_token(tokenchain);
-				free_redirection(&redirection);
+				if (lexer(str, tokenchain) == 0)
+				{
+					// print_token_chain(tokenchain);
+					if (expander(tokenchain, env, &exe_data, &redirection) == 0)
+						execution(exe_data, env, &redirection);
+					free_str_in_token(tokenchain);
+					free_redirection(&redirection);
+				}
 				tmp_i++;
 			}
 		}

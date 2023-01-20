@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/19 12:21:13 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:02:10 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	check_type(t_token *token)
  */
 int	is_valid_var(char c, int i)
 {
+	if (c == '?' && i == 0)
+		return(1);
 	if (ft_isalpha(c))
 		return (1);
 	if (ft_isdigit(c) && i != 0)
@@ -74,7 +76,7 @@ char	*get_value(char *str, t_env *env_lst)
 	char	var_name[MAX_VAR_NAME];
 	int		i;
 
-	printf("get value %s\n", str);
+	//printf("get value %s\n", str);
 	i = 0;
 	while (is_valid_var(str[i], i))
 	{
@@ -179,19 +181,16 @@ void	get_token_str(t_token *token, t_env *env_lst, char *str)
 
 int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 {
+	// printf("create new exe_data\n");
 	if (*exe_data == NULL)
 	{
-		printf("first\n");
 		*exe_data = ft_calloc(1, sizeof(t_exe_data));
 		*exe_ptr = *exe_data;
-		printf("first\n");
 	}
 	else
 	{
-		printf("extra\n");
 		(*exe_ptr)->next = ft_calloc(1, sizeof(t_exe_data));
 		*exe_ptr = (*exe_ptr)->next;
-		printf("extra fin\n");
 	}
 	if (*exe_data == NULL || *exe_ptr == NULL)
 		return (error_allocation);
@@ -225,24 +224,23 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 	add_lst_t_exe_data(exe_data, &exe_ptr);
 	while (tokenchain->token[t].start != NULL)
 	{
-		printf("in expander\n");
 		// if (tokenchain->token[t].start != NULL && check_type(&tokenchain->token[t]) != 0)// shold be in the tokenizer
 		// add_lst_t_exe_data(exe_data, &exe_ptr);
 		// 	return (1);
-		while (tokenchain->token[t].start != NULL && tokenchain->token[t].type <= type_str)// will be his own funktion
+		while (tokenchain->token[t].type == type_str)
 		{
 			l = get_token_length(&tokenchain->token[t], env_lst);
 			exe_ptr->argv[arg_num] = ft_calloc(l + 1, sizeof(char));
-			printf("copy argv %i|",arg_num);
 			if (exe_ptr == NULL)
 				return (error_allocation);
 			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num]);
 			arg_num++;
 			t++;
 		}
-		if (tokenchain->token[t].start != NULL && tokenchain->token[t].type >= type_redirection && tokenchain->token[t].type != type_pipe)// will be his own funktion
+		exe_ptr->argv[arg_num] = NULL;
+		if (tokenchain->token[t].type != type_null && tokenchain->token[t].type >= type_redirection)// will be his own funktion
 		{
-			printf("redirect\n");// need to check if the next type == str
+			// printf("redirect %i\n",t);// need to check if the next type == str
 			if (tokenchain->token[t].type == type_heredoc)
 				heredoc(tokenstring(&tokenchain->token[t + 1], env_lst));
 			if (tokenchain->token[t].type == type_input_file)
@@ -251,15 +249,16 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
 			if (tokenchain->token[t].type == type_app_redirection)
 				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
-			t++;
+			if (tokenchain->token[t].type == type_pipe)
+			{
+				// printf("pipe\n");
+				arg_num = 0;
+				add_lst_t_exe_data(exe_data, &exe_ptr);
+			}
+			else
+				t++;
 		}
-		else if (tokenchain->token[t].type == type_pipe)
-		{
-			printf("pipe\n");
-			arg_num = 0;
-			add_lst_t_exe_data(exe_data, &exe_ptr);
-		}
-		t++;
+		// t++;
 	}
 	return (0);
 }
