@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/19 16:10:00 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/20 14:16:26 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ typedef struct s_exe_data{
 
 typedef struct s_redirection{
 	char	*infile;
+	int 	fd_infile;
+	int		fd_outfile;
 	char	*outfile;//! needs to be the the fd of the already open file//shoud open the file when found and close if a new one is found
 }t_redirection;
 //?-----------PROTOTYPES------------?//

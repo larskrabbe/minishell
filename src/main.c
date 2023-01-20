@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 13:01:31 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/20 15:03:08 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_exe_data			*exe_data;// maybe use double pointer
 	t_redirection		redirection;
 
+	redirection.outfile = NULL;
+	redirection.infile = NULL;
 	int tmp_i = 0;
 	if (argc <= 1 && argv == NULL)
 		return (0);

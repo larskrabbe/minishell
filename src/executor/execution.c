@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 13:01:04 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/20 15:39:24 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	execution_forking(t_exe_data *exe_data, t_env *env_lst, int built_in_flag)
 	pid_t	pid;
 	int		status;
 
+	printf("fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
 	pid = fork();
 	if (pid == 0)
 	{
-		//printf("fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
 		if (exe_data->fd_read != -1)
 		{
 			dup2(exe_data->fd_read, STDIN_FILENO);
@@ -65,10 +65,11 @@ int	pipe_start(t_exe_data *exe_data, t_redirection *redirection)
 	{
 		if (redirection->outfile != NULL)
 		{
-			fd[0] = open(redirection->outfile, 0777);
-			if (fd[0] < 0)
-				return (error_open);
-			exe_data->fd_write = fd[0];
+			//fd[0] = open(redirection->outfile, 0777);
+			// if (fd[0] < 0)
+			// 	return (error_open);
+			printf("outfile\n");
+			exe_data->fd_write = redirection->fd_outfile;
 		}
 	}
 	if (exe_data->next != NULL)// need to  split this case in
@@ -83,13 +84,19 @@ int	pipe_start(t_exe_data *exe_data, t_redirection *redirection)
 
 int	pipe_end(t_exe_data *exe_data)
 {
-	// printf("fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
+	 printf("in close | fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
 	if (exe_data->fd_read != -1)
+	{
+		dup2(STDIN_FILENO, exe_data->fd_read);
 		if (close(exe_data->fd_read))
 			return (1);
+	}
 	if (exe_data->fd_write != -1)
+	{
+		dup2(STDOUT_FILENO, exe_data->fd_write);
 		if (close(exe_data->fd_write))
 			return (1);
+	}
 	return (0);
 }
 
