@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/21 18:43:14 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:35:27 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	env_var_exists(t_env *env_lst, char *name, char *value)
 	{
 		if (find_env_match(env_lst, name))
 		{
-			tmp_val = ft_strdup(env_lst->value);
+			tmp_val = ft_strjoin("", env_lst->value);
 			free(env_lst->value);
 			free(env_lst->name);
 			if (new_name)
