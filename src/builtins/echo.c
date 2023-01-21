@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:00 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/19 17:39:27 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/21 13:47:55 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_echo(char **args)
 	if (!args)
 		return (0);
 	if (args)
-		while (*args && is_arg_an_option(args[i]))
+		while (args[i] && is_arg_an_option(args[i]))
 			option_count = ++i;
 	args += option_count;
 	if (args)
