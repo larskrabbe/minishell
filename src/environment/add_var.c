@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/21 19:38:35 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/21 21:03:16 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	*var_name_ends_with_plus(char *name)
 	if (!name)
 		return (NULL);
 	tmp_name = ft_strdup(name);
+	if (!tmp_name)
+		return (NULL);
 	i = ft_strlen(tmp_name);
 	if (tmp_name[i - 1] == '+')
 	{
@@ -28,6 +30,7 @@ void	*var_name_ends_with_plus(char *name)
 		free(tmp_name);
 		return (new_name);
 	}
+	free(tmp_name);
 	return (NULL);
 }
 
@@ -49,6 +52,7 @@ void	ft_putenv(t_env *env_lst, char *name, char *value)
 	env_new = env_lstnew(content);
 	free(content);
 	env_add_back(&env_lst, env_new);
+	free(new_name);
 }
 
 int	env_var_maker(t_setenv *setter, t_env *env_lst, char *new_env_var)
@@ -83,6 +87,7 @@ int	env_var_exists(t_env *env_lst, char *name, char *value)
 				env_lst->value = value;
 			env_lst->name = name;
 			free(tmp_val);
+			free(new_name);
 			return (TRUE);
 		}
 		env_lst = env_lst->next;
