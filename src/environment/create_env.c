@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2022/12/23 18:43:50 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:43:49 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ t_env	*env_lstnew(char *content)
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	split = ft_split(content, '=');
+	split = ft_slice(content, '=');
+	if (!split)
+		return (NULL);
 	new->name = split[0];
 	if (!ft_strncmp("OLDPWD", new->name, 6))
 	{

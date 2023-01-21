@@ -6,20 +6,43 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/04 19:21:23 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:43:14 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
+
+void	*var_name_ends_with_plus(char *name)
+{
+	int		i;
+	char	*tmp_name;
+	char	*new_name;
+
+	if (!name)
+		return (NULL);
+	tmp_name = ft_strdup(name);
+	i = ft_strlen(tmp_name);
+	if (tmp_name[i - 1] == '+')
+	{
+		new_name = ft_substr(tmp_name, 0, i - 1);
+		free(tmp_name);
+		return (new_name);
+	}
+	return (NULL);
+}
 
 void	ft_putenv(t_env *env_lst, char *name, char *value)
 {
 	t_env	*env_new;
 	char	*content;
 	char	*tmp;
+	char	*new_name;
 
 	if (!env_lst || !name || !value)
 		return ;
+	new_name = var_name_ends_with_plus(name);
+	if (new_name)
+		name = new_name;
 	tmp = ft_strjoin(name, "=");
 	content = ft_strjoin(tmp, value);
 	free(tmp);
@@ -41,15 +64,25 @@ int	env_var_maker(t_setenv *setter, t_env *env_lst, char *new_env_var)
 
 int	env_var_exists(t_env *env_lst, char *name, char *value)
 {
+	char	*tmp_val;
+	char	*new_name;
+
+	new_name = var_name_ends_with_plus(name);
+	if (new_name)
+		name = new_name;
 	while (env_lst)
 	{
 		if (find_env_match(env_lst, name))
 		{
-			// printf("Match found\n");
+			tmp_val = ft_strdup(env_lst->value);
 			free(env_lst->value);
 			free(env_lst->name);
-			env_lst->value = value;
+			if (new_name)
+				env_lst->value = ft_strjoin(tmp_val, value);
+			else
+				env_lst->value = value;
 			env_lst->name = name;
+			free(tmp_val);
 			return (TRUE);
 		}
 		env_lst = env_lst->next;

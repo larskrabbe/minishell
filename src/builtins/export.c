@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/21 16:25:09 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/21 18:42:20 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 void	export_error_mssg(char *new_env)
 {
 	printf("export: `%s': not a valid identifier \n", new_env);
+}
+
+int	valid_first_char(char *new_env)
+{
+	if (*(new_env) == '=')
+	{
+		export_error_mssg(new_env);
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
+int	valid_last_char(char *new_env)
+{
+	if (*(new_env) == '+')
+		return (TRUE);
+	return (FALSE);
 }
 
 int	invalid_env_id(char *new_env)
@@ -26,9 +43,16 @@ int	invalid_env_id(char *new_env)
 	j = 0;
 	tmp = 0;
 	error = FALSE;
+	if (!valid_first_char(new_env))
+		return (TRUE);
 	while (tmp == 0 && (*(new_env + j))
 	)
 	{
+		if (*(new_env + j + 1) == '=')
+		{
+			if (valid_last_char(new_env + j))
+				break ;
+		}
 		if (((*(new_env + j)) >= 32 && (*(new_env + j)) <= 47)
 			|| ((*(new_env + j)) >= 58 && (*(new_env + j)) <= 60)
 			|| ((*(new_env + j)) >= 62 && (*(new_env + j)) <= 64)
