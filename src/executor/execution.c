@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 15:39:24 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/21 16:24:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,9 @@ int	pipe_end(t_exe_data *exe_data)
 
 int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection)
 {
-	int				i;
 	int				built_in_flag;
 
 	built_in_flag = FALSE;
-	i = 1;
 	while (exe_data != NULL)
 	{
 		// need a checker to see if its just 1 builtin call and no piping, if yes DO NOT fork

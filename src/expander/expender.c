@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 15:44:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/21 16:49:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,19 +241,26 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 		exe_ptr->argv[arg_num] = NULL;
 		if (tokenchain->token[t].type != type_null && tokenchain->token[t].type >= type_redirection)// will be his own funktion
 		{
-			// printf("redirect %i\n",t);// need to check if the next type == str
-			// if (tokenchain->token[t].type == type_heredoc)
-			// 	heredoc(tokenstring(&tokenchain->token[t + 1], env_lst));
-			// if (tokenchain->token[t].type == type_input_file)
-			// 	redirection->infile = tokenstring(&tokenchain->token[t + 1], env_lst);
 			if (tokenchain->token[t].type == type_redirection)
 			{
+				if (redirection->fd_outfile != -1)
+				{
+					free(redirection->outfile);
+					close(redirection->fd_outfile);
+				}
 				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
-				redirection->fd_outfile = open(redirection->outfile, O_WRONLY | O_CREAT, 0666);
-				printf(" open this file ->%s fd = %i",redirection->outfile, redirection->fd_outfile);
+				redirection->fd_outfile = open(redirection->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			}
 			if (tokenchain->token[t].type == type_app_redirection)
+			{
+				if (redirection->fd_outfile != -1)
+				{
+					free(redirection->outfile);
+					close(redirection->fd_outfile);
+				}
 				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
+				redirection->fd_outfile = open(redirection->outfile, O_WRONLY | O_CREAT | O_APPEND, 0666);
+			}
 			if (tokenchain->token[t].type == type_pipe)
 			{
 				// printf("pipe\n");
