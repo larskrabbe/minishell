@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 14:16:26 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/22 15:17:46 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include	"../src/lexer/lexer.h"
 # include	"../src/expander/expender.h"
 # include	<fcntl.h>
+# include <termios.h>
+
+
 
 //?-----------Defines------------?//
 
@@ -481,7 +484,7 @@ int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection);
 t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
 /* 
 ====================================================
-                      Heredoc (Expander)                     
+                  Heredoc (Expander)                
 ====================================================
  */
 
@@ -494,5 +497,42 @@ t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
  */
 char	**heredoc(char *delimiter);
 
+
+
+
+/* 
+====================================================
+                         Signals                    
+====================================================
+ */
+
+/**
+ * @brief The signalhandler_ctrlc() function handles an interrupt signal 
+ * triggered by ctrl+c
+ * 
+ * @param sig 
+ */
+
+void	signalhandler_ctrlc(int sig);
+/**
+ * @brief The set_signals() function sets the signals SIGINT and SIGQUIT
+ * 
+ */
+
+void	set_signals(void);
+/**
+ * @brief The clear_signal() function clears the signal set up by the 
+ * set_signal() function
+ * 
+ */
+
+
+void	clear_signals(void);
+/**
+ * @brief The reset_signals() function clears and 
+ * sets the SIGINT and SIGQUIT signals to SIG_IGN
+ * 
+ */
+void	reset_signals(void);
 
 #endif
