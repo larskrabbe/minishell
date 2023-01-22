@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:37 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/21 21:03:16 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/22 01:04:52 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	*var_name_ends_with_plus(char *name)
 	if (!name)
 		return (NULL);
 	tmp_name = ft_strdup(name);
-	if (!tmp_name)
-		return (NULL);
 	i = ft_strlen(tmp_name);
 	if (tmp_name[i - 1] == '+')
 	{
@@ -39,55 +37,63 @@ void	ft_putenv(t_env *env_lst, char *name, char *value)
 	t_env	*env_new;
 	char	*content;
 	char	*tmp;
-	char	*new_name;
 
 	if (!env_lst || !name || !value)
 		return ;
-	new_name = var_name_ends_with_plus(name);
-	if (new_name)
-		name = new_name;
 	tmp = ft_strjoin(name, "=");
 	content = ft_strjoin(tmp, value);
 	free(tmp);
 	env_new = env_lstnew(content);
 	free(content);
 	env_add_back(&env_lst, env_new);
-	free(new_name);
 }
 
-int	env_var_maker(t_setenv *setter, t_env *env_lst, char *new_env_var)
+int	env_var_maker(t_setenv *setter, t_env *env, char *new_env, int *concat)
 {
-	setter->split = ft_slice(new_env_var, '=');
-	if (!env_lst || !setter->split)
+	char	*new_name;
+
+	if (!env)
 		return (FALSE);
-	setter->name = setter->split[0];
-	setter->value = setter->split[1];
-	free(setter->split);
+	setter->split = ft_slice(new_env, '=');
+	if (!setter->split)
+		return (FALSE);
+	new_name = var_name_ends_with_plus(setter->split[0]);
+	if (new_name)
+	{
+		setter->name = ft_strdup(new_name);
+		free(new_name);
+		*concat = 1;
+	}
+	else
+	{
+		setter->name = ft_strdup(setter->split[0]);
+		*concat = 0;
+	}
+	setter->value = ft_strdup(setter->split[1]);
+	ft_free(setter->split);
 	return (TRUE);
 }
 
-int	env_var_exists(t_env *env_lst, char *name, char *value)
+int	env_var_exists(t_env *env_lst, char *name, char *value, int *concat)
 {
-	char	*tmp_val;
-	char	*new_name;
+	char	*tmp_value;
 
-	new_name = var_name_ends_with_plus(name);
-	if (new_name)
-		name = new_name;
 	while (env_lst)
 	{
 		if (find_env_match(env_lst, name))
 		{
-			tmp_val = ft_strjoin("", env_lst->value);
+			tmp_value = ft_strdup(env_lst->value);
 			free(env_lst->value);
 			free(env_lst->name);
-			if (new_name)
-				env_lst->value = ft_strjoin(tmp_val, value);
+			if (*concat)
+			{
+				env_lst->value = ft_strjoin(tmp_value, value);
+				free(value);
+			}
 			else
 				env_lst->value = value;
 			env_lst->name = name;
-			free(tmp_val);
-			free(new_name);
+			free(tmp_value);
 			return (TRUE);
 		}
 		env_lst = env_lst->next;
@@ -98,12 +104,16 @@ int	env_var_exists(t_env *env_lst, char *name, char *value)
 int	ft_setenv(t_env *env_lst, char *new_env_var)
 {
 	t_setenv	setter;
+	int			concat;
 
+	concat = 0;
 	setter.env_curr = env_lst;
 	setter.split = NULL;
-	if (!env_var_maker(&setter, env_lst, new_env_var))
+	setter.name = NULL;
+	setter.value = NULL;
+	if (!env_var_maker(&setter, env_lst, new_env_var, &concat))
 		return (FALSE);
-	if (env_var_exists(setter.env_curr, setter.name, setter.value))
+	if (env_var_exists(setter.env_curr, setter.name, setter.value, &concat))
 		return (TRUE);
 	ft_putenv(env_lst, setter.name, setter.value);
 	free(setter.name);
