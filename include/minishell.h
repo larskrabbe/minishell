@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/22 15:17:46 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:48:30 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,10 +328,10 @@ typedef struct s_cd
 /**
  * @brief The ft_pwd() prints the current working directory
  * 
- * @param env_lst 
+ * @param 
  * @return returns an int defined by enum e_error
  */
-int		ft_pwd(t_env **env_lst);
+int		ft_pwd(void);
 /**
  * @brief The ft_echo() function prints arguments passed
  * to it delimited by only a single space followed by a new line.

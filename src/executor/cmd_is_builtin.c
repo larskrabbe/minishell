@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_is_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/19 14:21:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/22 18:48:58 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	handle_builtin(char *cmd, char **args, t_env **env)
 	if (find_builtin_match(command, "echo"))
 		result = ft_echo(args);
 	if (find_builtin_match(command, "pwd"))
-		result = ft_pwd(env);
+		result = ft_pwd();
 	if (find_builtin_match(command, "env"))
 		result = ft_env(env);
 	if (find_builtin_match(command, "cd"))

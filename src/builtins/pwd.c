@@ -6,21 +6,17 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:40:05 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/03 18:46:02 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:48:41 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_pwd(t_env **env_lst)
+int	ft_pwd(void)
 {
-	char	*pwd;
+	char	pwd[MAX_ARG];
 
-	if (!env_lst)
-		return (error_allocation);
-	pwd = ft_getenv(*env_lst, "PWD");
-	if (!pwd)
-		return (error_allocation);
+	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
 	return (no_error);
 }
