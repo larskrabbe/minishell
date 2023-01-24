@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 17:06:52 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 18:11:14 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	heredoc_expend(char *str, t_env *env_lst, t_redirection *redirection)
 
 	tmp_token.start = str;
 	tmp_token.end = str + ft_strlen(str);
-	tmp_str = tokenstring(&tmp_token, env_lst);
+	tmp_str = tokenstring(&tmp_token, env_lst, redirection);
 	if (tmp_str == NULL)
 		return (error_allocation);
 	write(redirection->fd_infile, tmp_str, ft_strlen(tmp_str));

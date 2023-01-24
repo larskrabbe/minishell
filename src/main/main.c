@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 17:59:04 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 18:04:55 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	main(int argc, char *argv[], char *envp[])
 	redirection.outfile = NULL;
 	redirection.infile = NULL;
 	redirection.exit_code = 0;
-	int tmp_i = 0;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	tokenchain = tokenchain_create();

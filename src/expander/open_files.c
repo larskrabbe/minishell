@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 16:58:20 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 18:10:35 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
 		close(redirection->fd_outfile);
 		redirection->fd_outfile = -1;
 	}
-	str = tokenstring(token, env_lst);
+	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
 	stat(str, &info);
@@ -50,7 +50,7 @@ int	open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst)
 		close(redirection->fd_outfile);
 		redirection->fd_outfile = -1;
 	}
-	str = tokenstring(token, env_lst);
+	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
 	stat(str, &info);
@@ -77,7 +77,7 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 		close(redirection->fd_infile);
 		redirection->fd_infile = -1;
 	}
-	str = tokenstring(token, env_lst);
+	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
 	stat(str, &info);

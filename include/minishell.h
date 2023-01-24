@@ -6,11 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/01/24 16:40:09 by lkrabbe          ###   ########.fr       */
-=======
-/*   Updated: 2023/01/24 15:52:42 by bogunlan         ###   ########.fr       */
->>>>>>> 34e391917b8db6d53e69206e2d1bf471874889fc
+/*   Updated: 2023/01/24 18:08:36 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +24,14 @@
 # include	"libft.h"
 # include	"../src/lexer/lexer.h"
 # include	<fcntl.h>
-<<<<<<< HEAD
 # include	<termios.h>
+# include	<sys/types.h>
 # include	<sys/stat.h>
-=======
-# include <termios.h>
-
+# include	<unistd.h>
 
 //?----------Globals------------?//
 
 int	g_signal;
->>>>>>> 34e391917b8db6d53e69206e2d1bf471874889fc
 
 	
 //?-----------Defines------------?//
@@ -158,7 +151,7 @@ void			free_str_in_token(t_tokenchain *tokenchain);
 int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
 void			get_token_str(t_token *token, t_env *env_lst, char *str, t_redirection *redirection);
 int				check_type(t_token *token);
-char			*tokenstring(t_token *token, t_env *env_lst);// need a way to return error message
+char			*tokenstring(t_token *token, t_env *env_lst, t_redirection *redirection);// need a way to return error message
 int				open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst);
 int				open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst);
 int				open_infile(t_redirection *redirection, t_token *token, t_env *env_lst);

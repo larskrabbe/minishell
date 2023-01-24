@@ -2,6 +2,7 @@
 	"files.associations": {
 		"expender.h": "c",
 		"_off_t.h": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"types.h": "c"
 	}
 }
