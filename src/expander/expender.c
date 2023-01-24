@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/21 16:49:07 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 16:44:37 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ char *tokenstring(t_token *token, t_env *env_lst)// need a way to return error m
 	get_token_str(token, env_lst, str);
 	return (str);
 }
+
 void	get_token_str(t_token *token, t_env *env_lst, char *str)
 {
 	char	*ptr;
@@ -200,16 +201,17 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 	return (0);
 }
 
-// int	redirection(t_exe_data *exe_ptr, t_token *token, int type)
-// {
-
-// 	if (tokenchain->token[t].type == type_pipe)
-// 	{
-// 		exe_ptr->argv[arg_num] = NULL;
-// 		arg_num = 0;
-// 	}
-// 	return (0);
-// }
+/**
+ * @brief set the values inside of the struct back to zero
+ * 
+ */
+void	redirection_default(t_redirection *redirection)
+{
+	redirection->fd_infile = -1;
+	redirection->fd_outfile = -1;
+	redirection->infile = NULL;
+	redirection->outfile = NULL;
+}
 
 int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection)
 {
@@ -217,17 +219,16 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 	int			l;
 	int			arg_num;
 	t_exe_data	*exe_ptr;
+	int			error;
 
+	error = 0;
 	exe_ptr = NULL;
 	t = 1;
 	arg_num = 0;
-
+	redirection_default(redirection);
 	add_lst_t_exe_data(exe_data, &exe_ptr);
-	while (tokenchain->token[t].start != NULL)
+	while (tokenchain->token[t].start != NULL && !error)
 	{
-		// if (tokenchain->token[t].start != NULL && check_type(&tokenchain->token[t]) != 0)// shold be in the tokenizer
-		// add_lst_t_exe_data(exe_data, &exe_ptr);
-		// 	return (1);
 		while (tokenchain->token[t].type == type_str)
 		{
 			l = get_token_length(&tokenchain->token[t], env_lst);
@@ -238,29 +239,19 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 			arg_num++;
 			t++;
 		}
-		exe_ptr->argv[arg_num] = NULL;
-		if (tokenchain->token[t].type != type_null && tokenchain->token[t].type >= type_redirection)// will be his own funktion
+		if (arg_num != 0)
+			exe_ptr->argv[arg_num] = NULL;
+		if (tokenchain->token[t].type != type_null && tokenchain->token[t].type >= type_redirection && !error)// will be his own funktion
 		{
 			if (tokenchain->token[t].type == type_redirection)
-			{
-				if (redirection->fd_outfile != -1)
-				{
-					free(redirection->outfile);
-					close(redirection->fd_outfile);
-				}
-				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
-				redirection->fd_outfile = open(redirection->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			}
-			if (tokenchain->token[t].type == type_app_redirection)
-			{
-				if (redirection->fd_outfile != -1)
-				{
-					free(redirection->outfile);
-					close(redirection->fd_outfile);
-				}
-				redirection->outfile = tokenstring(&tokenchain->token[t + 1], env_lst);
-				redirection->fd_outfile = open(redirection->outfile, O_WRONLY | O_CREAT | O_APPEND, 0666);
-			}
+				error = open_outfile(redirection, &tokenchain->token[t + 1], env_lst);
+			else if (tokenchain->token[t].type == type_app_redirection)
+				error = open_outfile_app(redirection, &tokenchain->token[t + 1], env_lst);
+			else if (tokenchain->token[t].type == type_input_file)
+				error = open_infile(redirection, &tokenchain->token[t + 1], env_lst);
+			else if (tokenchain->token[t].type == type_heredoc)
+				heredoc(redirection, &tokenchain->token[t + 1], env_lst);
+
 			if (tokenchain->token[t].type == type_pipe)
 			{
 				// printf("pipe\n");
@@ -273,5 +264,5 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 		if (tokenchain->token[t].type != type_null)
 			t++;
 	}
-	return (0);
+	return (error);
 }

@@ -97,16 +97,11 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 		}
 		else
 			str++;
-		tokenchain->token[t].start = NULL;
-		tokenchain->token[t].end = NULL;
-		tokenchain->token[t].type = type_null;
-		tokenchain->token[t].str = NULL;
-		// tokenchain->token[t + 1].start = NULL;
-		// tokenchain->token[t + 1].end = NULL;
-		// tokenchain->token[t + 1].type = type_null;
-		// tokenchain->token[t + 1].str = NULL;
-		// printf("t = %i\n",t);
 	}
+	tokenchain->token[t].start = NULL;
+	tokenchain->token[t].end = NULL;
+	tokenchain->token[t].type = type_null;
+	tokenchain->token[t].str = NULL;
 	if (t >= MAX_ARG)
 		return (error_max_arg);
 	return (syntax_checker(tokenchain));

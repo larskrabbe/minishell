@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe < lkrabbe@student.42heilbronn.d    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/21 16:24:21 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/23 20:06:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	execution_forking(t_exe_data *exe_data, t_env *env_lst, int built_in_flag)
 	pid_t	pid;
 	int		status;
 
-	printf("fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -63,12 +62,8 @@ int	pipe_start(t_exe_data *exe_data, t_redirection *redirection)
 	}
 	if (exe_data->next == NULL)
 	{
-		if (redirection->outfile != NULL)
+		if (redirection->fd_outfile != -1)
 		{
-			//fd[0] = open(redirection->outfile, 0777);
-			// if (fd[0] < 0)
-			// 	return (error_open);
-			printf("outfile\n");
 			exe_data->fd_write = redirection->fd_outfile;
 		}
 	}
@@ -84,7 +79,6 @@ int	pipe_start(t_exe_data *exe_data, t_redirection *redirection)
 
 int	pipe_end(t_exe_data *exe_data)
 {
-	 printf("in close | fd read = %i fd writing = %i\n", exe_data->fd_read, exe_data->fd_write);
 	if (exe_data->fd_read != -1)
 	{
 		dup2(STDIN_FILENO, exe_data->fd_read);
@@ -110,7 +104,6 @@ int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection)
 		// need a checker to see if its just 1 builtin call and no piping, if yes DO NOT fork
 		if (pipe_start(exe_data, redirection) != 0)
 			printf("error in pipe_start\n");
-		// printf(">%s", exe_data->argv[0]);
 		built_in_flag = cmd_is_builtin(exe_data->argv[0]);// !if builtin it shpid still be executed in a extra child // ! if it isjust one built in , dont need t o create a child ( becuase of cd and other stufft hat wouldnt work)
 		if (built_in_flag == FALSE)
 		{

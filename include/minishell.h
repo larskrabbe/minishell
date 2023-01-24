@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/22 18:48:30 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 16:40:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 # include	"../src/lexer/lexer.h"
 # include	"../src/expander/expender.h"
 # include	<fcntl.h>
-# include <termios.h>
+# include	<termios.h>
+# include	<sys/stat.h>
 
-
-
+	
 //?-----------Defines------------?//
 
 # ifndef FALSE
@@ -60,6 +60,7 @@ typedef enum e_error{
 	error_null_ptr = 5,
 	error_pipe = 6,
 	error_open = 7,
+	error_permission = 8,
 }t_error;
 
 typedef enum e_signal{
@@ -144,6 +145,10 @@ void			free_str_in_token(t_tokenchain *tokenchain);
 int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
 void			get_token_str(t_token *token, t_env *env_lst, char *str);
 int				check_type(t_token *token);
+char			*tokenstring(t_token *token, t_env *env_lst);// need a way to return error message
+int				open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst);
+int				open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst);
+int				open_infile(t_redirection *redirection, t_token *token, t_env *env_lst);
 
 /* 
 ====================================================
@@ -489,13 +494,12 @@ t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
  */
 
 /**
- * @brief The heredoc() function returns an array of strings
- * passed from the standard input, otherwise NULL
+ * @brief The heredoc() function reads a input via readline and write it in a open file
  * 
  * @param delimiter 
- * @return char** 
+ * @return fdf of the openfile  
  */
-char	**heredoc(char *delimiter);
+int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst);
 
 
 

@@ -6,11 +6,11 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/20 15:03:08 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/23 20:06:28 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"../include/minishell.h"
+#include	"../../include/minishell.h"
 
 int	g_signal;
 
@@ -90,7 +90,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 	redirection.outfile = NULL;
 	redirection.infile = NULL;
-	int tmp_i = 0;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	tokenchain = tokenchain_create();
@@ -98,7 +97,7 @@ int	main(int argc, char *argv[], char *envp[])
 		return (error_allocation);
 	signal_setup(&signal_handler);
 	env = *ft_getenv_lst(envp);
-	while (g_signal == 0 && tmp_i < 10)
+	while (g_signal == 0 )
 	{
 		str = readline(prompt);
 		if (str != NULL )
@@ -115,7 +114,6 @@ int	main(int argc, char *argv[], char *envp[])
 					free_str_in_token(tokenchain);
 					free_redirection(&redirection);
 				}
-				tmp_i++;
 			}
 		}
 		free(str);

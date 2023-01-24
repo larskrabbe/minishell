@@ -8,7 +8,7 @@ FLAGS = -lreadline $(CFLAGS)
 
 CFLAGS = -Wextra -Werror -Wall -fsanitize=address -g
 
-SRC = main.c
+#SRC = main.c
 
 OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
 
@@ -31,7 +31,8 @@ ENV =	src/environment/add_var.c \
 
 EXP =	src/expander/expender.c \
 		src/expander/expender_memory.c\
-		src/expander/heredoc.c
+		src/expander/heredoc.c\
+		src/expander/open_files.c
 
 PATH =	src/pathing/get_cmd_path.c
 
@@ -39,12 +40,14 @@ EXEC =	src/executor/cmd_is_builtin.c\
 		src/executor/execution.c\
 		src/executor/execution_memory.c
 
+MAIN = src/main/main.c
+
 
 
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) src/main.c -o $(NAME)
+	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) $(MAIN) -o $(NAME)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
