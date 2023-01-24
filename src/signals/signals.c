@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 02:24:48 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/22 15:17:26 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:32:09 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,27 @@
 
 void	signalhandler_ctrlc(int sig)
 {
+	// printf("signal %i global %i\n",sig, g_signal);
 	if (sig == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 2);
+		// write(STDOUT_FILENO, "", 2);
 	}
-	//rl_replace_line("", 0); // This fxn is to be used instead of rl_insert_text()
+	rl_replace_line("", 0); // This fxn is to be used instead of rl_insert_text()
+	printf("\n");
 	rl_on_new_line();
-	rl_insert_text("");
+	rl_redisplay();
+}
+
+void	signalhandler_ctrlslash(int sig)
+{
+	// printf("signal %i global %i\n",sig, g_signal);
+	if (sig == SIGQUIT)
+	{
+		// write(STDOUT_FILENO, "Quit", 4);
+	}
+	rl_replace_line("", 0); // This fxn is to be used instead of rl_insert_text()
+	printf("Quit\n");
+	rl_on_new_line();
 	rl_redisplay();
 }
 

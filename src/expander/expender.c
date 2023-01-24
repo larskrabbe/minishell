@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 16:44:37 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:58:18 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	strlen_with_check(char *str)
  * @brief gets you the value lenght from the variable 
  * 
  */
-char	*get_value(char *str, t_env *env_lst)
+char	*get_value(char *str, t_env *env_lst, t_redirection *redirection)
 {
 	char	var_name[MAX_VAR_NAME];
 	int		i;
@@ -84,10 +84,14 @@ char	*get_value(char *str, t_env *env_lst)
 		i++;
 	}
 	var_name[i] = '\0';
+	if (var_name[0] == '\0')
+		return(ft_itoa((int)getpid()));
+	if (var_name[0] == '?')
+		return(ft_itoa(((int)(redirection->exit_code) >> 8) & 0x000000ff));
 	return (ft_getenv(env_lst, var_name));
 }
 
-int	get_token_length(t_token *token, t_env *env_lst)
+int	get_token_length(t_token *token, t_env *env_lst, t_redirection *redirection)
 {
 	int		l;
 	char	*ptr;
@@ -107,7 +111,7 @@ int	get_token_length(t_token *token, t_env *env_lst)
 		{
 			i = 0;
 			ptr++;
-			l += strlen_with_check(get_value(ptr, env_lst));
+			l += strlen_with_check(get_value(ptr, env_lst, redirection));
 			while (is_valid_var(*ptr, i))
 			{
 				ptr++;
@@ -122,21 +126,20 @@ int	get_token_length(t_token *token, t_env *env_lst)
 	return (l + 1);
 }
 
-char *tokenstring(t_token *token, t_env *env_lst)// need a way to return error message
+char *tokenstring(t_token *token, t_env *env_lst, t_redirection *redirection)// need a way to return error message
 {
 	int		len;
 	char	*str;
 
 	str = NULL;
-	len = get_token_length(token, env_lst);
+	len = get_token_length(token, env_lst, redirection);
 	str = ft_calloc(len, sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	get_token_str(token, env_lst, str);
+	get_token_str(token, env_lst, str, redirection);
 	return (str);
 }
-
-void	get_token_str(t_token *token, t_env *env_lst, char *str)
+void	get_token_str(t_token *token, t_env *env_lst, char *str, t_redirection *redirection)
 {
 	char	*ptr;
 	int		q;
@@ -157,7 +160,7 @@ void	get_token_str(t_token *token, t_env *env_lst, char *str)
 		{
 			ptr++;
 			i = 0;
-			var_ptr = get_value(ptr, env_lst);
+			var_ptr = get_value(ptr, env_lst, redirection);
 			while (var_ptr != NULL && *var_ptr != '\0')
 			{
 				str[l] = *var_ptr;
@@ -231,11 +234,11 @@ int	expander(t_tokenchain *tokenchain, t_env *env_lst, t_exe_data **exe_data, t_
 	{
 		while (tokenchain->token[t].type == type_str)
 		{
-			l = get_token_length(&tokenchain->token[t], env_lst);
+			l = get_token_length(&tokenchain->token[t], env_lst, redirection);
 			exe_ptr->argv[arg_num] = ft_calloc(l + 1, sizeof(char));
 			if (exe_ptr == NULL)
 				return (error_allocation);
-			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num]);
+			get_token_str(&tokenchain->token[t], env_lst, exe_ptr->argv[arg_num], redirection);
 			arg_num++;
 			t++;
 		}

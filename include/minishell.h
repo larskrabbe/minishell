@@ -6,7 +6,11 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/01/24 16:40:09 by lkrabbe          ###   ########.fr       */
+=======
+/*   Updated: 2023/01/24 15:52:42 by bogunlan         ###   ########.fr       */
+>>>>>>> 34e391917b8db6d53e69206e2d1bf471874889fc
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +27,18 @@
 # include	<signal.h>
 # include	"libft.h"
 # include	"../src/lexer/lexer.h"
-# include	"../src/expander/expender.h"
 # include	<fcntl.h>
+<<<<<<< HEAD
 # include	<termios.h>
 # include	<sys/stat.h>
+=======
+# include <termios.h>
+
+
+//?----------Globals------------?//
+
+int	g_signal;
+>>>>>>> 34e391917b8db6d53e69206e2d1bf471874889fc
 
 	
 //?-----------Defines------------?//
@@ -65,8 +77,8 @@ typedef enum e_error{
 
 typedef enum e_signal{
 	no_signal = 0,
-	exit_signal = 1,
-	c_signal = 2,
+	exit_signal = 10,
+	c_signal = 20,
 }t_sigal;
 
 /**
@@ -131,6 +143,7 @@ typedef struct s_redirection{
 	int 	fd_infile;
 	int		fd_outfile;
 	char	*outfile;//! needs to be the the fd of the already open file//shoud open the file when found and close if a new one is found
+	int		exit_code;
 }t_redirection;
 //?-----------PROTOTYPES------------?//
 
@@ -143,7 +156,7 @@ t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
 int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
-void			get_token_str(t_token *token, t_env *env_lst, char *str);
+void			get_token_str(t_token *token, t_env *env_lst, char *str, t_redirection *redirection);
 int				check_type(t_token *token);
 char			*tokenstring(t_token *token, t_env *env_lst);// need a way to return error message
 int				open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst);
@@ -243,7 +256,7 @@ void	ft_unsetenv(t_env **env_lst, char *name);
  * @param name
  * @return pointer to environment value, otherwise NULL
  */
-char	*ft_getenv(t_env *env_lst, char *env_name);
+char	*ft_getenv(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_gen_slice() function helps the ft_slice() function 
@@ -516,27 +529,36 @@ int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst);
  * 
  * @param sig 
  */
-
 void	signalhandler_ctrlc(int sig);
+
+/**
+ * @brief The signalhandler_ctrlslash() function handles an interrupt signal 
+ * triggered by ctrl+\
+ * 
+ * @param sig 
+ */
+void	signalhandler_ctrlslash(int sig);
+
 /**
  * @brief The set_signals() function sets the signals SIGINT and SIGQUIT
  * 
  */
-
 void	set_signals(void);
+
 /**
  * @brief The clear_signal() function clears the signal set up by the 
  * set_signal() function
  * 
  */
-
-
 void	clear_signals(void);
+
 /**
  * @brief The reset_signals() function clears and 
  * sets the SIGINT and SIGQUIT signals to SIG_IGN
  * 
  */
 void	reset_signals(void);
+
+
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/23 20:06:28 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:59:04 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-int	g_signal;
+// int	g_signal;
 
 void recieve(int signum)
 {
@@ -82,7 +82,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char				*str;
 	char				prompt[] = "<minishell>";
-	struct sigaction	signal_handler;//? dont think this needs to be, should be able to in the signal set up
+	//struct sigaction	signal_handler;//? dont think this needs to be, should be able to in the signal set up
 	t_env				*env = NULL;
 	t_tokenchain		*tokenchain;// maybe use double pointer
 	t_exe_data			*exe_data;// maybe use double pointer
@@ -90,16 +90,25 @@ int	main(int argc, char *argv[], char *envp[])
 
 	redirection.outfile = NULL;
 	redirection.infile = NULL;
+	redirection.exit_code = 0;
+	int tmp_i = 0;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
-	signal_setup(&signal_handler);
+	//signal_setup(&signal_handler);
 	env = *ft_getenv_lst(envp);
-	while (g_signal == 0 )
+	g_signal = 1;
+	while (g_signal != 0)
 	{
+		set_signals();
 		str = readline(prompt);
+		if (!str)
+		{
+			write(1, "exit\n", 5);
+			g_signal = 0;
+		}
 		if (str != NULL )
 		{
 			if (*str != '\0')
@@ -118,7 +127,13 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		free(str);
 		str = NULL;
+		reset_signals();
+		// printf("Status>> %d\n", ((g_signal) >> 8) & 0x000000ff);
+		// break ;
+		// system("leaks minishell");
 	}
+	clean_env(&env);
 	free_before_exit();
+	// system("leaks minishell");
 	return (0);
 }

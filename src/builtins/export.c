@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/22 01:15:39 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:32:19 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	invalid_env_id(char *new_env)
 	error = FALSE;
 	if (!valid_first_char(new_env))
 		return (TRUE);
-	while (tmp == 0 && (*(new_env + j) != '=')
+	while (tmp == 0 && (new_env[j]) && (new_env[j] != '=')
 	)
 	{
-		if (*(new_env + j + 1) == '=')
+		if (new_env[j + 1] && *(new_env + j + 1) == '=')
 		{
 			if (valid_last_char(new_env + j))
 				break ;
