@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/22 18:48:30 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:52:42 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@
 # include	<signal.h>
 # include	"libft.h"
 # include	"../src/lexer/lexer.h"
-# include	"../src/expander/expender.h"
 # include	<fcntl.h>
 # include <termios.h>
 
 
+//?----------Globals------------?//
+
+int	g_signal;
 
 //?-----------Defines------------?//
 
@@ -64,8 +66,8 @@ typedef enum e_error{
 
 typedef enum e_signal{
 	no_signal = 0,
-	exit_signal = 1,
-	c_signal = 2,
+	exit_signal = 10,
+	c_signal = 20,
 }t_sigal;
 
 /**
@@ -130,6 +132,7 @@ typedef struct s_redirection{
 	int 	fd_infile;
 	int		fd_outfile;
 	char	*outfile;//! needs to be the the fd of the already open file//shoud open the file when found and close if a new one is found
+	int		exit_code;
 }t_redirection;
 //?-----------PROTOTYPES------------?//
 
@@ -142,7 +145,7 @@ t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
 int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
-void			get_token_str(t_token *token, t_env *env_lst, char *str);
+void			get_token_str(t_token *token, t_env *env_lst, char *str, t_redirection *redirection);
 int				check_type(t_token *token);
 
 /* 
@@ -238,7 +241,7 @@ void	ft_unsetenv(t_env **env_lst, char *name);
  * @param name
  * @return pointer to environment value, otherwise NULL
  */
-char	*ft_getenv(t_env *env_lst, char *env_name);
+char	*ft_getenv(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_gen_slice() function helps the ft_slice() function 
@@ -512,27 +515,36 @@ char	**heredoc(char *delimiter);
  * 
  * @param sig 
  */
-
 void	signalhandler_ctrlc(int sig);
+
+/**
+ * @brief The signalhandler_ctrlslash() function handles an interrupt signal 
+ * triggered by ctrl+\
+ * 
+ * @param sig 
+ */
+void	signalhandler_ctrlslash(int sig);
+
 /**
  * @brief The set_signals() function sets the signals SIGINT and SIGQUIT
  * 
  */
-
 void	set_signals(void);
+
 /**
  * @brief The clear_signal() function clears the signal set up by the 
  * set_signal() function
  * 
  */
-
-
 void	clear_signals(void);
+
 /**
  * @brief The reset_signals() function clears and 
  * sets the SIGINT and SIGQUIT signals to SIG_IGN
  * 
  */
 void	reset_signals(void);
+
+
 
 #endif

@@ -4,13 +4,16 @@ NAME = minishell
 
 CC = cc
 
-FLAGS = -lreadline $(CFLAGS)
+LDFLAGS    = -L/Users/$(USER)/.brew/opt/readline/lib
+CPPFLAGS   = -I/Users/$(USER)/.brew/opt/readline/include
 
-CFLAGS = -Wextra -Werror -Wall -fsanitize=address -g
+FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
+
+CFLAGS = -Wextra -Werror -Wall -g -fsanitize=address
 
 SRC = main.c
 
-OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
+# OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
 
 DIR_OBJ = obj/a
 
@@ -39,12 +42,14 @@ EXEC =	src/executor/cmd_is_builtin.c\
 		src/executor/execution.c\
 		src/executor/execution_memory.c
 
+SIGNAL = src/signals/signals.c
+
 
 
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) src/main.c -o $(NAME)
+	$(CC) $(SIGNAL) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) src/main.c -o $(NAME) $(FLAGS)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -62,9 +67,9 @@ BUILTINS =	src/builtins/echo.c \
 			src/builtins/cd.c \
 			src/builtins/cd_utils.c
 
-lexer_main:$(LEXER) $(ENV) $(BUILTINS) | $(LIBFT)
-	cc $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
-	@#cc -L LeakSanitizer/ -llsan -lc++ $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
+#lexer_main:$(LEXER) $(ENV) $(BUILTINS) | $(LIBFT)
+	#cc $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
+	#@cc -L LeakSanitizer/ -llsan -lc++ $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIB_DIR)
