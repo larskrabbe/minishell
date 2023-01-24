@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 18:11:14 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 20:31:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,13 @@ int	at_eof(char *str, char *delimiter)
 	return (FALSE);
 }
 
-int	heredoc_read(char *delimiter, int expend_flag, t_redirection *redirection, t_env *env_lst)
+int	heredoc_read(char *delimiter, int expend_flag, \
+t_redirection *redirection, t_env *env_lst)
 {
 	char	*str;
 
 	str = NULL;
-	if (redirection->fd_infile != -1)
-	{
-		close(redirection->fd_infile);
-		redirection->fd_infile = -1;
-	}
+	reset_fd(&redirection->fd_infile);
 	redirection->fd_infile = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0700);
 	if (redirection->fd_infile < 0)
 		return (error_open);
@@ -119,23 +116,4 @@ int	get_here_len(t_token *token, int *expend_flag)
 		ptr++;
 	}
 	return (len + 1);
-}
-
-int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst)
-{
-	int		expend_flag;
-	int		len;
-	char	*str;
-
-	str = NULL;
-	len = 0;
-	expend_flag = TRUE;
-	len = get_here_len(token, &expend_flag);
-	str = ft_calloc (len, sizeof(char));
-	if (str == NULL)
-		return (error_allocation);
-	get_here_str(token, str);
-	heredoc_read(str, expend_flag, redirection, env_lst);
-	free (str);
-	return (0);
 }

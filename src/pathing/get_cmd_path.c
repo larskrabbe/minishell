@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/05 17:12:12 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:00:43 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ char	*get_working_path(char **paths)
 
 int	cmd_has_current_path(char *cmd)
 {
-	int	i;
-	char **split;
+	int		i;
+	char	**split;
 
 	split = ft_split(cmd, '/');
 	if (!split)
@@ -99,7 +99,6 @@ char	*get_cmd_path(t_env **env_lst, char *cmd)
 	if (paths == NULL)
 		return (NULL);
 	path_to_cmd = get_working_path(paths);
-	// printf("path to command: %s\n", path_to_cmd);
 	ft_free(paths);
 	return (path_to_cmd);
 }

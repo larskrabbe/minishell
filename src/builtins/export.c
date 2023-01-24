@@ -3,35 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/23 22:32:19 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 23:42:44 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-void	export_error_mssg(char *new_env)
+int	invalid_env_id_helper(char *new_env, int *j, int *error, int *tmp)
 {
-	printf("export: `%s': not a valid identifier \n", new_env);
-}
-
-int	valid_first_char(char *new_env)
-{
-	if (*(new_env) == '=')
-	{
+	if (((*(new_env + *j)) >= 32 && (*(new_env + *j)) <= 47)
+		|| ((*(new_env + *j)) >= 58 && (*(new_env + *j)) <= 60)
+		|| ((*(new_env + *j)) >= 62 && (*(new_env + *j)) <= 64)
+		|| ((*(new_env + *j)) >= 91 && (*(new_env + *j)) <= 94)
+		|| ((*(new_env + *j)) >= 123 && (*(new_env + *j)) <= 127))
+	{					
 		export_error_mssg(new_env);
-		return (FALSE);
+		*error = TRUE;
+		*tmp = 1;
 	}
-	return (TRUE);
-}
-
-int	valid_last_char(char *new_env)
-{
-	if (*(new_env) == '+')
-		return (TRUE);
-	return (FALSE);
+	return (*error);
 }
 
 int	invalid_env_id(char *new_env)
@@ -53,16 +46,8 @@ int	invalid_env_id(char *new_env)
 			if (valid_last_char(new_env + j))
 				break ;
 		}
-		if (((*(new_env + j)) >= 32 && (*(new_env + j)) <= 47)
-			|| ((*(new_env + j)) >= 58 && (*(new_env + j)) <= 60)
-			|| ((*(new_env + j)) >= 62 && (*(new_env + j)) <= 64)
-			|| ((*(new_env + j)) >= 91 && (*(new_env + j)) <= 94)
-			|| ((*(new_env + j)) >= 123 && (*(new_env + j)) <= 127))
-		{					
-			export_error_mssg(new_env);
-			error = TRUE;
-			tmp = 1;
-		}
+		if (invalid_env_id_helper(new_env, &j, &error, &tmp))
+			break ;
 		j++;
 	}
 	return (error);

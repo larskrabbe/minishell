@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_is_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 18:42:39 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/22 18:48:58 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 23:56:01 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
 #include "../../include/minishell.h"
 
 char	*string_to_lower(char *str)
@@ -20,7 +19,8 @@ char	*string_to_lower(char *str)
 
 	if (!str)
 		return (NULL);
-	new_str = (char *) ft_calloc(ft_strlen(str) + 1 , sizeof(char));
+	new_str = (char *) ft_calloc(ft_strlen(str) + 1 \
+	, sizeof(char));
 	if (!new_str)
 		return (NULL);
 	i = 0;
@@ -101,7 +101,6 @@ int	handle_builtin(char *cmd, char **args, t_env **env)
 		result = ft_export(env, args);
 	if (find_builtin_match(command, "unset"))
 		result = ft_unset(env, args);
-	// if (find_builtin_match(command, "exit"))
 	free(command);
 	return (result);
 }

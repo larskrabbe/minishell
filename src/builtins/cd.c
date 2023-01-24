@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:43:56 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/09 13:27:39 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/24 23:23:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ int	cd_home_dir(t_env *env_lst)
 	if (cd.res != 0)
 		return (error_syntax);
 	set_old_pwd(env_lst, cd.pwd);
-	// printf("%d\n", cd.res);
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
 	ft_setenv(env_lst, cd.new_pwd);
-	// printf("\npwd: %s\n", cd.new_pwd);
 	free(cd.new_pwd);
 	return (no_error);
 }
@@ -58,11 +56,9 @@ int	cd_x_dir(t_env *env_lst, char **path_name)
 	if (cd.res != 0)
 		return (error_syntax);
 	set_old_pwd(env_lst, cd.pwd);
-	// printf("%d\n", cd.res);
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
 	ft_setenv(env_lst, cd.new_pwd);
-	// printf("\npwd: %s\n", cd.new_pwd);
 	free(cd.new_pwd);
 	return (no_error);
 }
@@ -84,7 +80,7 @@ int	cd_tilde(t_env *env_lst, char **path_name)
 
 int	ft_cd(t_env **env_lst, char **path_name)
 {
-	int ret_val;
+	int	ret_val;
 
 	ret_val = no_error;
 	if (!env_lst)

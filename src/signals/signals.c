@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 02:24:48 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 18:20:48 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 20:10:54 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 // Handling ctrl-d will be in main when null is passed to the readline
 // Break from the main process loop
 
-void	signalhandler_ctrlc()
+void	signalhandler_ctrlc(int sig)
 {
+	if (sig == FALSE)
+		return ;
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-void	signalhandler_ctrlslash()
+void	signalhandler_ctrlslash(int sig)
 {
+	if (sig == FALSE)
+		return ;
 	rl_replace_line("", 0);
 	printf("Quit\n");
 	rl_on_new_line();
@@ -40,13 +44,13 @@ void	set_signals(void)
 	if (tcgetattr(fd, &t) == -1)
 	{
 		perror("tcgetattr failed");
-		return;
+		return ;
 	}
 	t.c_lflag &= ~ECHOCTL;
 	if (tcsetattr(fd, TCSANOW, &t) == -1)
 	{
 		perror("tcsetattr failed");
-		return;
+		return ;
 	}
 	if (signal(SIGINT, signalhandler_ctrlc) == SIG_ERR)
 		perror("Failed to set signal handler for SIGINT");
@@ -56,20 +60,20 @@ void	set_signals(void)
 
 void	clear_signals(void)
 {
-	struct	termios term;
-	int		fd;
+	struct termios	term;
+	int				fd;
 
 	fd = 0;
 	if (tcgetattr(fd, &term) == -1)
 	{
 		perror("tcgetattr failed");
-		return;
+		return ;
 	}
 	term.c_lflag |= ECHOCTL;
 	if (tcsetattr(fd, TCSANOW, &term) == -1)
 	{
 		perror("tcsetattr failed");
-		return;
+		return ;
 	}
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		perror("Failed to reset signal handler for SIGINT");

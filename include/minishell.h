@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 18:08:36 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 00:58:14 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include	<stdlib.h>
 # include	<signal.h>
 # include	"libft.h"
-# include	"../src/lexer/lexer.h"
 # include	<fcntl.h>
 # include	<termios.h>
 # include	<sys/types.h>
@@ -33,7 +32,6 @@
 
 int	g_signal;
 
-	
 //?-----------Defines------------?//
 
 # ifndef FALSE
@@ -49,6 +47,7 @@ int	g_signal;
 # define MAX_VAR_NAME 1000
 # define MAX_FILENAME 256
 # define MAX_PATH 4096
+# define IDLE_PROMT "<minishell>"
 // # define MAX_EXE 100 // not sure if this is a good idea 
 //?-----------ENUMS------------?//
 
@@ -66,6 +65,7 @@ typedef enum e_error{
 	error_pipe = 6,
 	error_open = 7,
 	error_permission = 8,
+	error_close ,
 }t_error;
 
 typedef enum e_signal{
@@ -77,7 +77,8 @@ typedef enum e_signal{
 /**
  * @brief 
  * 
- * @note the order and number are should not be changed  because i increament it in a funktion to 'upgrade' a type
+ * @note the order and number are should not be changed 
+ *  because i increament it in a funktion to 'upgrade' a type
  */
 typedef enum e_ttype{
 	type_null = 0,
@@ -89,7 +90,6 @@ typedef enum e_ttype{
 	type_heredoc = 13,
 	type_pipe = 20,
 }t_ttype;
-
 
 /**
  * @brief stores each position of a token inside of the input string
@@ -104,6 +104,7 @@ typedef struct s_token{
 	char			*str;
 	int				type;
 }t_token;
+
 
 /**
  * @brief Head structure of the tokenchain
@@ -132,29 +133,72 @@ typedef struct s_exe_data{
 }t_exe_data;
 
 typedef struct s_redirection{
-	char	*infile;
-	int 	fd_infile;
+	int		fd_infile;
 	int		fd_outfile;
-	char	*outfile;//! needs to be the the fd of the already open file//shoud open the file when found and close if a new one is found
 	int		exit_code;
 }t_redirection;
+
+typedef struct s_expend
+{
+	int			t;
+	int			l;
+	int			arg_num;
+	int			argv_flag;
+	t_exe_data	*exe_ptr;
+	t_exe_data	**exe_data;
+	int			error;
+}t_expend;
 //?-----------PROTOTYPES------------?//
 
 int				is_white_space(int a);
 int				is_special_char(char a);
 
 void			myerror(char *str);
-int				lexer(char *str, t_tokenchain *tokenchain);
+int				lexer(t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
-int				expander(t_tokenchain *tokenchain,t_env *env_lst, t_exe_data **exe_data, t_redirection *redirection);
-void			get_token_str(t_token *token, t_env *env_lst, char *str, t_redirection *redirection);
+int				expander(t_tokenchain *tokenchain, t_env *env_lst, \
+t_exe_data **exe_data, t_redirection *redirection);
+void			get_token_str(t_token *token, t_env *env_lst, \
+char *str, t_redirection *redirection);
 int				check_type(t_token *token);
-char			*tokenstring(t_token *token, t_env *env_lst, t_redirection *redirection);// need a way to return error message
-int				open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst);
-int				open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst);
-int				open_infile(t_redirection *redirection, t_token *token, t_env *env_lst);
+char			*tokenstring(t_token *token, t_env *env_lst, \
+t_redirection *redirection);
+int				open_outfile(t_redirection *redirection, \
+t_token *token, t_env *env_lst);
+int				open_outfile_app(t_redirection *redirection, \
+t_token *token, t_env *env_lst);
+int				open_infile(t_redirection *redirection, \
+t_token *token, t_env *env_lst);
+int				reset_fd(int *fd);
+int				get_here_len(t_token *token, int *expend_flag);
+char			*get_here_str(t_token *token, char *str);
+int				heredoc_read(char *delimiter, int expend_flag, \
+t_redirection *redirection, t_env *env_lst);
+void			get_token_str(t_token *token, t_env *env_lst, \
+char *str, t_redirection *redirection);
+int				get_token_length(t_token *token, \
+t_env *env_lst, t_redirection *redirection);
+int				is_valid_var(char c, int i);
+char			*get_value(char *str, t_env *env_lst, \
+t_redirection *redirection);
+int				strlen_with_check(char *str);
+void			found_rediretion(t_tokenchain *tokenchain, \
+t_expend *exp, t_redirection *redirection, t_env *env_lst);
+int				token_to_str(t_expend *exp, t_tokenchain *tokenchain, \
+t_redirection *redirection, t_env *env_lst);
+void			expander_setup(t_expend *exp, t_redirection *redirection, \
+t_exe_data **exe_data);
+void			redirection_default(t_redirection *redirection);
+int				add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr);
+void			execution_loop(t_exe_data *exe_data, t_env *env_lst, \
+t_redirection *redirection, int *built_in_flag);
+int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
+int				pipe_end(t_exe_data *exe_data);
+
+
+
 
 /* 
 ====================================================
@@ -179,7 +223,7 @@ typedef struct s_setenv
  * @param content 
  * @return t_env* 
  */
-t_env	*env_lstnew(char *content);
+t_env			*env_lstnew(char *content);
 
 /**
  * @brief The env_add_back() function adds every new
@@ -188,7 +232,7 @@ t_env	*env_lstnew(char *content);
  * @param lst 
  * @param new 
  */
-void	env_add_back(t_env **env_lst, t_env *new_env);
+void			env_add_back(t_env **env_lst, t_env *new_env);
 
 /**
  * @brief  The ft_getenv_lst() fucntion obtains all names and 
@@ -197,7 +241,7 @@ void	env_add_back(t_env **env_lst, t_env *new_env);
  * @param envp
  * @return double pointer to t_env structure
  */
-t_env	**ft_getenv_lst(char **envp);
+t_env			**ft_getenv_lst(char **envp);
 
 /**
  * @brief The ft_printenv() function prints out the names and
@@ -205,7 +249,7 @@ t_env	**ft_getenv_lst(char **envp);
  * 
  * @param env_lst 
  */
-void	ft_printenv(t_env *env_lst);
+void			ft_printenv(t_env *env_lst);
 
 /**
  * @brief  The ft_putenv() function takes an argument of
@@ -213,7 +257,7 @@ void	ft_printenv(t_env *env_lst);
  * list
  * ft_setenv()
  */
-void	ft_putenv(t_env *env_lst, char *name, char *value);
+void			ft_putenv(t_env *env_lst, char *name, char *value);
 
 /**
  * @brief The find_env_match() function searches for a
@@ -223,14 +267,14 @@ void	ft_putenv(t_env *env_lst, char *name, char *value);
  * @return 1 is returned if a match is found,
  * 0 if there is no match
  */
-int		find_env_match(t_env *env_lst, char *name);
+int				find_env_match(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_setenv() function inserts or resets the environment
  * variable name in the current environment list
  * @return 1 if variable is added, otherwise 0
  */
-int		ft_setenv(t_env *env_lst, char *new_env);
+int				ft_setenv(t_env *env_lst, char *new_env);
 
 /**
  * @brief  The ft_unsetenv() function deletes all instances of the
@@ -239,7 +283,7 @@ int		ft_setenv(t_env *env_lst, char *new_env);
  * @param env_lst 
  * @param name 
  */
-void	ft_unsetenv(t_env **env_lst, char *name);
+void			ft_unsetenv(t_env **env_lst, char *name);
 
 /**
  * @brief The ft_getenv() function obtains the current
@@ -249,13 +293,14 @@ void	ft_unsetenv(t_env **env_lst, char *name);
  * @param name
  * @return pointer to environment value, otherwise NULL
  */
-char	*ft_getenv(t_env *env_lst, char *name);
+char			*ft_getenv(t_env *env_lst, char *name);
 
 /**
  * @brief The ft_gen_slice() function helps the ft_slice() function 
  * obtain an array of strings
  */
-char	**ft_gen_slice(const char *s, char c, char **ptr, int ptr_index);
+char			**ft_gen_slice(const char *s, \
+char c, char **ptr, int ptr_index);
 
 /**
  * @brief The clean_env frees all dynamically allocated memory used
@@ -263,7 +308,7 @@ char	**ft_gen_slice(const char *s, char c, char **ptr, int ptr_index);
  * 
  * @param env_lst 
  */
-void	clean_env(t_env **env_lst);
+void			clean_env(t_env **env_lst);
 
 /**
  * @brief The ft_slice() function splits a string at the point of the 
@@ -271,13 +316,13 @@ void	clean_env(t_env **env_lst);
  * @param s string to be sliced
  * @param c delimeter
  */
-char	**ft_slice(char const *s, char c);
+char			**ft_slice(char const *s, char c);
 /**
  * @brief The ft_free() function deallocates memory from a **char
  * @param ptr pointer to be deallocated
  * @return NULL
  */
-char	**ft_free(char **ptr);
+char			**ft_free(char **ptr);
 /**
  * @brief The env_id_isvalid() function checks if a variable
  * has the right name
@@ -285,7 +330,7 @@ char	**ft_free(char **ptr);
  * @param new_env_var 
  * @return  
  */
-int	env_id_isvalid(char *new_env_var);
+int				env_id_isvalid(char *new_env_var);
 
 /**
  * @brief The invalid_env_id() function is an env_id_isvalid() helper
@@ -295,15 +340,14 @@ int	env_id_isvalid(char *new_env_var);
  * @param new_env 
  * @return
  */
-int		invalid_env_id(char *new_env);
+int				invalid_env_id(char *new_env);
 
 typedef struct s_env_string
 {
 	char			*name;
 	char			*join_equal;
 	char			*join_value;
-}
-				t_env_string;
+}t_env_string;
 /**
  * @brief The env_as_string() function gives a pointer to strings
  * of list of environment variables
@@ -311,12 +355,11 @@ typedef struct s_env_string
  * @param env_lst 
  * @return char** 
  */
-char	**env_as_string(t_env **env_lst);
+char			**env_as_string(t_env **env_lst);
 
 // char		*ft_strjoin(char const *s1, char const *s2);
 // int		ft_strncmp(const char *s1, const char *s2, size_t n);
 // size_t	ft_strlen(const char *s);
-
 
 /* 
 ====================================================
@@ -342,7 +385,7 @@ typedef struct s_cd
  * @param 
  * @return returns an int defined by enum e_error
  */
-int		ft_pwd(void);
+int				ft_pwd(void);
 /**
  * @brief The ft_echo() function prints arguments passed
  * to it delimited by only a single space followed by a new line.
@@ -351,14 +394,14 @@ int		ft_pwd(void);
  * @param args 
  * @return returns an int defined by enum e_error
  */
-int		ft_echo(char **args);
+int				ft_echo(char **args);
 /**
  * @brief The ft_env() function prints a list of environment variables
  * 
  * @param env_lst 
  * @return returns an int defined by enum e_error
  */
-int		ft_env(t_env **env_lst);
+int				ft_env(t_env **env_lst);
 /**
  * @brief The ft_export() function adds valid variables to the list
  * of environment variables.
@@ -370,7 +413,37 @@ int		ft_env(t_env **env_lst);
  * @param new_env 
  * @return returns an int defined by enum e_error
  */
-int		ft_export(t_env **env_lst, char **new_env);
+int				ft_export(t_env **env_lst, char **new_env);
+
+/**
+ * @brief The export_error_mssg() function is an 
+ * ft_export() helper function that prints an error message
+ * when an invalid arg is used as an identifier
+ * 
+ * @param new_env 
+ */
+void			export_error_mssg(char *new_env);
+
+/**
+ * @brief The valid_last_char() function is
+ * an ft_export() helper function that checks if
+ * the last character of an identifier is valid
+ * 
+ * @param new_env 
+ * @return int 
+ */
+int				valid_last_char(char *new_env);
+
+/**
+ * @brief The valid_first_char() function is 
+ * an ft_export() helper function that checks if
+ * the first character of an identifier is valid
+ * 
+ * @param new_env 
+ * @return int 
+ */
+int				valid_first_char(char *new_env);
+
 /**
  * @brief The ft_unset() function deletes all specified variables from the
  * list of environment variables if it exists
@@ -379,7 +452,7 @@ int		ft_export(t_env **env_lst, char **new_env);
  * @param env_name 
  * @return returns an int defined by enum e_error
  */
-int		ft_unset(t_env **env_lst, char **env_name);
+int				ft_unset(t_env **env_lst, char **env_name);
 
 /**
  * @brief ft_cd() function changes the current directory
@@ -389,7 +462,7 @@ int		ft_unset(t_env **env_lst, char **env_name);
  * @param path_name 
  * @return returns an int defined by enum e_error
  */
-int		ft_cd(t_env **env_lst, char **path_name);
+int				ft_cd(t_env **env_lst, char **path_name);
 /**
  * @brief The cd_tilde_with_path() is an ft_cd() helper function to move 
  * into a directory in case the tilde (~) sign is used as a prefix.
@@ -399,7 +472,7 @@ int		ft_cd(t_env **env_lst, char **path_name);
  * @param path_name 
  * @return returns 1 if true, otherwise 0
  */
-int		cd_tilde_with_path(t_env *env_lst, char **path_name);
+int				cd_tilde_with_path(t_env *env_lst, char **path_name);
 /**
  * @brief The cd_error_mssg() function is an 
  * ft_cd() helper function that prints an error message
@@ -407,7 +480,7 @@ int		cd_tilde_with_path(t_env *env_lst, char **path_name);
  * 
  * @param path_name 
  */
-void	cd_error_mssg(char **path_name);
+void			cd_error_mssg(char **path_name);
 /**
  * @brief The set_old_pwd() function is an ft_cd() helper function
  * that sets the old pwd
@@ -415,7 +488,7 @@ void	cd_error_mssg(char **path_name);
  * @param env_lst 
  * @param pwd 
  */
-void	set_old_pwd(t_env *env_lst, char *pwd);
+void			set_old_pwd(t_env *env_lst, char *pwd);
 /**
  * @brief The old_pwdis_set() function is 
  * ft_cd() helper function that checks if old pwd is
@@ -424,7 +497,7 @@ void	set_old_pwd(t_env *env_lst, char *pwd);
  * @param env_lst 
  * @return returns 1 if true, otherwise 0
  */
-int		old_pwdis_set(t_env *env_lst);
+int				old_pwdis_set(t_env *env_lst);
 
 /* 
 ====================================================
@@ -432,14 +505,13 @@ int		old_pwdis_set(t_env *env_lst);
 ====================================================
  */
 
-typedef struct	s_path
+typedef struct s_path
 {
 	char	*paths;
 	char	*tmp_path;
 	char	*join_fwd_slash;
 	char	*new_path;
-}
-				t_path;
+}t_path;
 
 /**
  * @brief The get_cmd_path() function returns the path
@@ -449,8 +521,7 @@ typedef struct	s_path
  * @param cmd 
  * @return returns a pointer to char or NULL if no path was found
  */
-char	*get_cmd_path(t_env **env_lst, char *cmd);
-
+char			*get_cmd_path(t_env **env_lst, char *cmd);
 
 /* 
 ====================================================
@@ -464,7 +535,7 @@ char	*get_cmd_path(t_env **env_lst, char *cmd);
  * 
  * @return 1 if true, otherwise 0
  */
-int	cmd_is_builtin(char *cmd);
+int				cmd_is_builtin(char *cmd);
 
 /**
  * @brief The handle_builtin() function executes the minishell built-ins.
@@ -475,15 +546,14 @@ int	cmd_is_builtin(char *cmd);
  * @param env pointer to environment variable node
  * @return returns an int defined by enum e_error
  */
-int		handle_builtin(char *cmd, char **args, t_env **env);
-
-
+int				handle_builtin(char *cmd, char **args, t_env **env);
 
 /**
  * @brief //! TODO Write this notes
  * 
  */
-int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection);
+int				execution(t_exe_data *exe_data, \
+t_env *env_lst, t_redirection *redirection);
 
 /**
  * @brief move to the next object of the list. The previous one the be deleted
@@ -492,7 +562,8 @@ int	execution(t_exe_data *exe_data, t_env *env_lst, t_redirection *redirection);
  * 
  * @return the next one 
  */
-t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
+t_exe_data		*next_t_exe_data(t_exe_data *exe_data);
+
 /* 
 ====================================================
                   Heredoc (Expander)                
@@ -500,15 +571,14 @@ t_exe_data	*next_t_exe_data(t_exe_data *exe_data);
  */
 
 /**
- * @brief The heredoc() function reads a input via readline and write it in a open file
+ * @brief The heredoc() function reads a
+ *  input via readline and write it in a open file
  * 
  * @param delimiter 
  * @return fdf of the openfile  
  */
-int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst);
-
-
-
+int				heredoc(t_redirection *redirection, \
+t_token *token, t_env *env_lst);
 
 /* 
 ====================================================
@@ -522,7 +592,7 @@ int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst);
  * 
  * @param sig 
  */
-void	signalhandler_ctrlc(int sig);
+void			signalhandler_ctrlc(int sig);
 
 /**
  * @brief The signalhandler_ctrlslash() function handles an interrupt signal 
@@ -530,28 +600,26 @@ void	signalhandler_ctrlc(int sig);
  * 
  * @param sig 
  */
-void	signalhandler_ctrlslash(int sig);
+void			signalhandler_ctrlslash(int sig);
 
 /**
  * @brief The set_signals() function sets the signals SIGINT and SIGQUIT
  * 
  */
-void	set_signals(void);
+void			set_signals(void);
 
 /**
  * @brief The clear_signal() function clears the signal set up by the 
  * set_signal() function
  * 
  */
-void	clear_signals(void);
+void			clear_signals(void);
 
 /**
  * @brief The reset_signals() function clears and 
  * sets the SIGINT and SIGQUIT signals to SIG_IGN
  * 
  */
-void	reset_signals(void);
-
-
+void			reset_signals(void);
 
 #endif

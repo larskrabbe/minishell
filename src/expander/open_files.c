@@ -6,11 +6,22 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 18:10:35 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 20:31:39 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
+
+int	reset_fd(int *fd)
+{
+	if (*fd != -1)
+	{
+		if (close(*fd))
+			return (error_close);
+		*fd = -1;
+	}
+	return (0);
+}
 
 int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
 {
@@ -18,11 +29,7 @@ int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	struct stat	info;
 
 	str = NULL;
-	if (redirection->fd_outfile != -1)
-	{
-		close(redirection->fd_outfile);
-		redirection->fd_outfile = -1;
-	}
+	reset_fd(&redirection->fd_outfile);
 	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
@@ -45,11 +52,7 @@ int	open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst)
 	struct stat	info;
 
 	str = NULL;
-	if (redirection->fd_outfile != -1)
-	{
-		close(redirection->fd_outfile);
-		redirection->fd_outfile = -1;
-	}
+	reset_fd(&redirection->fd_outfile);
 	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
@@ -72,11 +75,7 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	struct stat	info;
 
 	str = NULL;
-	if (redirection->fd_infile != -1)
-	{
-		close(redirection->fd_infile);
-		redirection->fd_infile = -1;
-	}
+	reset_fd(&redirection->fd_infile);
 	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
@@ -90,5 +89,24 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	if (redirection->fd_infile < 0)
 		return (error_open);
 	free(str);
+	return (0);
+}
+
+int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst)
+{
+	int		expend_flag;
+	int		len;
+	char	*str;
+
+	str = NULL;
+	len = 0;
+	expend_flag = TRUE;
+	len = get_here_len(token, &expend_flag);
+	str = ft_calloc (len, sizeof(char));
+	if (str == NULL)
+		return (error_allocation);
+	get_here_str(token, str);
+	heredoc_read(str, expend_flag, redirection, env_lst);
+	free (str);
 	return (0);
 }

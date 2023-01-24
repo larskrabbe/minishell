@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:59:57 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/13 22:01:12 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 19:42:02 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	free_char_array(char **array)
 void	free_t_exe_data(t_exe_data *ptr)
 {
 	free_char_array(ptr->argv);
-	// ft_bzero(ptr, sizeof(t_exe_data));
 	free(ptr->path);
 }
 

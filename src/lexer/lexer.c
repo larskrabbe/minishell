@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:50:17 by lkrabbe           #+#    #+#             */
-/*   Updated: 2022/12/03 19:27:40 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/24 20:30:23 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,21 @@ int	syntax_checker(t_tokenchain *tokenchain)
 	return (no_error);
 }
 
-int	lexer(char *str, t_tokenchain *tokenchain)
+void	token_closer(t_token *token)
 {
-	int	t;
+	token->start = NULL;
+	token->end = NULL;
+	token->type = type_null;
+	token->str = NULL;
+}
 
+int	lexer(t_tokenchain *tokenchain)
+{
+	int		t;
+	char	*str;
+
+	str = tokenchain->str;
 	t = 1;
-	tokenchain->str = str;
 	while (*str != '\0' && t < MAX_ARG)
 	{
 		if (is_white_space(*str) == 0)
@@ -98,10 +107,7 @@ int	lexer(char *str, t_tokenchain *tokenchain)
 		else
 			str++;
 	}
-	tokenchain->token[t].start = NULL;
-	tokenchain->token[t].end = NULL;
-	tokenchain->token[t].type = type_null;
-	tokenchain->token[t].str = NULL;
+	token_closer(&tokenchain->token[t]);
 	if (t >= MAX_ARG)
 		return (error_max_arg);
 	return (syntax_checker(tokenchain));
