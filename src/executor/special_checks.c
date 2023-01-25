@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:55:46 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 00:56:06 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:53:01 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_redirection *redirection)
 	while (exe_data != NULL)
 	{
 		execution_loop(exe_data, env_lst, redirection, &built_in_flag);
+		exe_data = next_t_exe_data(exe_data);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 00:56:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:28:34 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,4 @@ t_redirection *redirection, int *built_in_flag)
 	if (exe_data->path != NULL || *built_in_flag == TRUE)
 		execution_forking(exe_data, env_lst, *built_in_flag, redirection);
 	pipe_end(exe_data);
-	exe_data = next_t_exe_data(exe_data);
 }
