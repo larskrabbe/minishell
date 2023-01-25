@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 19:47:40 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 21:59:28 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -602,6 +602,8 @@ t_token *token, t_env *env_lst);
  * @param sig 
  */
 void			signalhandler_ctrlc(int sig);
+
+void			signalhandler_heredoc(int sig);
 
 /**
  * @brief The signalhandler_ctrlslash() function handles an interrupt signal 

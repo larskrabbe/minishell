@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/01/25 19:56:04 by lkrabbe          ###   ########.fr       */
-=======
-/*   Updated: 2023/01/25 21:37:04 by bogunlan         ###   ########.fr       */
->>>>>>> 46082c99d29c6e93c71c89154ef71fa87a208bf1
+/*   Updated: 2023/01/25 22:02:36 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +52,7 @@ t_redirection *redirection, t_env *env_lst)
 		return (error_open);
 	while (g_signal != signal_c)
 	{
-		ft_putnbr_fd(g_signal, 1);
-		str = readline(">>>>>> ");
+		str = readline(HEREDOC_PROMT);
 		if (!str)
 		{
 			g_signal = signal_d;
