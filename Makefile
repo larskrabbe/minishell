@@ -48,7 +48,9 @@ EXEC =	src/executor/cmd_is_builtin.c\
 		src/executor/execution_memory.c\
 		src/executor/special_checks.c
 
-SIGNAL = src/signals/signals.c
+SIGNAL =	src/signals/signals.c \
+			src/signals/signal_handlers.c
+
 MAIN = src/main/main.c
 
 
