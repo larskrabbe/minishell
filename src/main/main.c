@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 20:25:40 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:51:28 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,5 @@ int	main(int argc, char *argv[], char *envp[])
 	read_line_loop(exe_data, tokenchain, &redirection, env);
 	clean_env(&env);
 	clear_history();
-	return (0);
+	return (redirection.exit_code);
 }

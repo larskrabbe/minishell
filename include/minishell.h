@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 00:58:14 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:02:03 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef enum e_error{
 	error_open = 7,
 	error_permission = 8,
 	error_close ,
+	error_exit = 255,
+	error_builtin = 256,
 }t_error;
 
 typedef enum e_signal{
@@ -104,7 +106,6 @@ typedef struct s_token{
 	char			*str;
 	int				type;
 }t_token;
-
 
 /**
  * @brief Head structure of the tokenchain
@@ -196,9 +197,6 @@ void			execution_loop(t_exe_data *exe_data, t_env *env_lst, \
 t_redirection *redirection, int *built_in_flag);
 int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
 int				pipe_end(t_exe_data *exe_data);
-
-
-
 
 /* 
 ====================================================
@@ -498,6 +496,14 @@ void			set_old_pwd(t_env *env_lst, char *pwd);
  * @return returns 1 if true, otherwise 0
  */
 int				old_pwdis_set(t_env *env_lst);
+
+/**
+ * @brief The ft_exit() function terminates a process
+ * by setting the g_signal to 0
+ * @param args 
+ * @return int 
+ */
+int				ft_exit(char **args);
 
 /* 
 ====================================================
