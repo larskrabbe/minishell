@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 02:24:48 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 20:10:54 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 18:00:53 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	signalhandler_ctrlc(int sig)
 {
 	if (sig == FALSE)
 		return ;
+	g_signal = signal_c;
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
@@ -29,6 +30,7 @@ void	signalhandler_ctrlslash(int sig)
 {
 	if (sig == FALSE)
 		return ;
+	g_signal = signal_escape;
 	rl_replace_line("", 0);
 	printf("Quit\n");
 	rl_on_new_line();

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 15:27:28 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 18:10:38 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ t_redirection *redirection, t_env *env)
 {
 	char	*str;
 
-	while (g_signal != 0)
+	while (g_signal != signal_d)
 	{
 		set_signals();
 		str = readline(IDLE_PROMT);
 		if (!str)
 		{
 			write(1, "exit\n", 5);
-			g_signal = 0;
+			g_signal = signal_d;
 		}
-		if (str != NULL )
+		if (str != NULL && (g_signal != signal_d))
 		{
 			tokenchain->str = str;
 			if (*str != '\0')
@@ -103,5 +103,5 @@ int	main(int argc, char *argv[], char *envp[])
 	read_line_loop(exe_data, tokenchain, &redirection, env);
 	clean_env(&env);
 	clear_history();
-	return (255);
+	return (redirection.exit_code);
 }

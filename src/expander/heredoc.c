@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 20:31:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 19:29:57 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,16 @@ t_redirection *redirection, t_env *env_lst)
 
 	str = NULL;
 	reset_fd(&redirection->fd_infile);
-	redirection->fd_infile = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0700);
+	redirection->fd_infile = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (redirection->fd_infile < 0)
 		return (error_open);
-	while (TRUE)
+	while (g_signal != signal_c)
 	{
+		ft_putnbr_fd(g_signal, 1);
 		str = readline("> ");
 		if (!str || !delimiter)
 			return (error_allocation);
-		if (at_eof(str, delimiter))
+		if (at_eof(str, delimiter) || g_signal == signal_c)
 		{
 			free(str);
 			break ;
@@ -64,6 +65,8 @@ t_redirection *redirection, t_env *env_lst)
 		write(redirection->fd_infile, "\n", 1);
 		free(str);
 	}
+	if (g_signal == signal_c || g_signal == signal_d)
+		g_signal = signal_default;	printf("fd = %i", redirection->fd_infile);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:06:50 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 23:08:55 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:43:59 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_value(char *str, t_env *env_lst, t_redirection *redirection)
 	}
 	var_name[i] = '\0';
 	if (var_name[0] == '\0')
-		return (ft_itoa((int)getpid()));
+		return (ft_strdup("$"));
 	if (var_name[0] == '?')
 		return (ft_itoa(((int)(redirection->exit_code) >> 8) & 0x000000ff));
 	return (ft_getenv(env_lst, var_name));

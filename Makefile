@@ -73,7 +73,8 @@ BUILTINS =	src/builtins/echo.c \
 			src/builtins/unset.c \
 			src/builtins/cd.c \
 			src/builtins/cd_utils.c \
-			src/builtins/export_utils.c
+			src/builtins/export_utils.c \
+			src/builtins/exit.c
 
 #lexer_main:$(LEXER) $(ENV) $(BUILTINS) | $(LIBFT)
 	#cc $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
