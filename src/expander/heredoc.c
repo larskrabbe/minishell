@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/25 19:29:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 21:37:04 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ int	heredoc_read(char *delimiter, int expend_flag, \
 t_redirection *redirection, t_env *env_lst)
 {
 	char	*str;
+	int		stdin_copy;
 
+	stdin_copy = dup(0);
 	str = NULL;
+	signal(SIGINT, signalhandler_heredoc);
 	reset_fd(&redirection->fd_infile);
 	redirection->fd_infile = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (redirection->fd_infile < 0)
@@ -50,10 +53,16 @@ t_redirection *redirection, t_env *env_lst)
 	while (g_signal != signal_c)
 	{
 		ft_putnbr_fd(g_signal, 1);
-		str = readline("> ");
+		str = readline(">>>>>> ");
+		if (!str)
+		{
+			close(redirection->fd_infile);
+			g_signal = signal_d;
+			break ;
+		}
 		if (!str || !delimiter)
 			return (error_allocation);
-		if (at_eof(str, delimiter) || g_signal == signal_c)
+		if (at_eof(str, delimiter) || g_signal == signal_c || !str)
 		{
 			free(str);
 			break ;
@@ -66,7 +75,11 @@ t_redirection *redirection, t_env *env_lst)
 		free(str);
 	}
 	if (g_signal == signal_c || g_signal == signal_d)
-		g_signal = signal_default;	printf("fd = %i", redirection->fd_infile);
+	{
+		dup2(stdin_copy, 0);
+		g_signal = signal_default;
+	}
+	close(stdin_copy);
 	return (0);
 }
 
