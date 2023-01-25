@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 19:27:53 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 19:47:40 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	g_signal;
 # define MAX_FILENAME 256
 # define MAX_PATH 4096
 # define IDLE_PROMT "<minishell>"
+# define HEREDOC_PROMT "> "
 // # define MAX_EXE 100 // not sure if this is a good idea 
 //?-----------ENUMS------------?//
 

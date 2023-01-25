@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/25 19:29:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/25 19:56:04 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_redirection *redirection, t_env *env_lst)
 	while (g_signal != signal_c)
 	{
 		ft_putnbr_fd(g_signal, 1);
-		str = readline("> ");
+		str = readline(HEREDOC_PROMT);
 		if (!str || !delimiter)
 			return (error_allocation);
 		if (at_eof(str, delimiter) || g_signal == signal_c)
@@ -66,7 +66,7 @@ t_redirection *redirection, t_env *env_lst)
 		free(str);
 	}
 	if (g_signal == signal_c || g_signal == signal_d)
-		g_signal = signal_default;	printf("fd = %i", redirection->fd_infile);
+		g_signal = signal_default;
 	return (0);
 }
 
