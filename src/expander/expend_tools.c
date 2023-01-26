@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:06:50 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 16:43:59 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:21:47 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief gets you the value lenght from the variable 
  * 
  */
-char	*get_value(char *str, t_env *env_lst, t_redirection *redirection)
+char	*get_value(char *str, t_env **env_lst, t_redirection *redirection)
 {
 	char	var_name[MAX_VAR_NAME];
 	int		i;
@@ -32,9 +32,8 @@ char	*get_value(char *str, t_env *env_lst, t_redirection *redirection)
 		return (ft_strdup("$"));
 	if (var_name[0] == '?')
 		return (ft_itoa(((int)(redirection->exit_code) >> 8) & 0x000000ff));
-	return (ft_getenv(env_lst, var_name));
+	return (ft_getenv(*env_lst, var_name));// !danger
 }
-
 /**
  * @brief strlen with check for null
  * 

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 17:58:09 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:22:47 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_type(t_token *token)
 	return (0);
 }
 
-char	*tokenstring(t_token *token, t_env *env_lst, \
+char	*tokenstring(t_token *token, t_env **env_lst, \
 t_redirection *redirection)
 {
 	int		len;
@@ -82,7 +82,7 @@ void	redirection_default(t_redirection *redirection)
 	redirection->fd_outfile = -1;
 }
 
-int	expander(t_tokenchain *tokenchain, t_env *env_lst, \
+int	expander(t_tokenchain *tokenchain, t_env **env_lst, \
 t_redirection *redirection)
 {
 	struct s_expend	exp;

@@ -6,16 +6,18 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:55:46 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 21:50:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:11:57 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 
-void	clean_exit(t_redirection *redirection, t_env *env_lst)
+void	clean_exit(t_redirection *redirection, t_env **env_lst)
 {
 	clear_history();
-	clean_env(&env_lst);
+	clean_env(env_lst);
 	free_all_t_exe_data(redirection->og_ptr);
 	tokenchain_free(redirection->tokenchain);
 	exit (0);
@@ -34,7 +36,7 @@ int	count_exe_data(t_exe_data *ptr)
 	return (i);
 }
 
-int	execution(t_exe_data *exe_data, t_env *env_lst, \
+int	execution(t_exe_data *exe_data, t_env **env_lst, \
 t_redirection *redirection)
 {
 	int	built_in_flag;
@@ -61,7 +63,7 @@ t_redirection *redirection)
 			close(exe_data->fd_write);
 		}
 		redirection->exit_code = handle_builtin(exe_data->argv[0], \
-		&exe_data->argv[1], &env_lst);
+		&exe_data->argv[1], env_lst);
 		dup2(fd[0], STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
@@ -79,13 +81,8 @@ t_redirection *redirection)
 	{
 		printf("count = %i\n", exe_count);
 		if (waitpid(0, &status, 0) == redirection->last_pid)
-			redirection->exit_code = status;
+			redirection->exit_code = (status);
 		exe_count--;
 	}
 	return (0);
 }
-
-
-// wait for as many children in random order
-// check for every one that exits the PID. If it is the rightmost one,
-// save exit code

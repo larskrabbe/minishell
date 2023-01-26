@@ -6,13 +6,13 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/25 22:02:36 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:14:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-int	heredoc_expend(char *str, t_env *env_lst, t_redirection *redirection)
+int	heredoc_expend(char *str, t_env **env_lst, t_redirection *redirection)
 {
 	char	*tmp_str;
 	t_token	tmp_token;
@@ -38,7 +38,7 @@ int	at_eof(char *str, char *delimiter)
 }
 
 int	heredoc_read(char *delimiter, int expend_flag, \
-t_redirection *redirection, t_env *env_lst)
+t_redirection *redirection, t_env **env_lst)
 {
 	char	*str;
 	int		stdin_copy;

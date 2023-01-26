@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 17:52:41 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:22:35 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ typedef struct s_redirection{
 	t_exe_data		*og_ptr;
 	t_tokenchain	*tokenchain;
 	int				last_pid;
+	
 }t_redirection;
 
 typedef struct s_expend
@@ -167,47 +168,45 @@ int				lexer(t_tokenchain *tokenchain);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
-int				expander(t_tokenchain *tokenchain, t_env *env_lst, \
+int				expander(t_tokenchain *tokenchain, t_env **env_lst, \
 t_redirection *redirection);
-void			get_token_str(t_token *token, t_env *env_lst, \
+void			get_token_str(t_token *token, t_env **env_lst, \
 char *str, t_redirection *redirection);
 int				check_type(t_token *token);
-char			*tokenstring(t_token *token, t_env *env_lst, \
+char			*tokenstring(t_token *token, t_env **env_lst, \
 t_redirection *redirection);
 int				open_outfile(t_redirection *redirection, \
-t_token *token, t_env *env_lst);
+t_token *token, t_env **env_lst);
 int				open_outfile_app(t_redirection *redirection, \
-t_token *token, t_env *env_lst);
+t_token *token, t_env **env_lst);
 int				open_infile(t_redirection *redirection, \
-t_token *token, t_env *env_lst);
+t_token *token, t_env **env_lst);
 int				reset_fd(int *fd);
 int				get_here_len(t_token *token, int *expend_flag);
 char			*get_here_str(t_token *token, char *str);
 int				heredoc_read(char *delimiter, int expend_flag, \
-t_redirection *redirection, t_env *env_lst);
-void			get_token_str(t_token *token, t_env *env_lst, \
-char *str, t_redirection *redirection);
+t_redirection *redirection, t_env **env_lst);
 int				get_token_length(t_token *token, \
-t_env *env_lst, t_redirection *redirection);
+t_env **env_lst, t_redirection *redirection);
 int				is_valid_var(char c, int i);
-char			*get_value(char *str, t_env *env_lst, \
+char			*get_value(char *str, t_env **env_lst, \
 t_redirection *redirection);
 int				strlen_with_check(char *str);
 void			found_rediretion(t_tokenchain *tokenchain, \
-t_expend *exp, t_redirection *redirection, t_env *env_lst);
+t_expend *exp, t_redirection *redirection, t_env **env_lst);
 int				token_to_str(t_expend *exp, t_tokenchain *tokenchain, \
-t_redirection *redirection, t_env *env_lst);
+t_redirection *redirection, t_env **env_lst);
 void			expander_setup(t_expend *exp, t_redirection *redirection, \
 t_exe_data **exe_data);
 void			redirection_default(t_redirection *redirection);
 int				add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr);
-void			execution_loop(t_exe_data *exe_data, t_env *env_lst, \
+void			execution_loop(t_exe_data *exe_data, t_env **env_lst, \
 t_redirection *redirection, int *built_in_flag);
 int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
 int				pipe_end(t_exe_data *exe_data);
 void			tokenchain_free(t_tokenchain *tokenchain);
 void			free_all_t_exe_data(t_exe_data *ptr);
-void			clean_exit(t_redirection *redirection, t_env *env_lst);
+void			clean_exit(t_redirection *redirection, t_env **env_lst);
 
 /* 
 ====================================================
@@ -570,7 +569,7 @@ int				handle_builtin(char *cmd, char **args, t_env **env);
  * 
  */
 int				execution(t_exe_data *exe_data, \
-t_env *env_lst, t_redirection *redirection);
+t_env **env_lst, t_redirection *redirection);
 
 /**
  * @brief move to the next object of the list. The previous one the be deleted
@@ -595,7 +594,7 @@ t_exe_data		*next_t_exe_data(t_exe_data *exe_data);
  * @return fdf of the openfile  
  */
 int				heredoc(t_redirection *redirection, \
-t_token *token, t_env *env_lst);
+t_token *token, t_env **env_lst);
 
 /* 
 ====================================================

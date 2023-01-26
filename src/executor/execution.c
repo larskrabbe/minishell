@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 21:53:52 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:12:48 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	changing_fd_in_out(t_exe_data *exe_data)
 {
-	dprintf(2, "Child : fd read -> %i fd write -> %i", exe_data->fd_read, exe_data->fd_write);
 	if (exe_data->fd_read != -1)
 	{
 		dup2(exe_data->fd_read, STDIN_FILENO);
@@ -28,7 +27,7 @@ void	changing_fd_in_out(t_exe_data *exe_data)
 }
 
 int	execution_forking(t_exe_data *exe_data, \
-t_env *env_lst, int built_in_flag, t_redirection *redirection)
+t_env **env_lst, int built_in_flag, t_redirection *redirection)
 {
 	pid_t	pid;
 
@@ -40,11 +39,11 @@ t_env *env_lst, int built_in_flag, t_redirection *redirection)
 		signal(SIGINT, signalhandler_ctrlc);
 		changing_fd_in_out(exe_data);
 		if (built_in_flag == TRUE)
-			handle_builtin(exe_data->argv[0], &exe_data->argv[1], &env_lst);
+			handle_builtin(exe_data->argv[0], &exe_data->argv[1], env_lst);
 		else
 		{
 			if (execve(exe_data->path, exe_data->argv, \
-			env_as_string(&env_lst)) == -1)
+			env_as_string(env_lst)) == -1)
 				printf("execve failed\n");
 		}
 		clean_exit(redirection, env_lst);
@@ -81,20 +80,18 @@ int	pipe_end(t_exe_data *exe_data)
 {
 	if (exe_data->fd_read != -1)
 	{
-		// dup2(STDIN_FILENO, exe_data->fd_read);
 		if (close(exe_data->fd_read))
 			return (1);
 	}
 	if (exe_data->fd_write != -1)
 	{
-		//dup2(STDOUT_FILENO, exe_data->fd_write);
 		if (close(exe_data->fd_write))
 			return (1);
 	}
 	return (0);
 }
 
-void	execution_loop(t_exe_data *exe_data, t_env *env_lst, \
+void	execution_loop(t_exe_data *exe_data, t_env **env_lst, \
 t_redirection *redirection, int *built_in_flag)
 {
 	if (pipe_start(exe_data, redirection) != 0)
@@ -102,7 +99,7 @@ t_redirection *redirection, int *built_in_flag)
 	*built_in_flag = cmd_is_builtin(exe_data->argv[0]);
 	if (*built_in_flag == FALSE)
 	{
-		exe_data->path = get_cmd_path(&env_lst, exe_data->argv[0]);
+		exe_data->path = get_cmd_path(env_lst, exe_data->argv[0]);
 		if (exe_data->path == NULL)
 			printf("<minishell>: %s: No such file or directory\n", \
 			exe_data->argv[0]);

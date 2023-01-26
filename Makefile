@@ -8,7 +8,7 @@ CC = cc
 LDFLAGS    = -L/Users/$(USER)/.brew/opt/readline/lib
 CPPFLAGS   = -I/Users/$(USER)/.brew/opt/readline/include
 
-FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
+FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -fsanitize=address
 
 CFLAGS = -Wextra -Werror -Wall 
 SRC = main.c

@@ -6,14 +6,14 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:11:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 15:58:23 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:19:29 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
 int	token_to_str(t_expend *exp, t_tokenchain *tokenchain, \
-t_redirection *redirection, t_env *env_lst)
+t_redirection *redirection, t_env **env_lst)
 {
 	exp->l = get_token_length(&tokenchain->token[exp->t], env_lst, redirection);
 	exp->exe_ptr->argv[exp->arg_num] = ft_calloc(exp->l + 1, sizeof(char));
@@ -40,7 +40,7 @@ t_exe_data **exe_data)
 }
 
 int	choose_redirection(t_token *token, t_token *next, \
-t_redirection *redirection, t_env *env_lst)
+t_redirection *redirection, t_env **env_lst)
 {
 	if (token->type == type_redirection)
 		return (open_outfile(redirection, next, env_lst));
@@ -54,7 +54,7 @@ t_redirection *redirection, t_env *env_lst)
 }
 
 void	found_rediretion(t_tokenchain *tokenchain, \
-t_expend *exp, t_redirection *redirection, t_env *env_lst)
+t_expend *exp, t_redirection *redirection, t_env **env_lst)
 {
 	if (tokenchain->token[exp->t].type != type_null && \
 	tokenchain->token[exp->t].type >= type_redirection && \

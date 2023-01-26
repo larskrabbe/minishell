@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 18:19:46 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:14:08 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	reset_fd(int *fd)
 	return (0);
 }
 
-int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
+int	open_outfile(t_redirection *redirection, t_token *token, t_env **env_lst)
 {
 	char		*str;
 	struct stat	info;
@@ -46,7 +46,7 @@ int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	return (0);
 }
 
-int	open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst)
+int	open_outfile_app(t_redirection *redirection, t_token *token, t_env **env_lst)
 {
 	char		*str;
 	struct stat	info;
@@ -69,7 +69,7 @@ int	open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst)
 	return (0);
 }
 
-int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
+int	open_infile(t_redirection *redirection, t_token *token, t_env **env_lst)
 {
 	char		*str;
 	struct stat	info;
@@ -97,7 +97,7 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	return (0);
 }
 
-int	heredoc(t_redirection *redirection, t_token *token, t_env *env_lst)
+int	heredoc(t_redirection *redirection, t_token *token, t_env **env_lst)
 {
 	int		expend_flag;
 	int		len;

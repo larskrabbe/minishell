@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 21:46:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:05:34 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv, int *i)
 }
 
 void	string_translate(t_tokenchain *tokenchain, \
-t_redirection *redirection, t_env *env)
+t_redirection *redirection, t_env **env_lst)
 {
 	add_history(tokenchain->str);
 	if (lexer(tokenchain) == 0)
 	{
-		if (expander(tokenchain, env, redirection) == 0)
-			execution(redirection->og_ptr, env, redirection);
+		if (expander(tokenchain, env_lst, redirection) == 0)
+			execution(redirection->og_ptr, env_lst, redirection);
 		free_all_t_exe_data(redirection->og_ptr);
 		redirection->og_ptr = NULL;
 	}
 }
 
 void	read_line_loop(t_tokenchain *tokenchain, \
-t_redirection *redirection, t_env *env, char *tester)
+t_redirection *redirection, t_env **env_lst, char *tester)
 {
 	char		*str;
 	tester = NULL;
@@ -74,7 +74,7 @@ t_redirection *redirection, t_env *env, char *tester)
 			tokenchain->str = str;
 			if (*str != '\0')
 			{
-				string_translate(tokenchain, redirection, env);
+				string_translate(tokenchain, redirection, env_lst);
 			}
 		}
 		free(str);
@@ -86,7 +86,7 @@ t_redirection *redirection, t_env *env, char *tester)
 int	main(int argc, char *argv[], char *envp[])
 {
 	printf("pid %i\n",getpid());
-	t_env				*env;
+	t_env				**env;
 	t_tokenchain		*tokenchain;
 	t_exe_data			*exe_data;
 	t_redirection		redirection;
@@ -102,7 +102,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (tokenchain == NULL)
 		return (error_allocation);
 	redirection.tokenchain = tokenchain;
-	env = *ft_getenv_lst(envp);
+	env = ft_getenv_lst(envp);
 	g_signal = 1;
 	read_line_loop(tokenchain, &redirection, env, NULL);
 	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
@@ -110,7 +110,7 @@ int	main(int argc, char *argv[], char *envp[])
 	// 	read_line_loop(tokenchain, &redirection, env, argv[2]);
 	// 	//exit(redirection.exit_code);
 	// }
-	clean_env(&env);
+	clean_env(env);
 	clear_history();
 	tokenchain_free(tokenchain);
 	return (redirection.exit_code);
