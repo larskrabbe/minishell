@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 14:25:05 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:39:29 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_exe_data			*exe_data;
 	t_redirection		redirection;
 
-	envp = NULL;
+	// envp = NULL;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	exe_data = NULL;
