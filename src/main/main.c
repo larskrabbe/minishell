@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 13:16:50 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:40:01 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,26 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv, int *i)
 	return (argv);
 }
 
-void	string_translate(t_exe_data *exe_data, t_tokenchain *tokenchain, \
+void	string_translate(t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env *env)
 {
 	add_history(tokenchain->str);
 	if (lexer(tokenchain) == 0)
 	{
-		if (expander(tokenchain, env, &exe_data, redirection) == 0)
-			execution(exe_data, env, redirection);
-		free_str_in_token(tokenchain);
+		if (expander(tokenchain, env, redirection) == 0)
+			execution(redirection->og_ptr, env, redirection);
+		free_all_t_exe_data(redirection->og_ptr);
+		redirection->og_ptr = NULL;
 	}
 }
 
-void	read_line_loop(t_exe_data *exe_data, t_tokenchain *tokenchain, \
+void	read_line_loop(t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env *env)
 {
-	char	*str;
+	char		*str;
 
 	while (g_signal != signal_d)
 	{
-		exe_data = NULL;
 		set_signals();
 		str = readline(IDLE_PROMT);
 		if (!str)
@@ -73,13 +73,12 @@ t_redirection *redirection, t_env *env)
 			tokenchain->str = str;
 			if (*str != '\0')
 			{
-				string_translate(exe_data, tokenchain, redirection, env);
+				string_translate(tokenchain, redirection, env);
 			}
 		}
 		free(str);
 		str = NULL;
 		reset_signals();
-		free_all_t_exe_data(exe_data);
 	}
 }
 
@@ -96,12 +95,14 @@ int	main(int argc, char *argv[], char *envp[])
 	redirection.fd_infile = -1;
 	redirection.fd_outfile = -1;
 	redirection.exit_code = 0;
+	redirection.og_ptr = NULL;
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
+	redirection.tokenchain = tokenchain;
 	env = *ft_getenv_lst(envp);
 	g_signal = 1;
-	read_line_loop(exe_data, tokenchain, &redirection, env);
+	read_line_loop(tokenchain, &redirection, env);
 	clean_env(&env);
 	clear_history();
 	tokenchain_free(tokenchain);

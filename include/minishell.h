@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 13:02:21 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:38:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,11 @@ typedef struct s_exe_data{
 }t_exe_data;
 
 typedef struct s_redirection{
-	int		fd_infile;
-	int		fd_outfile;
-	int		exit_code;
+	int				fd_infile;
+	int				fd_outfile;
+	int				exit_code;
+	t_exe_data		*og_ptr;
+	t_tokenchain	*tokenchain;
 }t_redirection;
 
 typedef struct s_expend
@@ -164,7 +166,7 @@ t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);
 int				expander(t_tokenchain *tokenchain, t_env *env_lst, \
-t_exe_data **exe_data, t_redirection *redirection);
+t_redirection *redirection);
 void			get_token_str(t_token *token, t_env *env_lst, \
 char *str, t_redirection *redirection);
 int				check_type(t_token *token);
@@ -203,6 +205,7 @@ int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
 int				pipe_end(t_exe_data *exe_data);
 void			tokenchain_free(t_tokenchain *tokenchain);
 void			free_all_t_exe_data(t_exe_data *ptr);
+void			clean_exit(t_redirection *redirection, t_env *env_lst);
 
 /* 
 ====================================================

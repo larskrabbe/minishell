@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 11:16:39 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:23:18 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_env *env_lst, int built_in_flag, t_redirection *redirection)
 			env_as_string(&env_lst)) == -1)
 				printf("execve failed\n");
 		}
+		clean_exit(redirection, env_lst);
 		exit (0);
 	}
 	else

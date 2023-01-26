@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 12:13:46 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:37:18 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ void	redirection_default(t_redirection *redirection)
 }
 
 int	expander(t_tokenchain *tokenchain, t_env *env_lst, \
-t_exe_data **exe_data, t_redirection *redirection)
+t_redirection *redirection)
 {
 	struct s_expend	exp;
 
-	expander_setup(&exp, redirection, exe_data);
+	expander_setup(&exp, redirection, &redirection->og_ptr);
 	while (tokenchain->token[exp.t].start != NULL && !exp.error)
 	{
 		while (tokenchain->token[exp.t].type == type_str && \

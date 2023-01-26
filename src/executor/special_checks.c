@@ -6,11 +6,20 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:55:46 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 20:21:22 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:03:12 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
+
+void	clean_exit(t_redirection *redirection, t_env *env_lst)
+{
+	clear_history();
+	clean_env(&env_lst);
+	free_all_t_exe_data(redirection->og_ptr);
+	tokenchain_free(redirection->tokenchain);
+	exit (0);
+}
 
 int	execution(t_exe_data *exe_data, t_env *env_lst, \
 t_redirection *redirection)
@@ -31,7 +40,7 @@ t_redirection *redirection)
 	while (exe_data != NULL && exe_data->argv[0] != NULL)
 	{
 		execution_loop(exe_data, env_lst, redirection, &built_in_flag);
-		exe_data = next_t_exe_data(exe_data);
+		exe_data = exe_data->next;
 	}
 	return (0);
 }

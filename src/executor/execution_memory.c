@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:59:57 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 13:01:30 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:41:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_char_array(char **array)
 		free(array[i]);
 		i++;
 	}
-	free(array);
 }
 
 void	free_t_exe_data(t_exe_data *ptr)

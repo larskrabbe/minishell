@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tmp.c                                              :+:      :+:    :+:   */
+/*   expender_bside.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:11:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 23:15:56 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 15:58:23 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ t_redirection *redirection, t_env *env_lst)
 void	expander_setup(t_expend *exp, t_redirection *redirection, \
 t_exe_data **exe_data)
 {
-	exp->error = 0;
 	exp->exe_ptr = NULL;
+	add_lst_t_exe_data(exe_data, &exp->exe_ptr);
+	exp->error = 0;
 	exp->t = 1;
 	exp->arg_num = 0;
 	exp->argv_flag = 0;
 	exp->exe_data = exe_data;
 	redirection_default(redirection);
-	add_lst_t_exe_data(exe_data, &exp->exe_ptr);
 }
 
 int	choose_redirection(t_token *token, t_token *next, \
