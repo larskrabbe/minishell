@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:29 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 23:52:46 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:35:32 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	unset_first_env(t_env **env_lst, char *name)
 		env_prev = *env_lst;
 		*env_lst = (*env_lst)->next;
 		free_env(env_prev);
+		env_prev = NULL;
 		return (TRUE);
 	}
 	return (FALSE);
@@ -61,10 +62,18 @@ void	ft_unsetenv(t_env **env_lst, char *name)
 	t_env	*env_curr;
 	t_env	*env_prev;
 
+	printf("Before unsetting\n");
+	printf("%p\n", *env_lst);
 	if (!(*env_lst) || !name)
 		return ;
 	if (unset_first_env(env_lst, name))
+	{
+		printf("After unsetting\n");
+		printf("%p\n", *env_lst);
+		*env_lst = NULL;
 		return ;
+	}
+	printf("afte loop\n");
 	env_curr = *env_lst;
 	env_prev = env_curr;
 	*env_lst = env_prev;

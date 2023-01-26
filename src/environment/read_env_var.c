@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_env_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/26 11:52:27 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:28:24 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	ft_printenv(t_env *env_lst)
 {
 	t_env	*env_curr;
 
+
+	if (env_lst == NULL)
+		return ;
 	env_curr = env_lst;
 	if (!env_lst)
 	{
@@ -62,13 +65,16 @@ t_env	**ft_getenv_lst(char **envp)
 	t_env			*env_new;
 	static t_env	*env_lst;
 	int				oldpwd;
+	char			cwd[MAX_ARG];
 
-	env_lst = NULL;
-	if (envp == NULL)
-		exit (1);
-	if (*envp == NULL)
+	if (envp == NULL || *envp == NULL)
 	{
+		getcwd(cwd, sizeof(cwd));
+		char *pwd = ft_strjoin("PWD=", cwd);
+		env_new = env_lstnew(pwd);
+		env_add_back(&env_lst, env_new);
 		ft_setenv(env_lst, "OLDPWD");
+		free (pwd);
 		return (&env_lst);
 	}
 	while (*envp)

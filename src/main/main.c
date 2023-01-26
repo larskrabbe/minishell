@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 12:09:14 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:25:05 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ t_redirection *redirection, t_env *env)
 int	main(int argc, char *argv[], char *envp[])
 {
 	//printf("pid = %i\nsizeof envp = %lu\n", getpid(), sizeof(envp));
-	t_env				*env;
+	t_env				**env;
 	t_tokenchain		*tokenchain;
 	t_exe_data			*exe_data;
 	t_redirection		redirection;
 
-	// envp = NULL;
+	envp = NULL;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	exe_data = NULL;
@@ -100,10 +100,15 @@ int	main(int argc, char *argv[], char *envp[])
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
-	env = *ft_getenv_lst(envp);
-	g_signal = 1;
-	read_line_loop(exe_data, tokenchain, &redirection, env);
-	clean_env(&env);
-	clear_history();
+	env = ft_getenv_lst(envp);
+	printf("%p\n", env);
+	if (env != NULL)
+	{	
+		read_line_loop(exe_data, tokenchain, &redirection, *env);
+		clean_env(env);
+		clear_history();
+	}
+	else 
+		redirection.exit_code = error_allocation;
 	return (redirection.exit_code);
 }

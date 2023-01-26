@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/21 20:51:13 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:32:14 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env	*env_lstnew(char *content)
 	t_env	*new;
 	char	**split;
 
-	new = (t_env *)malloc(sizeof(t_env));
+	new = (t_env *)ft_calloc(sizeof(t_env),1);
 	if (!new)
 		return (NULL);
 	split = ft_slice(content, '=');

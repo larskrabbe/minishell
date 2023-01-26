@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 23:42:44 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:27:13 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	ft_export_print(t_env *env_lst)
 {
 	t_env	*env_curr;
 
+	if (env_lst == NULL)
+		return ;
 	env_curr = env_lst;
 	if (!env_lst)
 	{
@@ -92,8 +94,11 @@ int	ft_export(t_env **env_lst, char **new_env)
 	error = FALSE;
 	if (!env_lst)
 		return (error_allocation);
+	printf("|--%p--|\n", *env_lst);
 	if (!new_env || !*new_env)
+	{
 		ft_export_print(*env_lst);
+	}
 	else
 	{
 		while (*new_env)
