@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 18:10:38 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 12:09:14 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,16 @@ t_redirection *redirection, t_env *env)
 		reset_signals();
 	}
 }
-
+ #include <stdlib.h>
 int	main(int argc, char *argv[], char *envp[])
 {
+	//printf("pid = %i\nsizeof envp = %lu\n", getpid(), sizeof(envp));
 	t_env				*env;
 	t_tokenchain		*tokenchain;
 	t_exe_data			*exe_data;
 	t_redirection		redirection;
 
+	// envp = NULL;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	exe_data = NULL;

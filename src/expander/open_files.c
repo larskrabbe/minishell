@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/25 19:56:08 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 11:13:33 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	open_outfile(t_redirection *redirection, t_token *token, t_env *env_lst)
 		printf("<minishell>: %s: Permission denied\n", str);
 		return (error_permission);
 	}
-	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0744);
 	if (redirection->fd_outfile < 0)
 		return (error_open);
 	free(str);
@@ -62,7 +62,7 @@ int	open_outfile_app(t_redirection *redirection, t_token *token, t_env *env_lst)
 		printf("<minishell>: %s: Permission denied\n", str);
 		return (error_permission);
 	}
-	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_APPEND, 0744);
 	if (redirection->fd_outfile < 0)
 		return (error_open);
 	free(str);
@@ -80,12 +80,17 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 	if (str == NULL)
 		return (error_allocation);
 	stat(str, &info);
+	if (access(str, F_OK) != 0)
+	{
+		printf("%s: %s: No such file or directory", IDLE_PROMT, str);
+		return (error_nofile);
+	}
 	if (!(info.st_mode & S_IRUSR))
 	{
 		printf("<minishell>: %s: Permission denied\n", str);
 		return (error_permission);
 	}
-	redirection->fd_infile = open(str, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	redirection->fd_infile = open(str, O_RDONLY, 0744);
 	if (redirection->fd_infile < 0)
 		return (error_open);
 	free(str);

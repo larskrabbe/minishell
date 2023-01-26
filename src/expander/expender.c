@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 23:21:02 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 12:13:46 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int	check_type(t_token *token)
 		else
 			printf("missing type for %c\n", *token->start);
 		if (*(token->start + 1) == *token->start)
+		{
 			token->type++;
-		if (*(token->start + 2) != *token->end && \
-		(*(token->start + 1) == *token->start))
-			return (error_syntax);
+			if (*(token->start + 2) != *token->end && \
+			(*(token->start + 1) == *token->start))
+				return (error_syntax);
+		}
 	}
 	else
 			token->type = type_str;

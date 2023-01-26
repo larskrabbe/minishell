@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 23:53:02 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 11:52:27 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,13 @@ t_env	**ft_getenv_lst(char **envp)
 	int				oldpwd;
 
 	env_lst = NULL;
-	if (!(*envp))
-		return (NULL);
+	if (envp == NULL)
+		exit (1);
+	if (*envp == NULL)
+	{
+		ft_setenv(env_lst, "OLDPWD");
+		return (&env_lst);
+	}
 	while (*envp)
 	{
 		env_new = env_lstnew(*envp);
