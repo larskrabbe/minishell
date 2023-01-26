@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/26 15:46:45 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 21:15:55 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*get_cmd_path(t_env **env_lst, char *cmd)
 {
 	char	**paths;
 	char	*path_to_cmd;
-
+// if cmd contains /, then return a strdup of cmd.
 	if (access(cmd, X_OK) == 0)
 	{
 		if (!cmd_has_current_path(cmd))

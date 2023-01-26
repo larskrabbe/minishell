@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 17:46:39 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 21:46:57 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@ t_redirection *redirection, t_env *env)
 }
 
 void	read_line_loop(t_tokenchain *tokenchain, \
-t_redirection *redirection, t_env *env)
+t_redirection *redirection, t_env *env, char *tester)
 {
 	char		*str;
-
+	tester = NULL;
 	while (g_signal != signal_d)
 	{
 		set_signals();
 		str = readline(IDLE_PROMT);
+		// str = tester;
 		if (!str)
 		{
 			write(1, "exit\n", 5);
@@ -84,6 +85,7 @@ t_redirection *redirection, t_env *env)
 
 int	main(int argc, char *argv[], char *envp[])
 {
+	printf("pid %i\n",getpid());
 	t_env				*env;
 	t_tokenchain		*tokenchain;
 	t_exe_data			*exe_data;
@@ -102,7 +104,12 @@ int	main(int argc, char *argv[], char *envp[])
 	redirection.tokenchain = tokenchain;
 	env = *ft_getenv_lst(envp);
 	g_signal = 1;
-	read_line_loop(tokenchain, &redirection, env);
+	read_line_loop(tokenchain, &redirection, env, NULL);
+	// if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	// {
+	// 	read_line_loop(tokenchain, &redirection, env, argv[2]);
+	// 	//exit(redirection.exit_code);
+	// }
 	clean_env(&env);
 	clear_history();
 	tokenchain_free(tokenchain);

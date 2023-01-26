@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_env_var.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/26 14:28:24 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:56:15 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	find_env_match(t_env *env_lst, char *name)
 	t_env	*env_curr;
 
 	env_curr = env_lst;
+	if (env_lst == NULL)
+		return (FALSE);
 	if (!ft_strncmp(env_curr->name, name, ft_strlen(env_curr->name)))
 	{
 		if (!ft_strncmp(env_curr->name, name, ft_strlen(name)))

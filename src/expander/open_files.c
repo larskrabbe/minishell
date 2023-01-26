@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 11:13:33 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:19:46 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	open_infile(t_redirection *redirection, t_token *token, t_env *env_lst)
 		printf("<minishell>: %s: Permission denied\n", str);
 		return (error_permission);
 	}
-	redirection->fd_infile = open(str, O_RDONLY, 0744);
+	redirection->fd_infile = open(str, O_RDONLY);
 	if (redirection->fd_infile < 0)
 		return (error_open);
 	free(str);

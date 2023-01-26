@@ -52,12 +52,12 @@ SIGNAL =	src/signals/signals.c \
 
 MAIN = src/main/main.c
 
-
+# -L .tester/LeakSanitizer/ -llsan -lc++ 
 
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) -L .tester/LeakSanitizer/ -llsan -lc++ $(SIGNAL) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) $(MAIN) -o $(NAME) $(FLAGS)
+	$(CC) $(SIGNAL) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) $(MAIN) -o $(NAME) $(FLAGS)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@

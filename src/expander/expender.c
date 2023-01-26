@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 17:37:18 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:58:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 		return (error_allocation);
 	(*exe_ptr)->fd_read = -1;
 	(*exe_ptr)->fd_write = -1;
+	(*exe_ptr)->pid = -1;
 	return (0);
 }
 

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/01/26 17:38:07 by lkrabbe          ###   ########.fr       */
-=======
-/*   Updated: 2023/01/26 14:19:04 by bogunlan         ###   ########.fr       */
->>>>>>> 8d62ac5f30fbedeb5e2549d0912e5d48bd7622c1
+/*   Updated: 2023/01/26 17:52:41 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +135,7 @@ typedef struct s_exe_data{
 	int					fd_read;
 	int					fd_write;
 	struct s_exe_data	*next;
+	int					pid;
 }t_exe_data;
 
 typedef struct s_redirection{
@@ -147,6 +144,7 @@ typedef struct s_redirection{
 	int				exit_code;
 	t_exe_data		*og_ptr;
 	t_tokenchain	*tokenchain;
+	int				last_pid;
 }t_redirection;
 
 typedef struct s_expend

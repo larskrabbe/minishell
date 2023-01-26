@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 17:23:18 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 21:53:52 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	changing_fd_in_out(t_exe_data *exe_data)
 {
+	dprintf(2, "Child : fd read -> %i fd write -> %i", exe_data->fd_read, exe_data->fd_write);
 	if (exe_data->fd_read != -1)
 	{
 		dup2(exe_data->fd_read, STDIN_FILENO);
@@ -30,7 +31,6 @@ int	execution_forking(t_exe_data *exe_data, \
 t_env *env_lst, int built_in_flag, t_redirection *redirection)
 {
 	pid_t	pid;
-	int		status;
 
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
@@ -48,11 +48,9 @@ t_env *env_lst, int built_in_flag, t_redirection *redirection)
 				printf("execve failed\n");
 		}
 		clean_exit(redirection, env_lst);
-		exit (0);
 	}
-	else
-		waitpid(pid, &status, 0);
-	redirection->exit_code = status;
+	redirection->last_pid = pid;
+	exe_data->pid = pid;
 	return (0);
 }
 
@@ -83,13 +81,13 @@ int	pipe_end(t_exe_data *exe_data)
 {
 	if (exe_data->fd_read != -1)
 	{
-		dup2(STDIN_FILENO, exe_data->fd_read);
+		// dup2(STDIN_FILENO, exe_data->fd_read);
 		if (close(exe_data->fd_read))
 			return (1);
 	}
 	if (exe_data->fd_write != -1)
 	{
-		dup2(STDOUT_FILENO, exe_data->fd_write);
+		//dup2(STDOUT_FILENO, exe_data->fd_write);
 		if (close(exe_data->fd_write))
 			return (1);
 	}
