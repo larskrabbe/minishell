@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 12:09:14 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 13:16:50 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv, int *i)
 void	string_translate(t_exe_data *exe_data, t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env *env)
 {
-	exe_data = NULL;
 	add_history(tokenchain->str);
 	if (lexer(tokenchain) == 0)
 	{
@@ -61,6 +60,7 @@ t_redirection *redirection, t_env *env)
 
 	while (g_signal != signal_d)
 	{
+		exe_data = NULL;
 		set_signals();
 		str = readline(IDLE_PROMT);
 		if (!str)
@@ -79,18 +79,17 @@ t_redirection *redirection, t_env *env)
 		free(str);
 		str = NULL;
 		reset_signals();
+		free_all_t_exe_data(exe_data);
 	}
 }
- #include <stdlib.h>
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	//printf("pid = %i\nsizeof envp = %lu\n", getpid(), sizeof(envp));
 	t_env				*env;
 	t_tokenchain		*tokenchain;
 	t_exe_data			*exe_data;
 	t_redirection		redirection;
 
-	// envp = NULL;
 	if (argc <= 1 && argv == NULL)
 		return (0);
 	exe_data = NULL;
@@ -105,5 +104,6 @@ int	main(int argc, char *argv[], char *envp[])
 	read_line_loop(exe_data, tokenchain, &redirection, env);
 	clean_env(&env);
 	clear_history();
+	tokenchain_free(tokenchain);
 	return (redirection.exit_code);
 }

@@ -10,8 +10,7 @@ CPPFLAGS   = -I/Users/$(USER)/.brew/opt/readline/include
 
 FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
-CFLAGS = -Wextra -Werror -Wall -g -fsanitize=address
-
+CFLAGS = -Wextra -Werror -Wall 
 SRC = main.c
 
 # OBJ = $(addprefix obj/,$(notdir $(SRC:.c=.o)))
@@ -58,7 +57,7 @@ MAIN = src/main/main.c
 all:$(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(SIGNAL) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) $(MAIN) -o $(NAME) $(FLAGS)
+	$(CC) -L LeakSanitizer/ -llsan -lc++ $(SIGNAL) $(LEXER) $(ENV) $(LIBFT) $(EXP) $(PATH) $(EXEC) $(BUILTINS) $(MAIN) -o $(NAME) $(FLAGS)
 
 $(DIR_OBJ)/%.o : %.c | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@

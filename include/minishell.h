@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 11:13:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/26 13:02:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,8 @@ void			execution_loop(t_exe_data *exe_data, t_env *env_lst, \
 t_redirection *redirection, int *built_in_flag);
 int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
 int				pipe_end(t_exe_data *exe_data);
+void			tokenchain_free(t_tokenchain *tokenchain);
+void			free_all_t_exe_data(t_exe_data *ptr);
 
 /* 
 ====================================================
