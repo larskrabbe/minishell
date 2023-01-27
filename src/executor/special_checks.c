@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:55:46 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:11:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 16:45:53 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ t_redirection *redirection)
 	int	built_in_flag;
 	int	exe_count;
 	int	status;
+	int	fd[2];
 
 	built_in_flag = FALSE;
 	g_signal = 1;
-	int	fd[2];
 	if (cmd_is_builtin(exe_data->argv[0]) && exe_data->next == NULL)
 	{
 		if (pipe_start(exe_data, redirection) != 0)
@@ -79,7 +79,6 @@ t_redirection *redirection)
 	exe_count = count_exe_data(exe_data);
 	while (exe_data != NULL && exe_count > 0)
 	{
-		printf("count = %i\n", exe_count);
 		if (waitpid(0, &status, 0) == redirection->last_pid)
 			redirection->exit_code = (status);
 		exe_count--;

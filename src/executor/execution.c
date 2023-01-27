@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:12:48 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 17:02:11 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	changing_fd_in_out(t_exe_data *exe_data)
 {
+	printf("in %i out %i \n",exe_data->fd_read, exe_data->fd_write);
 	if (exe_data->fd_read != -1)
 	{
 		dup2(exe_data->fd_read, STDIN_FILENO);
@@ -29,7 +30,8 @@ void	changing_fd_in_out(t_exe_data *exe_data)
 int	execution_forking(t_exe_data *exe_data, \
 t_env **env_lst, int built_in_flag, t_redirection *redirection)
 {
-	pid_t	pid;
+	pid_t			pid;
+	struct stat		info;
 
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
@@ -42,9 +44,15 @@ t_env **env_lst, int built_in_flag, t_redirection *redirection)
 			handle_builtin(exe_data->argv[0], &exe_data->argv[1], env_lst);
 		else
 		{
-			if (execve(exe_data->path, exe_data->argv, \
-			env_as_string(env_lst)) == -1)
-				printf("execve failed\n");
+			stat(exe_data->path, &info);
+			if (!(info.st_mode & S_IRUSR))
+			{
+				printf("<minishell>: %s: Permission denied\n", exe_data->path);
+				return (error_permission);
+			}
+			else if (execve(exe_data->path, exe_data->argv, \
+				env_as_string(env_lst)) == -1)
+				printf("execve failed %s\n", exe_data->path);
 		}
 		clean_exit(redirection, env_lst);
 	}

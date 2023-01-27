@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:05:34 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 16:05:01 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_redirection *redirection, t_env **env_lst, char *tester)
 			}
 		}
 		free(str);
+		free_str_in_token(tokenchain);
 		str = NULL;
 		reset_signals();
 	}

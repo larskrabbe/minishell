@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 00:14:20 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:20:30 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ t_redirection *redirection, t_env **env_lst)
 	char	*str;
 	int		stdin_copy;
 
-	stdin_copy = dup(0);
+	stdin_copy = dup(STDIN_FILENO);
 	str = NULL;
 	signal(SIGINT, signalhandler_heredoc);
 	reset_fd(&redirection->fd_infile);
-	redirection->fd_infile = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	redirection->fd_infile = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 777);
 	if (redirection->fd_infile < 0)
 		return (error_open);
 	while (g_signal != signal_c)
@@ -74,9 +74,11 @@ t_redirection *redirection, t_env **env_lst)
 	}
 	if (g_signal == signal_c || g_signal == signal_d)
 	{
-		dup2(stdin_copy, 0);
+		dup(stdin_copy);
 		g_signal = signal_default;
 	}
+	close(redirection->fd_infile);
+	redirection->fd_infile = open(".heredoc", O_RDONLY, 777);
 	close(stdin_copy);
 	return (0);
 }

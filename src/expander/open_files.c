@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:14:08 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:09:36 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	heredoc(t_redirection *redirection, t_token *token, t_env **env_lst)
 		return (error_allocation);
 	get_here_str(token, str);
 	heredoc_read(str, expend_flag, redirection, env_lst);
+	printf("heredoc fd = %i\n",redirection->fd_infile);
 	free (str);
 	return (0);
 }

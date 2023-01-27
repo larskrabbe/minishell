@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:59:57 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/26 16:41:09 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 16:45:58 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,15 @@ t_exe_data	*next_t_exe_data(t_exe_data *exe_data)
 	t_exe_data	*tmp;
 
 	tmp = exe_data->next;
-	free_t_exe_data(exe_data);
+	//free_char_array(exe_data->argv);
+	free(exe_data->path);
 	free(exe_data);
 	return (tmp);
 }
 
 void	free_all_t_exe_data(t_exe_data *ptr)
 {
+	printf("pid %i\n",getpid());
 	while (ptr != NULL)
 		ptr = next_t_exe_data(ptr);
 }
