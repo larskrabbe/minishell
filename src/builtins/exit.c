@@ -6,11 +6,45 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:04:13 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/25 18:05:13 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 01:18:39 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+long long int	my_atoli(const char *str)
+{
+	unsigned long long int	num;
+	int						sign;
+	int						i;
+	unsigned long long int	last_num;
+
+	sign = 1;
+	num = 0;
+	last_num = 0;
+	while (is_white_space(str[i]))
+		str++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = sign * -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		num = num * 10;
+		num = num + (str[i] - '0');
+		i++;
+		if (num < last_num && last_num != 0)
+		{
+			printf("%s: exit: %s: numeric argument required", IDLE_PROMT, str);
+		}
+		else
+			last_num = num;
+		return (4294967295);
+	}
+	return (sign * num);
+}
 
 int	time_to_exit(char *exit_code)
 {
@@ -23,7 +57,7 @@ int	time_to_exit(char *exit_code)
 		return (0);
 	while (exit_code[i] != '\0')
 	{
-		if (!ft_isdigit(exit_code[i]))
+		if (!ft_isdigit(exit_code[i]) )
 		{
 			printf("%s: exit: %c: numeric argument required\n", \
 			IDLE_PROMT, *exit_code);
@@ -31,6 +65,8 @@ int	time_to_exit(char *exit_code)
 		}
 		i++;
 	}
+	long long int num = 9223372036854775806;
+	printf("nnum%lli\n",num);
 	return (ft_atoi(exit_code));
 }
 
