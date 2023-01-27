@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:35:10 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/13 21:11:34 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:25:15 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ int	ft_unset(t_env **env_lst, char **env_name)
 		env_name++;
 	}
 	if (error)
-		return (error_syntax);
+		return (error_builtin);
 	return (no_error);
 }
