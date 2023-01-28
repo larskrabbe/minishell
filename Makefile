@@ -62,7 +62,7 @@ LIBFT=$(LIB_DIR)libft.a
 LIB_DIR=libft/
 
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(FLAGS) $(LIBFT) $(OBJ) -o $(NAME)
+	$(CC) $(FLAGS) $(LIBFT) $(OBJ) -o $(NAME)
 	@echo "\033[0;34m░S░E░A░ ░S░H░E░L░L░\033[0m"
 	@echo "by"
 	@echo "\033[0;33m𝕝𝕜𝕣𝕒𝕓𝕓𝕖 & 𝕓𝕠𝕘𝕦𝕟𝕝𝕒𝕟\033[0m"
@@ -77,18 +77,13 @@ $(LIBFT):
 	make -C $(LIB_DIR)
 
 clean:
-	@rm src/builtins/*.o src/environment/*.o src/executor/*.o \
-	src/expander/*.o src/lexer/*.o src/main/*.o src/pathing/*.o src/signals/*.o
+	rm -f $(OBJ)
 
-fclean:
-	@rm -f test.out
-	@rm src/builtins/*.o src/environment/*.o src/executor/*.o \
-	src/expander/*.o src/lexer/*.o src/main/*.o src/pathing/*.o src/signals/*.o
+fclean: clean
 	@rm -f $(NAME)
 	@rm -f $(LIBFT)
-	@rm -rf $(DIR_OBJ)
 
-re: fclean all
+re: clean all
 
 #need to install brew before we can install and  use readline
 #use bre addprefix to see if already installed
