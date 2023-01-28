@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 00:43:41 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 11:33:02 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	ft_export_print(t_env *env_lst)
 
 int	ft_export(t_env **env_lst, char **new_env)
 {
-	int	error;
-	t_env *env_new;
+	int		error;
+	t_env	*env_new;
 
 	error = FALSE;
 	if (!env_lst)
@@ -110,8 +110,8 @@ int	ft_export(t_env **env_lst, char **new_env)
 			{
 				if (!env_lst || !*env_lst)
 				{
-						env_new = env_lstnew(*new_env);
-						env_add_back(env_lst, env_new);
+					env_new = env_lstnew(*new_env);
+					env_add_back(env_lst, env_new);
 				}
 				if (!ft_setenv(*env_lst, *new_env))
 					return (error_allocation);

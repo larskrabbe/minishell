@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 15:26:24 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 10:24:49 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,13 +139,13 @@ typedef struct s_exe_data{
 }t_exe_data;
 
 typedef struct s_redirection{
-	int				fd_infile;
-	int				fd_outfile;
 	int				exit_code;
 	t_exe_data		*og_ptr;
 	t_tokenchain	*tokenchain;
 	int				last_pid;
-	
+	int				pipe_read;
+	int				pipe_write;
+	int				heredoc_num;
 }t_redirection;
 
 typedef struct s_expend
@@ -175,38 +175,41 @@ char *str, t_redirection *redirection);
 int				check_type(t_token *token);
 char			*tokenstring(t_token *token, t_env **env_lst, \
 t_redirection *redirection);
-int				open_outfile(t_redirection *redirection, \
-t_token *token, t_env **env_lst);
-int				open_outfile_app(t_redirection *redirection, \
-t_token *token, t_env **env_lst);
-int				open_infile(t_redirection *redirection, \
-t_token *token, t_env **env_lst);
+int				open_outfile(t_exe_data *exe_data, t_token *token, \
+t_env **env_lst, t_redirection *redirection);
+int				open_outfile_app(t_exe_data *exe_data, t_token *token, \
+t_env **env_lst, t_redirection *redirection);
+int				open_infile(t_exe_data *exe_data, t_token *token, \
+t_env **env_lst, t_redirection *redirection);
 int				reset_fd(int *fd);
 int				get_here_len(t_token *token, int *expend_flag);
 char			*get_here_str(t_token *token, char *str);
 int				heredoc_read(char *delimiter, int expend_flag, \
-t_redirection *redirection, t_env **env_lst);
+t_exe_data *exe_data, t_env **env_lst, t_redirection *redirection);
 int				get_token_length(t_token *token, \
 t_env **env_lst, t_redirection *redirection);
 int				is_valid_var(char c, int i);
 char			*get_value(char *str, t_env **env_lst, \
 t_redirection *redirection);
 int				strlen_with_check(char *str);
-void			found_rediretion(t_tokenchain *tokenchain, \
-t_expend *exp, t_redirection *redirection, t_env **env_lst);
+void			found_rediretion(t_tokenchain *tokenchain, t_expend *exp, \
+t_redirection 	*redirection, t_env **env_lst, t_exe_data *exe_data);
 int				token_to_str(t_expend *exp, t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env **env_lst);
-void			expander_setup(t_expend *exp, t_redirection *redirection, \
+void			expander_setup(t_expend *exp, \
 t_exe_data **exe_data);
-void			redirection_default(t_redirection *redirection);
 int				add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr);
 void			execution_loop(t_exe_data *exe_data, t_env **env_lst, \
 t_redirection *redirection, int *built_in_flag);
 int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
-int				pipe_end(t_exe_data *exe_data);
+int				close_files_and_pipes(t_exe_data *exe_data, t_redirection *redirection);
 void			tokenchain_free(t_tokenchain *tokenchain);
 void			free_all_t_exe_data(t_exe_data *ptr);
 void			clean_exit(t_redirection *redirection, t_env **env_lst);
+int				at_eof(char *str, char *delimiter);
+
+void			changing_fd_in_out(t_exe_data *exe_data);
+t_env			*no_env_case(t_env *env_new);
 
 /* 
 ====================================================
@@ -593,8 +596,9 @@ t_exe_data		*next_t_exe_data(t_exe_data *exe_data);
  * @param delimiter 
  * @return fdf of the openfile  
  */
-int				heredoc(t_redirection *redirection, \
-t_token *token, t_env **env_lst);
+int				heredoc(t_exe_data *exe_data, t_token *token, \
+t_env **env_lst, t_redirection *redirection);
+
 
 /* 
 ====================================================

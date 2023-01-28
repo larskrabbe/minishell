@@ -1,4 +1,5 @@
 
+
 VPATH = src
 
 NAME = minishell
@@ -8,8 +9,11 @@ CC = cc
 LDFLAGS    = -L/Users/$(USER)/.brew/opt/readline/lib
 CPPFLAGS   = -I/Users/$(USER)/.brew/opt/readline/include
 
-FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -L .tester/LeakSanitizer/ -llsan -lc++ #-fsanitize=address
+# FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -L .tester/LeakSanitizer/ -llsan -lc++ 
+# FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -fsanitize=address
+FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) 
 
+# -L .tester/LeakSanitizer/ -llsan -lc++ 
 CFLAGS = -Wextra -Werror -Wall 
 SRC = main.c
 
@@ -45,14 +49,14 @@ PATH =	src/pathing/get_cmd_path.c
 EXEC =	src/executor/cmd_is_builtin.c\
 		src/executor/execution.c\
 		src/executor/execution_memory.c\
-		src/executor/special_checks.c
+		src/executor/special_checks.c\
+		src/executor/pipe_redirection.c
 
 SIGNAL =	src/signals/signals.c \
 			src/signals/signal_handlers.c
 
 MAIN = src/main/main.c
 
-# -L .tester/LeakSanitizer/ -llsan -lc++ 
 
 all:$(NAME)
 

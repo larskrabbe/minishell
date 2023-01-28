@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:10:28 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 00:20:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:26:21 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_printenv(t_env *env_lst)
 {
 	t_env	*env_curr;
-
 
 	if (env_lst == NULL)
 		return ;
@@ -65,18 +64,13 @@ int	oldpwd_present(t_env *env_new)
 t_env	**ft_getenv_lst(char **envp)
 {
 	t_env			*env_new;
-	static t_env	*env_lst;
+	static t_env	*env_lst = NULL;
 	int				oldpwd;
-	char			cwd[MAX_ARG];
 
+	env_new = NULL;
 	if (envp == NULL || *envp == NULL)
 	{
-		getcwd(cwd, sizeof(cwd));
-		char *pwd = ft_strjoin("PWD=", cwd);
-		env_new = env_lstnew(pwd);
-		env_add_back(&env_lst, env_new);
-		ft_setenv(env_lst, "OLDPWD");
-		free (pwd);
+		env_lst = no_env_case(env_new);
 		return (&env_lst);
 	}
 	while (*envp)

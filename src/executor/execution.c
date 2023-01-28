@@ -6,32 +6,32 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 17:02:11 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 09:31:59 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	changing_fd_in_out(t_exe_data *exe_data)
+void	final_execve(t_exe_data *exe_data, \
+t_env **env_lst)
 {
-	printf("in %i out %i \n",exe_data->fd_read, exe_data->fd_write);
-	if (exe_data->fd_read != -1)
-	{
-		dup2(exe_data->fd_read, STDIN_FILENO);
-		close(exe_data->fd_read);
-	}
-	if (exe_data->fd_write != -1)
-	{
-		dup2(exe_data->fd_write, STDOUT_FILENO);
-		close(exe_data->fd_write);
-	}
+	struct stat		info;
+
+	stat(exe_data->path, &info);
+	if (!(info.st_mode & S_IXUSR))
+		printf("%s: %s: Permission denied\n", \
+		IDLE_PROMT, exe_data->path);
+	else if ((info.st_mode & S_IFDIR))
+		printf("%s: %s: is a directory\n", IDLE_PROMT, exe_data->path);
+	else if (execve(exe_data->path, exe_data->argv, \
+		env_as_string(env_lst)) == -1)
+		printf("execve failed %s\n", exe_data->path);
 }
 
 int	execution_forking(t_exe_data *exe_data, \
 t_env **env_lst, int built_in_flag, t_redirection *redirection)
 {
 	pid_t			pid;
-	struct stat		info;
 
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
@@ -43,59 +43,11 @@ t_env **env_lst, int built_in_flag, t_redirection *redirection)
 		if (built_in_flag == TRUE)
 			handle_builtin(exe_data->argv[0], &exe_data->argv[1], env_lst);
 		else
-		{
-			stat(exe_data->path, &info);
-			if (!(info.st_mode & S_IRUSR))
-			{
-				printf("<minishell>: %s: Permission denied\n", exe_data->path);
-				return (error_permission);
-			}
-			else if (execve(exe_data->path, exe_data->argv, \
-				env_as_string(env_lst)) == -1)
-				printf("execve failed %s\n", exe_data->path);
-		}
+			final_execve(exe_data, env_lst);
 		clean_exit(redirection, env_lst);
 	}
 	redirection->last_pid = pid;
 	exe_data->pid = pid;
-	return (0);
-}
-
-int	pipe_start(t_exe_data *exe_data, t_redirection *redirection)
-{
-	int	fd[2];
-
-	if (redirection->fd_infile != -1)
-			exe_data->fd_read = redirection->fd_infile;
-	if (exe_data->next == NULL)
-	{
-		if (redirection->fd_outfile != -1)
-		{
-			exe_data->fd_write = redirection->fd_outfile;
-		}
-	}
-	else
-	{
-		if (pipe(fd))
-			return (error_pipe);
-		exe_data->fd_write = fd[1];
-		exe_data->next->fd_read = fd[0];
-	}
-	return (0);
-}
-
-int	pipe_end(t_exe_data *exe_data)
-{
-	if (exe_data->fd_read != -1)
-	{
-		if (close(exe_data->fd_read))
-			return (1);
-	}
-	if (exe_data->fd_write != -1)
-	{
-		if (close(exe_data->fd_write))
-			return (1);
-	}
 	return (0);
 }
 
@@ -114,5 +66,5 @@ t_redirection *redirection, int *built_in_flag)
 	}
 	if (exe_data->path != NULL || *built_in_flag == TRUE)
 		execution_forking(exe_data, env_lst, *built_in_flag, redirection);
-	pipe_end(exe_data);
+	close_files_and_pipes(exe_data, redirection);
 }

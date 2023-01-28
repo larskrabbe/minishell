@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/26 14:32:14 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/01/28 02:25:15 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env	*env_lstnew(char *content)
 	t_env	*new;
 	char	**split;
 
-	new = (t_env *)ft_calloc(sizeof(t_env),1);
+	new = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!new)
 		return (NULL);
 	split = ft_slice(content, '=');
@@ -52,4 +52,19 @@ void	env_add_back(t_env **lst, t_env *new)
 	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = new;
+}
+
+t_env	*no_env_case(t_env *env_new)
+{
+	char	cwd[MAX_ARG];
+	char	*pwd;
+	t_env	*env_lst;
+
+	getcwd(cwd, sizeof(cwd));
+	pwd = ft_strjoin("PWD=", cwd);
+	env_new = env_lstnew(pwd);
+	env_add_back(&env_lst, env_new);
+	ft_setenv(env_lst, "OLDPWD");
+	free (pwd);
+	return (env_lst);
 }

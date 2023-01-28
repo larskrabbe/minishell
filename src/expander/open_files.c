@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 13:09:36 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 11:53:10 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,81 +23,111 @@ int	reset_fd(int *fd)
 	return (0);
 }
 
-int	open_outfile(t_redirection *redirection, t_token *token, t_env **env_lst)
+int	access_folder(char *str)
 {
-	char		*str;
-	struct stat	info;
+	char	*str_dup;
+	int		valid;
+	char	*last;
 
-	str = NULL;
-	reset_fd(&redirection->fd_outfile);
-	str = tokenstring(token, env_lst, redirection);
-	if (str == NULL)
+	str_dup = ft_strdup(str);
+	if (str_dup == NULL)
 		return (error_allocation);
-	stat(str, &info);
-	if (!(info.st_mode & S_IRUSR))
-	{
-		printf("<minishell>: %s: Permission denied\n", str);
-		return (error_permission);
-	}
-	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0744);
-	if (redirection->fd_outfile < 0)
-		return (error_open);
-	free(str);
-	return (0);
+	last = ft_strrchr(str_dup, '/');
+	if (last != NULL)
+		*last = 0;
+	valid = access(str_dup, F_OK);
+	free (str_dup);
+	return (valid);
 }
 
-int	open_outfile_app(t_redirection *redirection, t_token *token, t_env **env_lst)
+int	access_filename(char *str, int permsion)
 {
-	char		*str;
 	struct stat	info;
 
-	str = NULL;
-	reset_fd(&redirection->fd_outfile);
-	str = tokenstring(token, env_lst, redirection);
-	if (str == NULL)
-		return (error_allocation);
-	stat(str, &info);
-	if (!(info.st_mode & S_IRUSR))
+	if (access_folder(str) != 0 && access(str, F_OK) != 0)
 	{
-		printf("<minishell>: %s: Permission denied\n", str);
-		return (error_permission);
-	}
-	redirection->fd_outfile = open(str, O_WRONLY | O_CREAT | O_APPEND, 0744);
-	if (redirection->fd_outfile < 0)
-		return (error_open);
-	free(str);
-	return (0);
-}
-
-int	open_infile(t_redirection *redirection, t_token *token, t_env **env_lst)
-{
-	char		*str;
-	struct stat	info;
-
-	str = NULL;
-	reset_fd(&redirection->fd_infile);
-	str = tokenstring(token, env_lst, redirection);
-	if (str == NULL)
-		return (error_allocation);
-	stat(str, &info);
-	if (access(str, F_OK) != 0)
-	{
-		printf("%s: %s: No such file or directory", IDLE_PROMT, str);
+		printf("%s: %s: No such file or directory\n", IDLE_PROMT, str);
 		return (error_nofile);
 	}
-	if (!(info.st_mode & S_IRUSR))
+	stat(str, &info);
+	if ((info.st_mode & S_IFDIR))
 	{
-		printf("<minishell>: %s: Permission denied\n", str);
+		printf("%s: %s: Is a directory\n", IDLE_PROMT, str);
+		return (error_nofile);
+	}
+	if (!(info.st_mode & permsion))
+	{
+		printf("%s: %s: Permission denied\n", IDLE_PROMT, str);
 		return (error_permission);
 	}
-	redirection->fd_infile = open(str, O_RDONLY);
-	if (redirection->fd_infile < 0)
+	return (no_error);
+}
+
+int	open_outfile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirection *redirection)
+{
+	char		*str;
+
+	str = NULL;
+	reset_fd(&exe_data->fd_write);
+	str = tokenstring(token, env_lst, redirection);
+	if (str == NULL)
+		return (error_allocation);
+	if (access_filename(str, S_IWUSR) == 0)
+	{
+		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_TRUNC, 644);
+		if (exe_data->fd_write < 0)
+			return (error_open);
+	}
+
+	free(str);
+	return (0);
+}
+
+
+int	open_outfile_app(t_exe_data *exe_data, \
+t_token *token, t_env **env_lst, t_redirection *redirection)
+{
+	char		*str;
+
+	str = NULL;
+	reset_fd(&exe_data->fd_write);
+	str = tokenstring(token, env_lst, redirection);
+	if (str == NULL)
+		return (error_allocation);
+	if (access_filename(str, S_IWUSR) == 0)
+	{
+		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_APPEND, 644);
+		if (exe_data->fd_write < 0)
+			return (error_open);
+	}
+	free(str);
+	return (0);
+}
+
+int	open_infile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirection *redirection)
+{
+	char		*str;
+	struct stat	info;
+
+	str = NULL;
+	reset_fd(&exe_data->fd_read);
+	str = tokenstring(token, env_lst, redirection);
+	if (str == NULL)
+		return (error_allocation);
+	stat(str, &info);
+	if (access_filename(str, S_IRUSR) == 0)
+	{
+		exe_data->fd_write = open(str, O_RDONLY, 644);
+		if (exe_data->fd_write < 0)
+			return (error_open);
+	}
+	if (exe_data->fd_read < 0)
 		return (error_open);
 	free(str);
 	return (0);
 }
 
-int	heredoc(t_redirection *redirection, t_token *token, t_env **env_lst)
+int	heredoc(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirection *redirection)
 {
 	int		expend_flag;
 	int		len;
@@ -111,8 +141,7 @@ int	heredoc(t_redirection *redirection, t_token *token, t_env **env_lst)
 	if (str == NULL)
 		return (error_allocation);
 	get_here_str(token, str);
-	heredoc_read(str, expend_flag, redirection, env_lst);
-	printf("heredoc fd = %i\n",redirection->fd_infile);
+	heredoc_read(str, expend_flag, exe_data, env_lst, redirection);
 	free (str);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 14:20:35 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/26 21:15:55 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 23:36:47 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,19 @@ char	*get_cmd_path(t_env **env_lst, char *cmd)
 {
 	char	**paths;
 	char	*path_to_cmd;
-// if cmd contains /, then return a strdup of cmd.
-	if (access(cmd, X_OK) == 0)
-	{
-		if (!cmd_has_current_path(cmd))
-			return (NULL);
-		return (cmd);
-	}
+
 	if (!env_lst || !cmd)
 		return (NULL);
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
 	paths = get_all_paths(env_lst, cmd);
 	if (paths == NULL)
 		return (NULL);
 	path_to_cmd = get_working_path(paths);
 	ft_free(paths);
-	return (path_to_cmd);
+	if (path_to_cmd != NULL)
+		return (path_to_cmd);
+	else if (access(cmd, X_OK) == 0 && cmd_has_current_path(cmd))
+		return (cmd);
+	return (NULL);
 }

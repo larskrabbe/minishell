@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:11:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:19:29 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 07:16:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_redirection *redirection, t_env **env_lst)
 	return (0);
 }
 
-void	expander_setup(t_expend *exp, t_redirection *redirection, \
+void	expander_setup(t_expend *exp, \
 t_exe_data **exe_data)
 {
 	exp->exe_ptr = NULL;
@@ -36,32 +36,31 @@ t_exe_data **exe_data)
 	exp->arg_num = 0;
 	exp->argv_flag = 0;
 	exp->exe_data = exe_data;
-	redirection_default(redirection);
 }
 
 int	choose_redirection(t_token *token, t_token *next, \
-t_redirection *redirection, t_env **env_lst)
+t_exe_data *exe_data, t_env **env_lst , t_redirection *redirection)
 {
 	if (token->type == type_redirection)
-		return (open_outfile(redirection, next, env_lst));
+		return (open_outfile(exe_data, next, env_lst, redirection));
 	else if (token->type == type_app_redirection)
-		return (open_outfile_app(redirection, next, env_lst));
+		return (open_outfile_app(exe_data, next, env_lst, redirection));
 	else if (token->type == type_input_file)
-		return (open_infile(redirection, next, env_lst));
+		return (open_infile(exe_data, next, env_lst, redirection));
 	else if (token->type == type_heredoc)
-		return (heredoc(redirection, next, env_lst));
+		return (heredoc(exe_data, next, env_lst, redirection));
 	return (0);
 }
 
 void	found_rediretion(t_tokenchain *tokenchain, \
-t_expend *exp, t_redirection *redirection, t_env **env_lst)
+t_expend *exp, t_redirection *redirection, t_env **env_lst, t_exe_data *exe_data)
 {
 	if (tokenchain->token[exp->t].type != type_null && \
 	tokenchain->token[exp->t].type >= type_redirection && \
 	!exp->error)
 	{
 		exp->error = choose_redirection(&tokenchain->token[exp->t], \
-		&tokenchain->token[exp->t + 1], redirection, env_lst);
+		&tokenchain->token[exp->t + 1], exe_data, env_lst, redirection);
 		if (tokenchain->token[exp->t].type == type_pipe)
 		{
 			exp->arg_num = 0;

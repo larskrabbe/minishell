@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:06:50 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:21:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 00:07:08 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ char	*get_value(char *str, t_env **env_lst, t_redirection *redirection)
 		return (ft_strdup("$"));
 	if (var_name[0] == '?')
 		return (ft_itoa(((int)(redirection->exit_code) >> 8) & 0x000000ff));
-	return (ft_getenv(*env_lst, var_name));// !danger
+	return (ft_getenv(*env_lst, var_name));
 }
+
 /**
  * @brief strlen with check for null
  * 
@@ -43,4 +44,14 @@ int	strlen_with_check(char *str)
 	if (str == NULL)
 		return (0);
 	return (ft_strlen(str));
+}
+
+int	at_eof(char *str, char *delimiter)
+{
+	if (!ft_strncmp(str, delimiter, ft_strlen(str)))
+	{
+		if (!ft_strncmp(str, delimiter, ft_strlen(delimiter)))
+			return (TRUE);
+	}
+	return (FALSE);
 }

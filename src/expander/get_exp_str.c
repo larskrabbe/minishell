@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:00:28 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:23:23 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 00:06:55 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	get_len_exp(t_exp_env *exp, t_env **env_lst, t_redirection *redirection)
 	exp->ptr--;
 }
 
-int	get_token_length(t_token *token, t_env **env_lst, t_redirection *redirection)
+int	get_token_length(t_token *token, \
+t_env **env_lst, t_redirection *redirection)
 {
 	struct s_exp_env	exp;
 

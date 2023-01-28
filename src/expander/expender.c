@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/27 00:22:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 07:16:40 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,12 @@ int	add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr)
 	return (0);
 }
 
-/**
- * @brief set the values inside of the struct back to zero
- * 
- */
-void	redirection_default(t_redirection *redirection)
-{
-	redirection->fd_infile = -1;
-	redirection->fd_outfile = -1;
-}
-
 int	expander(t_tokenchain *tokenchain, t_env **env_lst, \
 t_redirection *redirection)
 {
 	struct s_expend	exp;
 
-	expander_setup(&exp, redirection, &redirection->og_ptr);
+	expander_setup(&exp, &redirection->og_ptr);
 	while (tokenchain->token[exp.t].start != NULL && !exp.error)
 	{
 		while (tokenchain->token[exp.t].type == type_str && \
@@ -95,7 +85,7 @@ t_redirection *redirection)
 			exp.error = token_to_str(&exp, tokenchain, redirection, env_lst);
 		if (exp.arg_num != 0 && !exp.error)
 			exp.exe_ptr->argv[exp.arg_num] = NULL;
-		found_rediretion(tokenchain, &exp, redirection, env_lst);
+		found_rediretion(tokenchain, &exp, redirection, env_lst, exp.exe_ptr);
 		if (tokenchain->token[exp.t].type != type_null)
 			exp.t++;
 	}

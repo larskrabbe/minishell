@@ -6,13 +6,13 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 19:57:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 13:20:30 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 10:19:02 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"../../include/minishell.h"
 
-int	heredoc_expend(char *str, t_env **env_lst, t_redirection *redirection)
+int	heredoc_expend(char *str, t_env **env_lst, t_redirection *redirection, int fd_write)
 {
 	char	*tmp_str;
 	t_token	tmp_token;
@@ -22,34 +22,17 @@ int	heredoc_expend(char *str, t_env **env_lst, t_redirection *redirection)
 	tmp_str = tokenstring(&tmp_token, env_lst, redirection);
 	if (tmp_str == NULL)
 		return (error_allocation);
-	write(redirection->fd_infile, tmp_str, ft_strlen(tmp_str));
+	write(fd_write, tmp_str, ft_strlen(tmp_str));
 	free (tmp_str);
 	return (0);
 }
 
-int	at_eof(char *str, char *delimiter)
-{
-	if (!ft_strncmp(str, delimiter, ft_strlen(str)))
-	{
-		if (!ft_strncmp(str, delimiter, ft_strlen(delimiter)))
-			return (TRUE);
-	}
-	return (FALSE);
-}
-
-int	heredoc_read(char *delimiter, int expend_flag, \
-t_redirection *redirection, t_env **env_lst)
+int	heredoc_readline(char *delimiter, int expend_flag, \
+t_redirection *redirection, t_env **env_lst, int fd_write)
 {
 	char	*str;
-	int		stdin_copy;
 
-	stdin_copy = dup(STDIN_FILENO);
 	str = NULL;
-	signal(SIGINT, signalhandler_heredoc);
-	reset_fd(&redirection->fd_infile);
-	redirection->fd_infile = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 777);
-	if (redirection->fd_infile < 0)
-		return (error_open);
 	while (g_signal != signal_c)
 	{
 		str = readline(HEREDOC_PROMT);
@@ -58,30 +41,75 @@ t_redirection *redirection, t_env **env_lst)
 			g_signal = signal_d;
 			break ;
 		}
-		if (!str || !delimiter)
-			return (error_allocation);
 		if (at_eof(str, delimiter) || g_signal == signal_c || !str)
 		{
 			free(str);
 			break ;
 		}
 		if (expend_flag == TRUE)
-			heredoc_expend(str, env_lst, redirection);
+			heredoc_expend(str, env_lst, redirection, fd_write);
 		else
-			write(redirection->fd_infile, str, ft_strlen(str));
-		write(redirection->fd_infile, "\n", 1);
+			write(fd_write, str, ft_strlen(str));
+		write(fd_write, "\n", 1);
 		free(str);
 	}
+	return (no_error);
+}
+
+int	heredoc_read(char *delimiter, int expend_flag, \
+t_exe_data *exe_data, t_env **env_lst, t_redirection *redirection)
+{
+	int		stdin_copy;
+	int		fd[2];
+
+	reset_fd(&exe_data->fd_read);
+	if (pipe(fd) != 0)
+		return (0);
+	stdin_copy = dup(STDIN_FILENO);
+	exe_data->fd_read = fd[0];
+	if (exe_data->fd_read < 0)
+		return (error_open);
+	heredoc_readline(delimiter, expend_flag, redirection, env_lst, fd[1]);
 	if (g_signal == signal_c || g_signal == signal_d)
 	{
 		dup(stdin_copy);
 		g_signal = signal_default;
 	}
-	close(redirection->fd_infile);
-	redirection->fd_infile = open(".heredoc", O_RDONLY, 777);
+	close(fd[1]);
 	close(stdin_copy);
 	return (0);
 }
+
+// int	heredoc_read(char *delimiter, int expend_flag, \
+// t_exe_data *exe_data, t_env **env_lst, t_redirection *redirection)
+// {
+// 	int		stdin_copy;
+// 	char	*file;
+
+// 	if (redirection->heredoc_num < MAX_HEREODAC)
+// 		redirection->heredoc_num++;
+// 	else
+// 		redirection->heredoc_num = 0;
+// 	file = ft_strjoin("heredoc",ft_itoa(redirection->heredoc_num));
+// 	stdin_copy = dup(STDIN_FILENO);
+// 	signal(SIGINT, signalhandler_heredoc);
+// 	reset_fd(&exe_data->fd_read);
+// 	exe_data->fd_read = \
+// 	open(file, O_CREAT | O_RDWR | O_TRUNC, 700);
+// 	free(file);
+// 	if (exe_data->fd_read < 0)
+// 		return (error_open);
+// 	if (heredoc_readline(delimiter, expend_flag, \
+// 	redirection, env_lst, exe_data))
+// 		return (error_allocation);
+// 	if (g_signal == signal_c || g_signal == signal_d)
+// 	{
+// 		dup(stdin_copy);
+// 		g_signal = signal_default;
+// 	}
+// 	close(stdin_copy);
+// 	return (0);
+// }
 
 char	*get_here_str(t_token *token, char *str)
 {
