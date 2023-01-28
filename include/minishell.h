@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 19:40:20 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:32:51 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	g_signal;
 typedef enum e_error{
 	no_error = 0,
 	error_quotes = 1,
-	error_syntax = 2,
+	error_syntax = 258000000,
 	error_allocation ,
 	error_max_arg ,
 	error_null_ptr ,
@@ -69,7 +69,7 @@ typedef enum e_error{
 	error_nofile ,
 	error_execve ,
 	error_direct,
-	error_no_command = 127,
+	error_no_command = 1270000000,
 	error_exit = 255,
 	error_builtin = 256,
 }t_error;
