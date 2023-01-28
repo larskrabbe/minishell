@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:11:02 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/28 02:25:15 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 12:59:07 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	env_add_back(t_env **lst, t_env *new)
 	curr->next = new;
 }
 
-t_env	*no_env_case(t_env *env_new)
+t_env	*no_env_case(t_env *env_lst)
 {
 	char	cwd[MAX_ARG];
 	char	*pwd;
-	t_env	*env_lst;
+	t_env	*env_new;
 
 	getcwd(cwd, sizeof(cwd));
 	pwd = ft_strjoin("PWD=", cwd);

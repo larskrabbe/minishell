@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 10:24:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:14:35 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,14 @@ t_env			**ft_getenv_lst(char **envp);
 void			ft_printenv(t_env *env_lst);
 
 /**
+ * @brief Checks if a identifier has the + operator
+ * and modifies the name without the +
+ * @param name 
+ * @return void* 
+ */
+void	*var_name_ends_with_plus(char *name);
+
+/**
  * @brief  The ft_putenv() function takes an argument of
  * the form ``name=value'' and adds it to the environment
  * list
@@ -433,6 +441,15 @@ int				ft_export(t_env **env_lst, char **new_env);
  * 
  * @param new_env 
  */
+
+/**
+ * @brief The ft_export_print() function prints the key value pairs of
+ * all environment variables
+ * 
+ * @param env_lst 
+ */
+void	ft_export_print(t_env *env_lst);
+
 void			export_error_mssg(char *new_env);
 
 /**

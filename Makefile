@@ -10,8 +10,8 @@ LDFLAGS    = -L/Users/$(USER)/.brew/opt/readline/lib
 CPPFLAGS   = -I/Users/$(USER)/.brew/opt/readline/include
 
 # FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -L .tester/LeakSanitizer/ -llsan -lc++ 
-# FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -fsanitize=address
-FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) 
+FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) -fsanitize=address
+# FLAGS =  -lreadline $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) 
 
 # -L .tester/LeakSanitizer/ -llsan -lc++ 
 CFLAGS = -Wextra -Werror -Wall 
@@ -79,7 +79,8 @@ BUILTINS =	src/builtins/echo.c \
 			src/builtins/cd.c \
 			src/builtins/cd_utils.c \
 			src/builtins/export_utils.c \
-			src/builtins/exit.c
+			src/builtins/exit.c \
+			src/builtins/export_utils2.c
 
 #lexer_main:$(LEXER) $(ENV) $(BUILTINS) | $(LIBFT)
 	#cc $(FLAGS) $(LEXER) $(ENV) $(BUILTINS) $(LIBFT)
