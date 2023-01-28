@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:00:28 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 19:51:47 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:41:58 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,19 @@ int	is_valid_var(char c, int i)
 
 void	get_len_exp(t_exp_env *exp, t_env **env_lst, t_redirection *redirection)
 {
+	char	*ptr;
+
 	exp->i = 0;
 	exp->ptr++;
-	exp->l += strlen_with_check(get_value(exp->ptr, env_lst, redirection));
+	ptr = get_value(exp->ptr, env_lst, redirection);
+	exp->l += strlen_with_check(ptr);
 	while (is_valid_var(*exp->ptr, exp->i))
 	{
 		exp->ptr++;
 		exp->i++;
 	}
 	exp->ptr--;
+	free(ptr);
 }
 
 int	get_token_length(t_token *token, \
@@ -81,9 +85,12 @@ t_env **env_lst, t_redirection *redirection)
 void	get_value_exp(t_exp_env *exp, char *str, \
 t_env **env_lst, t_redirection *redirection)
 {
+	char	*ptr;
+
 	exp->ptr++;
 	exp->i = 0;
-	exp->var_ptr = get_value(exp->ptr, env_lst, redirection);
+	ptr = get_value(exp->ptr, env_lst, redirection);
+	exp->var_ptr = ptr;
 	while (exp->var_ptr != NULL && *exp->var_ptr != '\0')
 	{
 		str[exp->l] = *exp->var_ptr;
@@ -96,7 +103,7 @@ t_env **env_lst, t_redirection *redirection)
 		exp->i++;
 	}
 	exp->ptr--;
-	free (exp->var_ptr);
+	free(ptr);
 }
 
 void	get_token_str(t_token *token, t_env **env_lst, \
