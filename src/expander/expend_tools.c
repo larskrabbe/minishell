@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:06:50 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 20:24:58 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 21:17:43 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	*get_value(char *str, t_env **env_lst, t_redirection *redirection)
 {
 	char	var_name[MAX_VAR_NAME];
 	int		i;
+	char	*ptr;
 
 	i = 0;
 	while (is_valid_var(str[i], i))
@@ -32,7 +33,10 @@ char	*get_value(char *str, t_env **env_lst, t_redirection *redirection)
 		return (ft_strdup("$"));
 	if (var_name[0] == '?')
 		return (ft_itoa(((int)(redirection->exit_code) >> 8) & 0x000000ff));
-	return (ft_strdup(ft_getenv(*env_lst, var_name)));
+		ptr = ft_getenv(*env_lst, var_name);
+	if (ptr == NULL)
+		return (ft_strdup(""));
+	return (ft_strdup(ptr));
 }
 
 /**

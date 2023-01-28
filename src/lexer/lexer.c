@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:50:17 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 18:32:10 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 21:06:05 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	syntax_checker(t_tokenchain *tokenchain, t_redirection *redirection)
 		tokenchain->token[t].type == type_pipe)
 			return (syntax_error_message(&tokenchain->token[t], redirection));
 		if (last_type >= type_redirection && \
-		tokenchain->token[t].type >= type_redirection)
+		tokenchain->token[t].type == type_str)
 			return (syntax_error_message(&tokenchain->token[t], redirection));
 		last_type = tokenchain->token[t].type;
 		t++;
