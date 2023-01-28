@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 14:08:19 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 07:16:40 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:03:38 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_redirection *redirection)
 			exp.error = token_to_str(&exp, tokenchain, redirection, env_lst);
 		if (exp.arg_num != 0 && !exp.error)
 			exp.exe_ptr->argv[exp.arg_num] = NULL;
-		found_rediretion(tokenchain, &exp, redirection, env_lst, exp.exe_ptr);
+		found_rediretion(tokenchain, &exp, redirection, exp.exe_ptr);
 		if (tokenchain->token[exp.t].type != type_null)
 			exp.t++;
 	}

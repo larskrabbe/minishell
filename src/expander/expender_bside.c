@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 23:11:33 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 07:16:07 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:09:06 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,31 @@ t_exe_data **exe_data)
 }
 
 int	choose_redirection(t_token *token, t_token *next, \
-t_exe_data *exe_data, t_env **env_lst , t_redirection *redirection)
+t_exe_data *exe_data, t_redirection *redirection)
 {
 	if (token->type == type_redirection)
-		return (open_outfile(exe_data, next, env_lst, redirection));
+		return (open_outfile(exe_data, next, redirection->env_lst, \
+redirection));
 	else if (token->type == type_app_redirection)
-		return (open_outfile_app(exe_data, next, env_lst, redirection));
+		return (open_outfile_app(exe_data, next, redirection->env_lst, \
+redirection));
 	else if (token->type == type_input_file)
-		return (open_infile(exe_data, next, env_lst, redirection));
+		return (open_infile(exe_data, next, redirection->env_lst, redirection));
 	else if (token->type == type_heredoc)
-		return (heredoc(exe_data, next, env_lst, redirection));
+		return (heredoc(exe_data, next, redirection));
 	return (0);
 }
 
 void	found_rediretion(t_tokenchain *tokenchain, \
-t_expend *exp, t_redirection *redirection, t_env **env_lst, t_exe_data *exe_data)
+t_expend *exp, t_redirection *redirection, \
+t_exe_data *exe_data)
 {
 	if (tokenchain->token[exp->t].type != type_null && \
 	tokenchain->token[exp->t].type >= type_redirection && \
 	!exp->error)
 	{
 		exp->error = choose_redirection(&tokenchain->token[exp->t], \
-		&tokenchain->token[exp->t + 1], exe_data, env_lst, redirection);
+		&tokenchain->token[exp->t + 1], exe_data, redirection);
 		if (tokenchain->token[exp->t].type == type_pipe)
 		{
 			exp->arg_num = 0;

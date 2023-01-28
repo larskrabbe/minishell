@@ -29,6 +29,7 @@ LEXER = src/lexer/lexer.c\
 		src/lexer/lexer_memory.c\
 		src/lexer/is_white_space.c\
 		src/lexer/lexer_utiels.c\
+		src/lexer/lexer_b.c\
 
 ENV =	src/environment/add_var.c \
 		src/environment/create_env.c \
@@ -42,7 +43,8 @@ EXP =	src/expander/expender.c \
 		src/expander/open_files.c\
 		src/expander/get_exp_str.c\
 		src/expander/expend_tools.c\
-		src/expander/expender_bside.c
+		src/expander/expender_bside.c\
+		src/expander/file_proc.c
 
 PATH =	src/pathing/get_cmd_path.c
 

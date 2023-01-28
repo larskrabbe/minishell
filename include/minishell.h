@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 15:52:10 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:11:26 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	g_signal;
 #  define TRUE 1
 # endif
 
-//!max amount of 'token' not sure if needed
 # define MAX_ARG 4096
 # define MAX_VAR_NAME 1000
 # define MAX_FILENAME 256
@@ -147,7 +146,7 @@ typedef struct s_redirection{
 	int				last_pid;
 	int				pipe_read;
 	int				pipe_write;
-	int				heredoc_num;
+	t_env			**env_lst;
 }t_redirection;
 
 typedef struct s_expend
@@ -187,7 +186,7 @@ int				reset_fd(int *fd);
 int				get_here_len(t_token *token, int *expend_flag);
 char			*get_here_str(t_token *token, char *str);
 int				heredoc_read(char *delimiter, int expend_flag, \
-t_exe_data *exe_data, t_env **env_lst, t_redirection *redirection);
+t_exe_data *exe_data, t_redirection *redirection);
 int				get_token_length(t_token *token, \
 t_env **env_lst, t_redirection *redirection);
 int				is_valid_var(char c, int i);
@@ -195,7 +194,7 @@ char			*get_value(char *str, t_env **env_lst, \
 t_redirection *redirection);
 int				strlen_with_check(char *str);
 void			found_rediretion(t_tokenchain *tokenchain, t_expend *exp, \
-t_redirection 	*redirection, t_env **env_lst, t_exe_data *exe_data);
+t_redirection	*redirection, t_exe_data *exe_data);
 int				token_to_str(t_expend *exp, t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env **env_lst);
 void			expander_setup(t_expend *exp, \
@@ -204,14 +203,20 @@ int				add_lst_t_exe_data(t_exe_data **exe_data, t_exe_data **exe_ptr);
 void			execution_loop(t_exe_data *exe_data, t_env **env_lst, \
 t_redirection *redirection, int *built_in_flag);
 int				pipe_start(t_exe_data *exe_data, t_redirection *redirection);
-int				close_files_and_pipes(t_exe_data *exe_data, t_redirection *redirection);
+int				close_files_and_pipes(t_exe_data *exe_data, \
+t_redirection *redirection);
 void			tokenchain_free(t_tokenchain *tokenchain);
 void			free_all_t_exe_data(t_exe_data *ptr);
 void			clean_exit(t_redirection *redirection, t_env **env_lst);
 int				at_eof(char *str, char *delimiter);
-
+int				token_start(t_tokenchain *tokenchain, \
+t_redirection *redirection, int *t, char **str);
 void			changing_fd_in_out(t_exe_data *exe_data);
 t_env			*no_env_case(t_env *env_new);
+int				syntax_error_message(t_token *token, \
+t_redirection *redirection);
+int				check_filetype(char *str, int permission, \
+t_redirection *redirection);
 
 /* 
 ====================================================
@@ -270,7 +275,7 @@ void			ft_printenv(t_env *env_lst);
  * @param name 
  * @return void* 
  */
-void	*var_name_ends_with_plus(char *name);
+void			*var_name_ends_with_plus(char *name);
 
 /**
  * @brief  The ft_putenv() function takes an argument of
@@ -450,7 +455,7 @@ int				ft_export(t_env **env_lst, char **new_env);
  * 
  * @param env_lst 
  */
-void	ft_export_print(t_env *env_lst);
+void			ft_export_print(t_env *env_lst);
 
 void			export_error_mssg(char *new_env);
 
@@ -616,8 +621,7 @@ t_exe_data		*next_t_exe_data(t_exe_data *exe_data);
  * @return fdf of the openfile  
  */
 int				heredoc(t_exe_data *exe_data, t_token *token, \
-t_env **env_lst, t_redirection *redirection);
-
+t_redirection *redirection);
 
 /* 
 ====================================================

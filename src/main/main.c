@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 14:14:27 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:02:28 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ int	main(int argc, char *argv[], char *envp[])
 	redirection.pipe_write = -1;
 	redirection.exit_code = 0;
 	redirection.og_ptr = NULL;
-	redirection.heredoc_num = 0;
 	tokenchain = tokenchain_create();
 	if (tokenchain == NULL)
 		return (error_allocation);
 	redirection.tokenchain = tokenchain;
 	env = ft_getenv_lst(envp);
+	redirection.env_lst = env;
 	g_signal = 1;
 	read_line_loop(tokenchain, &redirection, env);
 	clear_history();
