@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:50:17 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/24 20:30:23 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:06:57 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,15 @@ int inline static	quotes_logic(char c, char *end)
 	return (0);
 }
 
-char	*find_token_end(char *str)
+char	*open_quotes_error_message(char c, t_redirection *redirection)
+{
+	printf("%s:open quotation marks `%c` \n", \
+	IDLE_PROMT, c);
+	redirection->exit_code = error_quotes;
+	return (NULL);
+}
+
+char	*find_token_end(char *str, t_redirection *redirection)
 {
 	char	end;
 
@@ -45,13 +53,21 @@ char	*find_token_end(char *str)
 		str++;
 	}
 	if (end != ' ')
-		return (NULL);
+		return (open_quotes_error_message(end, redirection));
 	if (quotes_logic(*str, &end) == 1)
 		return (str);
 	return (str++);
 }
 
-int	syntax_checker(t_tokenchain *tokenchain)
+int	syntax_error_message(t_token *token, t_redirection *redirection)
+{
+	printf("%s:syntax error near unexpected token `%.*s' \n", \
+	IDLE_PROMT, (int)(&token->start - &token->end), token->start);
+	redirection->exit_code = error_syntax;
+	return (error_syntax);
+}
+
+int	syntax_checker(t_tokenchain *tokenchain, t_redirection *redirection)
 {
 	int	t;
 	int	last_type;
@@ -59,20 +75,20 @@ int	syntax_checker(t_tokenchain *tokenchain)
 	t = 1;
 	last_type = 0;
 	if (tokenchain->token[t].type == type_pipe)
-		return (error_syntax);
+		return (syntax_error_message(&tokenchain->token[t], redirection));
 	while (tokenchain->token[t].type != type_null)
 	{
 		if (last_type == type_pipe && \
 		tokenchain->token[t].type == type_pipe)
-			return (error_syntax);
+			return (syntax_error_message(&tokenchain->token[t], redirection));
 		if (last_type >= type_redirection && \
 		tokenchain->token[t].type >= type_redirection)
-			return (error_syntax);
+			return (syntax_error_message(&tokenchain->token[t], redirection));
 		last_type = tokenchain->token[t].type;
 		t++;
 	}
 	if (last_type >= type_redirection)
-		return (error_syntax);
+		return (syntax_error_message(&tokenchain->token[t], redirection));
 	return (no_error);
 }
 
@@ -84,7 +100,7 @@ void	token_closer(t_token *token)
 	token->str = NULL;
 }
 
-int	lexer(t_tokenchain *tokenchain)
+int	lexer(t_tokenchain *tokenchain,t_redirection *redirection)
 {
 	int		t;
 	char	*str;
@@ -96,7 +112,7 @@ int	lexer(t_tokenchain *tokenchain)
 		if (is_white_space(*str) == 0)
 		{
 			tokenchain->token[t].start = str;
-			tokenchain->token[t].end = find_token_end(str);
+			tokenchain->token[t].end = find_token_end(str, redirection);
 			str = tokenchain->token[t].end;
 			if (tokenchain->token[t].end == NULL)
 				return (error_quotes);
@@ -110,5 +126,5 @@ int	lexer(t_tokenchain *tokenchain)
 	token_closer(&tokenchain->token[t]);
 	if (t >= MAX_ARG)
 		return (error_max_arg);
-	return (syntax_checker(tokenchain));
+	return (syntax_checker(tokenchain, redirection));
 }

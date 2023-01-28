@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:20:23 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 08:04:28 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:14:27 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	**create_argv(t_tokenchain *tokenchain, char **argv, int *i)
 	int	a;
 
 	a = 0;
-	printf("seg maybe here\n i = %i\n", *i);
 	while (*tokenchain->token[*i].end != '\0' || \
 	tokenchain->token[*i].type == type_pipe)
 	{
@@ -45,7 +44,7 @@ void	string_translate(t_tokenchain *tokenchain, \
 t_redirection *redirection, t_env **env_lst)
 {
 	add_history(tokenchain->str);
-	if (lexer(tokenchain) == 0)
+	if (lexer(tokenchain, redirection) == 0)
 	{
 		if (expander(tokenchain, env_lst, redirection) == 0)
 			execution(redirection->og_ptr, env_lst, redirection);

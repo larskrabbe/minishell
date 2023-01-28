@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 10:24:49 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:16:07 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,16 @@ int	g_signal;
 typedef enum e_error{
 	no_error = 0,
 	error_quotes = 1,
-	error_allocation = 2,
-	error_max_arg = 3,
-	error_syntax = 4,
-	error_null_ptr = 5,
-	error_pipe = 6,
-	error_open = 7,
-	error_permission = 8,
+	error_syntax = 2,
+	error_allocation ,
+	error_max_arg ,
+	error_null_ptr ,
+	error_pipe ,
+	error_open ,
+	error_permission ,
 	error_close ,
 	error_nofile ,
+	error_execve ,
 	error_exit = 255,
 	error_builtin = 256,
 }t_error;
@@ -164,7 +165,7 @@ int				is_white_space(int a);
 int				is_special_char(char a);
 
 void			myerror(char *str);
-int				lexer(t_tokenchain *tokenchain);
+int				lexer(t_tokenchain *tokenchain, t_redirection *redirection);
 t_tokenchain	*tokenchain_create(void);
 void			print_token_chain(t_tokenchain *tokenchain);
 void			free_str_in_token(t_tokenchain *tokenchain);

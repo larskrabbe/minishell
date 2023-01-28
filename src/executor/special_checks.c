@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 00:55:46 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 09:33:28 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 12:53:09 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	clean_exit(t_redirection *redirection, t_env **env_lst)
 	clean_env(env_lst);
 	free_all_t_exe_data(redirection->og_ptr);
 	tokenchain_free(redirection->tokenchain);
-	exit (0);
+	exit (redirection->exit_code);
 }
 
 int	count_exe_data(t_exe_data *ptr)
