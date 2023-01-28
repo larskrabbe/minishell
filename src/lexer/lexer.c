@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:50:17 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 14:06:57 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:49:11 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	lexer(t_tokenchain *tokenchain,t_redirection *redirection)
 			if (tokenchain->token[t].end == NULL)
 				return (error_quotes);
 			if (check_type(&tokenchain->token[t]) != 0)
-				return (1);
+				return (syntax_error_message(&tokenchain->token[t], \
+				redirection));
 			t++;
 		}
 		else
