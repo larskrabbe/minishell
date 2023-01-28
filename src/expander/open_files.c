@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 14:55:19 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 17:41:10 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,45 @@ int	access_folder(char *str)
 	return (valid);
 }
 
-int	access_filename(char *str, int permsion, t_redirection *redirection)
+int	check_permission(struct stat *info, t_redirection *redirection, int permission, char *str)
 {
-	struct stat	info;
-
-	if (access_folder(str) != 0 || access(str, F_OK) != 0)
-	{
-		printf("%s: %s: No such file or directory\n", IDLE_PROMT, str);
-		redirection->exit_code = error_nofile;
-		return (error_nofile);
-	}
-	stat(str, &info);
-	if ((info.st_mode & S_IFDIR))
-	{
-		printf("%s: %s: Is a directory\n", IDLE_PROMT, str);
-		redirection->exit_code = error_nofile;
-		return (error_nofile);
-	}
-	if (!(info.st_mode & permsion))
+	printf("true or false %i struct%i perm%i\n", info->st_mode & permission, info->st_mode , permission);
+	if (!(info->st_mode & permission))
 	{
 		printf("%s: %s: Permission denied\n", IDLE_PROMT, str);
 		redirection->exit_code = error_permission;
 		return (error_permission);
 	}
 	return (no_error);
+}
+
+int	check_filetype(char *str, int permission, t_redirection *redirection)
+{
+	struct stat	info;
+
+	if (access(str, F_OK) != 0 && (ft_strrchr(str, '/') == NULL || \
+	access_folder(str) == 0))
+		return (no_error);
+	if (access(str, F_OK) != 0 && ft_strrchr(str, '/') != NULL)
+	{
+		printf("%s: %s: No such file or directory\n", IDLE_PROMT, str);
+		redirection->exit_code = error_nofile;
+		return (error_nofile);
+	}
+	stat(str, &info);
+	if (!(info.st_mode & S_IFREG))
+	{
+		printf("%s: %s: is not a regular file\n", IDLE_PROMT, str);
+		redirection->exit_code = error_nofile;
+		return (error_nofile);
+	}
+	if (str[ft_strlen(str) - 1] == '/')
+	{
+		printf("%s: %s: Not a directory\n", IDLE_PROMT, str);
+		redirection->exit_code = error_nofile;
+		return (error_nofile);
+	}
+	return ((check_permission(&info, redirection, permission, str)));
 }
 
 int	open_outfile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirection *redirection)
@@ -75,13 +90,14 @@ int	open_outfile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redire
 	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
-	if (access_filename(str, S_IWUSR, redirection) == 0)
+	if (check_filetype(str, S_IWUSR, redirection) == 0)
 	{
-		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_TRUNC, 644);
+		exe_data->fd_write = open(str, O_CREAT | O_TRUNC, 777);
 		if (exe_data->fd_write < 0)
 			return (error_open);
 	}
-
+	else
+		return (-1);
 	free(str);
 	return (0);
 }
@@ -97,12 +113,14 @@ t_token *token, t_env **env_lst, t_redirection *redirection)
 	str = tokenstring(token, env_lst, redirection);
 	if (str == NULL)
 		return (error_allocation);
-	if (access_filename(str, S_IWUSR, redirection) == 0)
+	if (check_filetype(str, S_IWUSR, redirection) == 0)
 	{
-		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_APPEND, 644);
+		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_APPEND, 777);
 		if (exe_data->fd_write < 0)
 			return (error_open);
 	}
+	else
+		return (-1);
 	free(str);
 	return (0);
 }
@@ -118,12 +136,14 @@ int	open_infile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirec
 	if (str == NULL)
 		return (error_allocation);
 	stat(str, &info);
-	if (access_filename(str, S_IRUSR, redirection) == 0)
+	if (check_filetype(str, S_IRUSR, redirection) == 0)
 	{
-		exe_data->fd_read = open(str, O_RDONLY, 644);
+		exe_data->fd_read = open(str, O_RDONLY, 777);
 		if (exe_data->fd_read < 0)
 			return (error_open);
 	}
+	else
+		return (-1);
 	if (exe_data->fd_read < 0)
 		return (error_open);
 	free(str);
