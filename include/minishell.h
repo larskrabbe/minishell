@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:21:20 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 19:11:26 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:40:20 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef enum e_error{
 	error_nofile ,
 	error_execve ,
 	error_direct,
+	error_no_command = 127,
 	error_exit = 255,
 	error_builtin = 256,
 }t_error;

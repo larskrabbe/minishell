@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 19:07:52 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:01:01 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,15 @@ t_env **env_lst, t_redirection *redirection)
 	{
 		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (exe_data->fd_write < 0)
+		{
+			free (str);
 			return (error_open);
+		}
+	}
+	else
+	{
+		free(str);
+		return (-1);
 	}
 	free(str);
 	return (0);
@@ -57,10 +65,16 @@ t_token *token, t_env **env_lst, t_redirection *redirection)
 	{
 		exe_data->fd_write = open(str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (exe_data->fd_write < 0)
+		{
+			free(str);
 			return (error_open);
+		}
 	}
 	else
+	{
+		free(str);
 		return (-1);
+	}
 	free(str);
 	return (0);
 }
@@ -81,12 +95,16 @@ t_token *token, t_env **env_lst, t_redirection *redirection)
 	{
 		exe_data->fd_read = open(str, O_RDONLY);
 		if (exe_data->fd_read < 0)
+		{
+			free(str);
 			return (error_open);
+		}
 	}
 	else
+	{
+		free(str);
 		return (-1);
-	if (exe_data->fd_read < 0)
-		return (error_open);
+	}
 	free(str);
 	return (0);
 }
