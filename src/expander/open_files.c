@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 17:12:35 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 14:09:21 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:55:19 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	access_filename(char *str, int permsion, t_redirection *redirection)
 {
 	struct stat	info;
 
-	if (access_folder(str) != 0 && access(str, F_OK) != 0)
+	if (access_folder(str) != 0 || access(str, F_OK) != 0)
 	{
 		printf("%s: %s: No such file or directory\n", IDLE_PROMT, str);
 		redirection->exit_code = error_nofile;
@@ -120,8 +120,8 @@ int	open_infile(t_exe_data *exe_data, t_token *token, t_env **env_lst, t_redirec
 	stat(str, &info);
 	if (access_filename(str, S_IRUSR, redirection) == 0)
 	{
-		exe_data->fd_write = open(str, O_RDONLY, 644);
-		if (exe_data->fd_write < 0)
+		exe_data->fd_read = open(str, O_RDONLY, 644);
+		if (exe_data->fd_read < 0)
 			return (error_open);
 	}
 	if (exe_data->fd_read < 0)
