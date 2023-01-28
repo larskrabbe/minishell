@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:44:54 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 14:16:39 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:40:04 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ t_redirection *redirection, int *built_in_flag)
 	{
 		exe_data->path = get_cmd_path(env_lst, exe_data->argv[0]);
 		if (exe_data->path == NULL)
-			printf("<minishell>: %s: No such file or directory\n", \
+		{
+			printf("<minishell>: %s:command not found\n", \
 			exe_data->argv[0]);
+			redirection->exit_code = error_no_command;
+		}	
 	}
 	if (exe_data->path != NULL || *built_in_flag == TRUE)
 		execution_forking(exe_data, env_lst, *built_in_flag, redirection);
