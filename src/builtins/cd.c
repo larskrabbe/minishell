@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:43:56 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/24 23:23:20 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:26:38 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cd_home_dir(t_env *env_lst)
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.res = chdir(ft_getenv(env_lst, "HOME"));
 	if (cd.res != 0)
-		return (error_syntax);
+		return (error_builtin);
 	set_old_pwd(env_lst, cd.pwd);
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
@@ -36,7 +36,7 @@ int	cd_old_dir(t_env *env_lst)
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.res = chdir(ft_getenv(env_lst, "OLDPWD"));
 	if (cd.res != 0)
-		return (error_syntax);
+		return (error_builtin);
 	set_old_pwd(env_lst, cd.pwd);
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
@@ -54,7 +54,7 @@ int	cd_x_dir(t_env *env_lst, char **path_name)
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.res = chdir(*path_name);
 	if (cd.res != 0)
-		return (error_syntax);
+		return (error_builtin);
 	set_old_pwd(env_lst, cd.pwd);
 	getcwd(cd.pwd, sizeof(cd.pwd));
 	cd.new_pwd = ft_strjoin("PWD=", cd.pwd);
@@ -67,13 +67,13 @@ int	cd_tilde(t_env *env_lst, char **path_name)
 {
 	if (*(*path_name + 1) == '\0')
 	{
-		if (cd_home_dir(env_lst) == error_syntax)
-			return (error_syntax);
+		if (cd_home_dir(env_lst) == error_builtin)
+			return (error_builtin);
 	}
 	else
 	{
 		if (cd_tilde_with_path(env_lst, path_name) == FALSE)
-			return (error_syntax);
+			return (error_builtin);
 	}
 	return (no_error);
 }
@@ -89,7 +89,7 @@ int	ft_cd(t_env **env_lst, char **path_name)
 		ret_val = cd_home_dir(*env_lst);
 	else if (!old_pwdis_set(*env_lst)
 		&& **path_name == '-')
-		ret_val = error_syntax;
+		ret_val = error_builtin;
 	else if (**path_name == '-'
 		&& *(*path_name + 1) == '\0')
 		ret_val = cd_old_dir(*env_lst);

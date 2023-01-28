@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:04:13 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 18:50:31 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/27 21:06:29 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	my_atoli_helper(const char *str, int *i, unsigned long long *num)
 		*num = *num * 10;
 		*num = *num + (str[*i] - '0');
 		(*i)++;
-		if ((*num) > 9223372036854775806)
+		if ((*num) > 9223372036854775807)
 		{
 			printf("%s: exit: %s: numeric argument required\n", IDLE_PROMT, str);
 			return (error_exit);
@@ -91,6 +91,7 @@ int	ft_exit(char **args)
 	}
 	if (*(args + 1) != NULL && ft_isdigit(**args))
 	{
+		g_signal = 1;
 		printf("%s: exit: too many arguments\n", IDLE_PROMT);
 		return (error_builtin);
 	}

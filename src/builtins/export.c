@@ -6,7 +6,7 @@
 /*   By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 17:01:07 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/28 11:33:02 by lkrabbe          ###   ########.fr       */
+/*   Updated: 2023/01/28 11:54:48 by lkrabbe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	ft_export(t_env **env_lst, char **new_env)
 	error = FALSE;
 	if (!env_lst)
 		return (error_allocation);
-	printf("|--%p--|\n", *env_lst);
 	if (!new_env || !*new_env)
 	{
 		ft_export_print(*env_lst);
@@ -120,6 +119,6 @@ int	ft_export(t_env **env_lst, char **new_env)
 		}
 	}
 	if (error)
-		return (error_syntax);
+		return (error_builtin);
 	return (no_error);
 }
