@@ -6,7 +6,7 @@
 #    By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 20:58:48 by bogunlan          #+#    #+#              #
-#    Updated: 2023/04/06 20:58:50 by bogunlan         ###   ########.fr        #
+#    Updated: 2023/04/06 21:21:11 by bogunlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,7 +91,7 @@ LIBFT=$(LIB_DIR)libft.a
 LIB_DIR=libft/
 
 $(NAME): $(LIBFT) $(OBJ)
-	@$(CC) -lc $(OBJ) $(LIBFT) $(FLAGS)  -o $(NAME)
+	@$(CC) $(OBJ) $(LIBFT) $(FLAGS) -o $(NAME)
 	@printf "%-54b %b" "$(NAME) $(GREEN) compiled succesfully!" "$(GREEN)[√]$(RESET)\n"
 	@echo "\033[0;34m░S░E░A░ ░S░H░E░L░L░\033[0m"
 	@echo "by"
