@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:04:13 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 21:06:29 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/04/06 18:38:39 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,9 @@ unsigned char	my_atoli(const char *str)
 	unsigned long long int	num;
 	int						sign;
 	int						i;
-	unsigned long long int	last_num;
 
 	sign = 1;
 	num = 0;
-	last_num = 0;
 	i = 0;
 	while (is_white_space(str[i]))
 		str++;

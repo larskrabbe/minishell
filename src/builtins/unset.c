@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:35:10 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/27 20:25:15 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/04/06 18:37:53 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_invalid_char(char *env_name)
 		if (((*(env_name + j)) >= 32 && (*(env_name + j)) <= 47)
 			|| ((*(env_name + j)) >= 58 && (*(env_name + j)) <= 64)
 			|| ((*(env_name + j)) >= 91 && (*(env_name + j)) <= 94)
-			|| ((*(env_name + j)) >= 123 && (*(env_name + j)) <= 127))
+			|| ((*(env_name + j)) >= 123 && (*(env_name + j)) < 127))
 		{					
 			unset_error(env_name);
 			error = TRUE;

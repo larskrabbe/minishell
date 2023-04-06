@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 18:17:37 by lkrabbe           #+#    #+#             */
-/*   Updated: 2023/01/28 20:03:38 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/04/06 18:35:33 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	syntax_error_message(t_token *token, t_redirection *redirection)
 	return (error_syntax);
 }
 
-int inline static	quotes_logic(char c, char *end)
+inline static int	quotes_logic(char c, char *end)
 {
 	if (c == '\"' && *end == ' ')
 		*end = '\"';

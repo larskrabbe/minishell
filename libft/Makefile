@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lkrabbe <lkrabbe@student.42heilbronn.de    +#+  +:+       +#+         #
+#    By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/26 12:47:46 by lkrabbe           #+#    #+#              #
-#    Updated: 2022/08/27 21:16:01 by lkrabbe          ###   ########.fr        #
+#    Updated: 2023/04/06 20:58:12 by bogunlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,16 +77,33 @@ F_STRING = 		ft_memcpy.c\
 				ft_tolower.c\
 				ft_toupper.c
 
+#COLORS
+BLACK = \033[0;30m
+RED = \033[0;31m
+GREEN = \033[1;32m
+LGREEN = \033[0;32m
+YELLOW = \033[0;33m
+BLUE = \033[1;34m
+LBLUE = \033[0;34m
+PURPLE = \033[0;35m
+CYAN = \033[0;36m
+WHITE = \033[0;37m
+RESET = \e[0m
+UP = "\033[A"
+CUT = "\033[K"
+
 OBJ = $(F_ALLOCATION:.c=.o) $(F_CHECKER:.c=.o) $(F_PRINT:.c=.o) $(F_LIST:.c=.o) $(F_PARSING:.c=.o) $(F_STRING:.c=.o)
 
 %.o: %.c
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
+	@printf "%-61b %b" "$(BLUE)compiling: $(LBLUE)$@" "$(GREEN)[√]$(RESET)\n"
 
 all:$(NAME)
 	make clean
 
 $(NAME):$(OBJ)
-	ar -rs $(NAME) $(OBJ)
+	@ar -rs $(NAME) $(OBJ)
+	@printf "%-54b %b" "$(NAME) $(GREEN) compiled succesfully!" "$(GREEN)[√]$(RESET)\n"
 
 clean:
 	rm -f *.o

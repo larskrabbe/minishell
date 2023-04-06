@@ -6,7 +6,7 @@
 /*   By: bogunlan <bogunlan@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 14:06:38 by bogunlan          #+#    #+#             */
-/*   Updated: 2023/01/28 14:06:58 by bogunlan         ###   ########.fr       */
+/*   Updated: 2023/04/06 18:38:57 by bogunlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	invalid_env_id_helper(char *new_env, int *j, int *error, int *tmp)
 		|| ((*(new_env + *j)) >= 58 && (*(new_env + *j)) <= 60)
 		|| ((*(new_env + *j)) >= 62 && (*(new_env + *j)) <= 64)
 		|| ((*(new_env + *j)) >= 91 && (*(new_env + *j)) <= 94)
-		|| ((*(new_env + *j)) >= 123 && (*(new_env + *j)) <= 127))
+		|| ((*(new_env + *j)) >= 123 && (*(new_env + *j)) < 127))
 	{					
 		export_error_mssg(new_env);
 		*error = TRUE;
