@@ -85,7 +85,7 @@
             <li>
                 echo with option -n
             </li>
-            </li>
+            <li>
                 cd with only a relative or absolute path
             </li>
             <li>
