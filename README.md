@@ -29,7 +29,7 @@
     <section id="features">
       <h2>Features</h2>
         <p>
-            Minishell has the following features:
+            Our Minishell has the following features:
         </p>
         <ul>
             <li>
@@ -76,12 +76,9 @@
     <section id="built-in">
         <h2>Built-in Commands</h2>
         <p>
-            Minishell implements the following built-in commands:
+            Our Minishell implements the following built-in commands:
         </p>
         <ul>
-            <li>
-                Minishell implements the following built-in commands:
-            </li>
             <li>
                 echo with option -n
             </li>
